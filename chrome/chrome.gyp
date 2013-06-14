@@ -632,11 +632,11 @@
                 'codesign_id': 'House of Life',
                 'codesign_keychain': 'login.keychain',
               },
-              'actions+': [
+              'actions': [
                 {
                   'action_name': 'Sign versioned directory',
                   'inputs': ['<(sign_versioned_dir_script_path)', '<(PRODUCT_DIR)/<(mac_product_name).app', ],
-                  'outputs': [],
+                  'outputs': [ '<(PRODUCT_DIR)/<(mac_product_name).app/Contents/Versions/<(version_full)/<(mac_product_name) Framework.framework/_CodeSignature' ],
                   'action': [
                     '<(sign_versioned_dir_script_path)',
                     '<(PRODUCT_DIR)/<(mac_product_name).app',
@@ -647,7 +647,7 @@
                 {
                   'action_name': 'Sign application',
                   'inputs': ['<(sign_app_script_path)', '<(PRODUCT_DIR)/<(mac_product_name).app', ],
-                  'outputs': [],
+                  'outputs': [ '<(PRODUCT_DIR)/<(mac_product_name).app/Contents/_CodeSignature' ],
                   'action': [
                     '<(sign_app_script_path)',
                     '<(PRODUCT_DIR)/<(mac_product_name).app',

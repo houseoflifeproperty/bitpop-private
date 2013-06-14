@@ -6,20 +6,21 @@ function setAntiscrollHeight() {
 }
 
 $(document).ready(function() {
+  setTimeout(function() {
+    setAntiscrollHeight();
+    $('.antiscroll-wrap').antiscroll();
 
-  setAntiscrollHeight();
-  $('.antiscroll-wrap').antiscroll();
-
-  try {
-    $('body select').msDropDown();
-  } catch(e) {
-    alert(e.message);
-  }
+    try {
+      $('body select').msDropDown();
+    } catch(e) {
+      alert(e.message);
+    }
+  }, 1000);
 });
 $(window).resize(function() {
   setAntiscrollHeight();
   if ($('.antiscroll-wrap').data('antiscroll')) {
-    $('.antiscroll-wrap').data('antiscroll').rebuild();
+    $('.antiscroll-wrap').data('antiscroll').destroy().refresh();
     }
 });
 

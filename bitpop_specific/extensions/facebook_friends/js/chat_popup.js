@@ -19,6 +19,7 @@ bitpop.chat = (function() {
       friendUid = window.location.hash.slice(1).split('&')[0];
       myUid = window.location.hash.slice(1).split('&')[1];
       lastMessageUid = null;
+      var MESSAGES_EXTENSION_ID = 'dhcejgafhmkdfanoalflifpjimaaijda';
 
       function appendFromLocalStorage() {
         var lsKey = myUid + ':' + friendUid;
@@ -61,23 +62,38 @@ bitpop.chat = (function() {
             range.select();
           }
         }
+
+        chrome.extension.sendMessage(MESSAGES_EXTENSION_ID, {
+          'type': 'popupOpened',
+          'friend_uid': friendUid
+        });
       })();
 
+      var latest_message = null;
       chrome.extension.onMessageExternal.addListener(function (request, sender, sendResponse) {
-        if (request.type == 'newMessage') {
+        if (request.type == 'newMessage' || request.type == 'newInboxMessage') {
           if (friendUid == request.from) {
-            var timestamp = new Date();
+            var timestamp = (request.type == 'newInboxMessage') ?
+                new Date(request.created_time * 1000) : new Date();
+            if (latest_message && request.type == 'newInboxMessage' &&
+                latest_message.body == request.body &&
+                latest_message.isInbox != (request.type == 'newInboxMessage') &&
+                timestamp.getTime() - latest_message.timestamp.getTime() < 2000) {
+              return false;
+            }
             appendMessage(bitpop.preprocessMessageText(request.body), timestamp, false);
-            var MESSAGES_EXTENSION_ID = 'dhcejgafhmkdfanoalflifpjimaaijda';
-            chrome.extension.sendMessage(MESSAGES_EXTENSION_ID,
-                                         {
-                                           "type": "inPopupMessageReceived",
-                                           "friend_uid": request.from,
-                                           "timestamp": timestamp
-                                         });
+            if (request.type == 'newMessage')
+              chrome.extension.sendMessage(MESSAGES_EXTENSION_ID,
+                                           {
+                                             "type": "inPopupMessageReceived",
+                                             "friend_uid": request.from,
+                                             "timestamp": timestamp
+                                           });
             if ($('.box-wrap').data('antiscroll')) {
               $('.box-wrap').data('antiscroll').rebuild();
             }
+            latest_message = { 'body': request.body, 'timestamp': timestamp,
+                                'isInbox': request.type == 'newInboxMessage' };
           }
           return false;
         }

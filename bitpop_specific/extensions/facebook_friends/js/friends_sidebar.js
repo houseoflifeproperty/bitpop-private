@@ -546,7 +546,7 @@ bitpop.FriendsSidebar = (function() {
     $('#friend_list').append(newDom);
 
     if ($('.antiscroll-wrap').data('antiscroll'))
-      $('.antiscroll-wrap').data('antiscroll').rebuild();
+      $('.antiscroll-wrap').data('antiscroll').destroy().refresh();
   };
 
   self.updateFriendList = function(response, dontAnimate) {

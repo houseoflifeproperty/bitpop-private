@@ -2822,7 +2822,6 @@
               '$(SDKROOT)/System/Library/Frameworks/OpenGL.framework',
               '$(SDKROOT)/System/Library/Frameworks/QuartzCore.framework',
               '$(SDKROOT)/System/Library/Frameworks/SecurityInterface.framework',
-              '<(PRODUCT_DIR)/Sparkle.framework',
             ],
           },
           'dependencies': [

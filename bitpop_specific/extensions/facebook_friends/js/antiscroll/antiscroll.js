@@ -32,19 +32,32 @@
     this.el = $(el);
     this.options = opts || {};
 
-    this.x = (false !== this.options.x) || this.options.forceHorizontal;
-    this.y = (false !== this.options.y) || this.options.forceVertical;
+    this.x = false !== this.options.x;
+    this.y = false !== this.options.y;
     this.autoHide = false !== this.options.autoHide;
     this.padding = undefined == this.options.padding ? 2 : this.options.padding;
 
     this.inner = this.el.find('.antiscroll-inner');
-    this.inner.css({
-        'width':  '+=' + (this.y ? scrollbarSize() : 0)
-      , 'height': '+=' + (this.x ? scrollbarSize() : 0)
-    });
-
     this.refresh();
   };
+
+  // function Antiscroll (el, opts) {
+  //   this.el = $(el);
+  //   this.options = opts || {};
+
+  //   this.x = (false !== this.options.x) || this.options.forceHorizontal;
+  //   this.y = (false !== this.options.y) || this.options.forceVertical;
+  //   this.autoHide = false !== this.options.autoHide;
+  //   this.padding = undefined == this.options.padding ? 2 : this.options.padding;
+
+  //   this.inner = this.el.find('.antiscroll-inner');
+  //   this.inner.css({
+  //       'width':  '+=' + (this.y ? scrollbarSize() : 0)
+  //     , 'height': '+=' + (this.x ? scrollbarSize() : 0)
+  //   });
+
+  //   this.refresh();
+  // };
 
   /**
    * refresh scrollbars
@@ -53,31 +66,59 @@
    */
 
   Antiscroll.prototype.refresh = function() {
-    var needHScroll = this.inner.get(0).scrollWidth > this.el.width() + (this.y ? scrollbarSize() : 0), 
-	    needVScroll = this.inner.get(0).scrollHeight > this.el.height() + (this.x ? scrollbarSize() : 0);
+    var width = this.el.width(),
+        height = this.el.height(),
+        needHScroll, needVScroll;
 
-    if (this.x) {
-      if (!this.horizontal && needHScroll) {
-        this.horizontal = new Scrollbar.Horizontal(this);
-      } else if (this.horizontal && !needHScroll)  {
-        this.horizontal.destroy();
-        this.horizontal = null;
-      } else if (this.horizontal) {
-        this.horizontal.update();
-      }
+    this.inner.css({
+        'width': (width + scrollbarSize()) + 'px'
+      , 'height': (height + scrollbarSize()) + 'px'
+    });
+
+    needHScroll = this.inner.get(0).scrollWidth > width;
+    needVScroll = this.inner.get(0).scrollHeight > height;
+
+    if (!this.horizontal && needHScroll && this.x) {
+      this.horizontal = new Scrollbar.Horizontal(this);
+    } else if (this.horizontal && !needHScroll)  {
+      this.horizontal.destroy();
+      this.horizontal = null
     }
 
-    if (this.y) {
-      if (!this.vertical && needVScroll) {
-        this.vertical = new Scrollbar.Vertical(this);
-      } else if (this.vertical && !needVScroll)  {
-        this.vertical.destroy();
-        this.vertical = null;
-      } else if (this.vertical) {
-        this.vertical.update();
-      }
+    if (!this.vertical && needVScroll && this.y) {
+      this.vertical = new Scrollbar.Vertical(this);
+    } else if (this.vertical && !needVScroll)  {
+      this.vertical.destroy();
+      this.vertical = null
     }
   };
+
+  // Antiscroll.prototype.refresh = function() {
+  //   var needHScroll = this.inner.get(0).scrollWidth > this.el.width() + (this.y ? scrollbarSize() : 0),
+	 //    needVScroll = this.inner.get(0).scrollHeight > this.el.height() + (this.x ? scrollbarSize() : 0);
+
+  //   if (this.x) {
+  //     if (!this.horizontal && needHScroll) {
+  //       this.horizontal = new Scrollbar.Horizontal(this);
+  //     } else if (this.horizontal && !needHScroll)  {
+  //       this.horizontal.destroy();
+  //       this.horizontal = null;
+  //     } else if (this.horizontal) {
+  //       this.horizontal.update();
+  //     }
+  //   }
+
+  //   if (this.y) {
+  //     if (!this.vertical && needVScroll) {
+  //       this.vertical = new Scrollbar.Vertical(this);
+  //     } else if (this.vertical && !needVScroll)  {
+  //       this.vertical.destroy();
+  //       this.vertical = null;
+  //     } else if (this.vertical) {
+  //       this.vertical.update();
+  //     }
+  //   }
+  // };
 
   /**
    * Cleans up.
@@ -304,7 +345,7 @@
    */
 
   Scrollbar.Horizontal.prototype.update = function () {
-    var paneWidth = this.pane.el.width(), 
+    var paneWidth = this.pane.el.width(),
 	    trackWidth = paneWidth - this.pane.padding * 2,
 		innerEl = this.pane.inner.get(0)
 
@@ -322,7 +363,7 @@
    */
 
   Scrollbar.Horizontal.prototype.mousemove = function (ev) {
-    var trackWidth = this.pane.el.width() - this.pane.padding * 2, 
+    var trackWidth = this.pane.el.width() - this.pane.padding * 2,
 	    pos = ev.pageX - this.startPageX,
 		barWidth = this.el.width(),
 		innerEl = this.pane.inner.get(0)
@@ -373,15 +414,15 @@
    */
 
   Scrollbar.Vertical.prototype.update = function () {
-    var paneHeight = this.pane.el.height(), 
+    var paneHeight = this.pane.el.height(),
 	    trackHeight = paneHeight - this.pane.padding * 2,
 		innerEl = this.innerEl;
-      
+
     var scrollbarHeight = trackHeight * paneHeight / innerEl.scrollHeight;
     scrollbarHeight = scrollbarHeight < 20 ? 20 : scrollbarHeight;
-    
+
     var topPos = trackHeight * innerEl.scrollTop / innerEl.scrollHeight;
-    
+
     if((topPos + scrollbarHeight) > trackHeight) {
         var diff = (topPos + scrollbarHeight) - trackHeight;
         topPos = topPos - diff - 3;
@@ -390,7 +431,7 @@
     this.el
       .css('height', scrollbarHeight)
       .css('top', topPos);
-	  
+
 	  return paneHeight < innerEl.scrollHeight;
   };
 

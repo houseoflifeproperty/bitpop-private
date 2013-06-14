@@ -29,6 +29,8 @@
             'LD_DYLIB_INSTALL_NAME':
                 '$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(WRAPPER_NAME)/$(PRODUCT_NAME)',
             'GCC_WARN_64_TO_32_BIT_CONVERSION': 'NO',
+            'GCC_PREFIX_HEADER': 'Sparkle.pch',
+            'GCC_PRECOMPILE_PREFIX_HEADER': 'YES',
           },
           'variables': {
             'sparkle_public_headers': [
@@ -166,6 +168,18 @@
                 '/usr/bin/env', 'ruby',
                 '-e', 'resources = "#{ENV["BUILT_PRODUCTS_DIR"]}/#{ENV["WRAPPER_NAME"]}/Resources"',
                 '-e', '`ln -sfh "pt_BR.lproj" "#{resources}/pt.lproj"`',
+              ],
+            },
+            {
+              'postbuild_name': 'Create public Sparkle Framework headers dir',
+              'action': [
+                'mkdir', '-p', '$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Headers',
+              ],
+            },
+            {
+              'postbuild_name': 'Copy public Sparkle Framework Headers',
+              'action': [
+                'cp', '<@(sparkle_public_headers)', '$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Headers/',
               ],
             },
           ],

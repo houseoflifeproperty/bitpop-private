@@ -62,7 +62,7 @@ DesktopNotifications = {
 
   threads: [],
   time_chat_was_read_indexed_by_friend_uid: {},
-  chat_last_read_by_thread: {},
+  time_popup_opened_indexed_by_friend_uid: {},
   just_connected: false,
 
   //FIXME: should be merged with popup.js constant
@@ -139,7 +139,7 @@ DesktopNotifications = {
     errback = errback || function(u, e) { console.error(u, e); };
     var self = DesktopNotifications;
 
-    var query = "SELECT thread_id, unread, unseen, updated_time FROM thread WHERE folder_id=0 AND unseen > 0";
+    var query = "SELECT thread_id, unread, unseen, updated_time, recipients FROM thread WHERE folder_id=0 AND unseen > 0";
     chrome.extension.sendMessage(self.controllerExtensionId,
         { type: 'fqlQuery',
           query: query
@@ -208,28 +208,36 @@ DesktopNotifications = {
         var th_id = serverInfo.data[i].thread_id;
         var upd_time = serverInfo.data[i].updated_time;
 
+        var recipients = serverInfo.data[i].recipients;
+        if (recipients.length > 1) {
+          var time_popup_opened =
+              self.time_popup_opened_indexed_by_friend_uid[''+recipients[0]] ||
+              self.time_popup_opened_indexed_by_friend_uid[''+recipients[1]];
+          if (time_popup_opened && time_popup_opened > upd_time) {
+            localStorage.setCacheItem('xx_' + th_id, ''+time_popup_opened,
+              { 'days': 21 });
+          }
+        }
+
         var d = localStorage.getCacheItem('xx_' + th_id);
         if (!d) {
-          d = 'January 1, 1970 00:00:00';
+          d = '0';
         }
-        var date = new Date(d);
+        var date = new Date(+d);
 
         if (self.just_connected ||
           date.getTime() <
             (new Date(upd_time * 1000)).getTime()) {
 
           self.threads.push(th_id);
-          // var update_add_time = localStorage.getCacheItem('xu_' + th_id) ||
-          //                             'January 1, 2047 00:00:00';
-          // var update_add_time_date = new Date(update_add_time);
-          // if (update_add_time_date < new Date(upd_time * 1000)) {
-          //   self.chat_last_read_by_thread[''+th_id] = update_add_time_date;
-          // }
-          // localStorage.setCacheItem('xu_' + th_id, upd_time * 1000);
           local_unseen_count++;
 
           if (first_unseen_thread_index === -1)
             first_unseen_thread_index = i;
+        }
+        if (self.just_connected) {
+          localStorage.setCacheItem('xx_' + th_id, (new Date()).getTime(),
+            { 'days': 21 });
         }
       }
 
@@ -244,7 +252,7 @@ DesktopNotifications = {
                       thread_ids_received.
                         slice(0, self.MAX_NOTIFICATIONS_TO_SHOW).join("','") +
                       "')",
-          users: "SELECT uid, name FROM user WHERE uid IN #recipients"
+          users: "SELECT uid, name FROM user WHERE uid IN (SELECT recipients FROM #recipients)"
         };
 
         var message_query_tmpl =
@@ -317,19 +325,22 @@ DesktopNotifications = {
       messages[th_id] = msg;
 
       if (!self.just_connected) {
-        var d = localStorage.getCacheItem('xx_' + th_id) ||
-            "January 1, 1970 00:00:00";
-        var date = new Date(d);
+        var d = localStorage.getCacheItem('xx_' + th_id) || "0";
+        var date = new Date(+d);
         var counter = Math.min(rs.length, threads.data[i].unseen);
         var msgList = [];
         for (var j = 0; j < counter && rs[j].author_id != myUid; ++j) {
           msgList.unshift(rs[j]);
         }
 
-        for (j = msgList.length - 1; j >= 0; --j) {
+        for (j = 0; j < msgList.length; ++j) {
+          var time_read = this.time_chat_was_read_indexed_by_friend_uid[
+              ''+msgList[j].author_id
+            ];
           if (this.threads.indexOf(th_id) !== -1 &&
-              this.time_chat_was_read_indexed_by_friend_uid[''+th_id].getTime() <
-                msgList[j].created_time * 1000) {
+              (!time_read ||
+                time_read.getTime() < msgList[j].created_time * 1000) &&
+              date.getTime() < msgList[j].created_time * 1000) {
             // Send message to friends extension to add message to chats
             chrome.extension.sendMessage("engefnlnhcgeegefndkhijjfdfbpbeah",
               {
@@ -338,6 +349,8 @@ DesktopNotifications = {
                 "body": msgList[j].body,
                 "created_time": msgList[j].created_time
               });
+            this.time_chat_was_read_indexed_by_friend_uid[
+              ''+msgList[j].author_id] = new Date();
           }
         }
       }

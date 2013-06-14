@@ -46,13 +46,8 @@ chrome.extension.onMessageExternal.addListener(function (request, sender, sendRe
 
     dn.start(current.refreshTime);
 
-  } else if (request.type == 'newMessage') {
-    dn.received_cache.push({ body: request.body,
-                             from: request.from,
-                             timestamp: new Date()
-                           });
-    if (dn.received_cache.length > 50)
-      dn.received_cache.shift();
+  } else if (request.type == 'popupOpened') {
+    dn.time_popup_opened_indexed_by_friend_uid[''+request.friend_uid] = (new Date()).getTime();
   } else if (request.type == 'inPopupMessageReceived') {
     dn.time_chat_was_read_indexed_by_friend_uid[''+request.from] = request.timestamp;
   } else if (request.type == 'loggedOut') {

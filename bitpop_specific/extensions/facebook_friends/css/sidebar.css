@@ -279,3 +279,6 @@ p.promo {
   color: gray;
 }
 
+#chat-content, .antiscroll-wrap {
+  height: 100%;
+}
