@@ -1311,11 +1311,14 @@ void LocationBarView::ShowFirstRunBubbleInternal() {
   if (!browser)
     return; // Possible when browser is shutting down.
 
-  FirstRunBubble::ShowBubble(browser, location_icon_view_);
+  views::BubbleDelegateView* other_bubble = 
+		FirstRunBubble::ShowBubble(browser, location_icon_view_);
 
   BrowserView* browser_view = static_cast<BrowserView*>(browser->window());
   FbButtonBubble::ShowBubble(browser,
-      browser_view->toolbar()->browser_actions()->GetBrowserActionViewAt(0));
+      browser_view->toolbar()->browser_actions()->GetBrowserActionViewAt(0),
+	  other_bubble
+	  );
 #endif
 
 }

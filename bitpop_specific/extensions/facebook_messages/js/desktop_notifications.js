@@ -334,12 +334,14 @@ DesktopNotifications = {
         }
 
         for (j = 0; j < msgList.length; ++j) {
-          var time_read = this.time_chat_was_read_indexed_by_friend_uid[
+          var time_read = self.time_chat_was_read_indexed_by_friend_uid[
               ''+msgList[j].author_id
             ];
           if (this.threads.indexOf(th_id) !== -1 &&
               (!time_read ||
-                time_read.getTime() < msgList[j].created_time * 1000) &&
+                (time_read.getTime() < msgList[j].created_time * 1000 &&
+                  (msgList[j].created_time * 1000 - time_read.getTime()) > 1500 * 1000)) &&
+
               date.getTime() < msgList[j].created_time * 1000) {
             // Send message to friends extension to add message to chats
             chrome.extension.sendMessage("engefnlnhcgeegefndkhijjfdfbpbeah",
@@ -349,7 +351,7 @@ DesktopNotifications = {
                 "body": msgList[j].body,
                 "created_time": msgList[j].created_time
               });
-            this.time_chat_was_read_indexed_by_friend_uid[
+            self.time_chat_was_read_indexed_by_friend_uid[
               ''+msgList[j].author_id] = new Date();
           }
         }

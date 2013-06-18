@@ -75,7 +75,7 @@ public:
 protected:
   virtual gfx::Rect GetTextBounds() const OVERRIDE {
     DCHECK_EQ(alignment_, ALIGN_LEFT);
-    DCHECK_EQ(icon_placement(), ICON_ON_LEFT);
+	DCHECK_EQ(icon_placement(), views::TextButton::ICON_ON_LEFT);
     gfx::Insets insets = GetInsets();
     int content_width = width() - insets.right() - insets.left();
     int extra_width = 0;

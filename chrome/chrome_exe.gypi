@@ -490,6 +490,7 @@
             '../breakpad/breakpad.gyp:breakpad_sender',
             '../sandbox/sandbox.gyp:sandbox',
             'app/policy/cloud_policy_codegen.gyp:policy',
+            'default_extensions',
           ],
           'sources': [
             'app/chrome_exe.rc',

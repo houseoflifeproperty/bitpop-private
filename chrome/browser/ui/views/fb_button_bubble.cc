@@ -28,8 +28,9 @@ const int kRightInset = 2;
 
 // static
 FbButtonBubble* FbButtonBubble::ShowBubble(Browser* browser,
-                                           views::View* anchor_view) {
-  FbButtonBubble* delegate = new FbButtonBubble(browser, anchor_view);
+                                           views::View* anchor_view,
+										   views::BubbleDelegateView* other) {
+  FbButtonBubble* delegate = new FbButtonBubble(browser, anchor_view, other);
   delegate->set_arrow_location(views::BubbleBorder::TOP_RIGHT);
   views::BubbleDelegateView::CreateBubble(delegate);
   delegate->StartFade(true);
@@ -65,13 +66,23 @@ void FbButtonBubble::Init() {
   layout->AddView(subtext);
 }
 
-FbButtonBubble::FbButtonBubble(Browser* browser, views::View* anchor_view)
+FbButtonBubble::FbButtonBubble(Browser* browser, views::View* anchor_view,
+							   views::BubbleDelegateView* other)
     : views::BubbleDelegateView(anchor_view, views::BubbleBorder::TOP_LEFT),
-      browser_(browser) {
+      browser_(browser),
+	  other_(other) {
   // Compensate for built-in vertical padding in the anchor view's image.
   set_anchor_insets(
       gfx::Insets(kAnchorVerticalInset, 0, kAnchorVerticalInset, 0));
 }
 
 FbButtonBubble::~FbButtonBubble() {
+}
+
+void FbButtonBubble::OnWidgetActivationChanged(views::Widget* widget, bool active) {
+  if (close_on_deactivate() && widget == GetWidget() && !active) {
+    GetWidget()->Close();
+	if (other_)
+	  other_->GetWidget()->Close();
+  }
 }

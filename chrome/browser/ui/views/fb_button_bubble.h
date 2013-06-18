@@ -14,17 +14,21 @@ class Browser;
 class FbButtonBubble : public views::BubbleDelegateView {
  public:
   // |browser| is the opening browser and is NULL in unittests.
-  static FbButtonBubble* ShowBubble(Browser* browser, views::View* anchor_view);
+  static FbButtonBubble* ShowBubble(Browser* browser, views::View* anchor_view,
+									views::BubbleDelegateView* other);
+  virtual void OnWidgetActivationChanged(views::Widget* widget, bool active) OVERRIDE;
 
  protected:
   // views::BubbleDelegateView overrides:
   virtual void Init() OVERRIDE;
 
  private:
-  FbButtonBubble(Browser* browser, views::View* anchor_view);
+  FbButtonBubble(Browser* browser, views::View* anchor_view,
+				 views::BubbleDelegateView* other);
   virtual ~FbButtonBubble();
 
   Browser* browser_;
+  views::BubbleDelegateView* other_;
 
   DISALLOW_COPY_AND_ASSIGN(FbButtonBubble);
 };

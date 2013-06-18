@@ -95,16 +95,7 @@ FirstRunBubble::~FirstRunBubble() {
 
 void FirstRunBubble::OnWidgetActivationChanged(views::Widget* widget,
                                                bool active) {
-  static int deactivation_count = 0;
-  if (deactivation_count == 0 && widget == GetWidget() && !active) {
-    deactivation_count++;
-    return;
-  }
-
-  if (close_on_deactivate() && widget == GetWidget() && !active) {
-    GetWidget()->Close();
-    deactivation_count = 0;
-  }
+  // do nothing here
 }
 
 void FirstRunBubble::LinkClicked(views::Link* source, int event_flags) {
