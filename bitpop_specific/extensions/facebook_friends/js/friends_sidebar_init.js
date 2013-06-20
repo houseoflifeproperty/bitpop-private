@@ -1,7 +1,8 @@
 function setAntiscrollHeight() {
-  $('#friend_list').height(
+  $('#scrollable-area').height(
     $('body').height() - $('.antiscroll-wrap').offset().top
   );
+
   $('.antiscroll-inner').width($('body').width());
 }
 

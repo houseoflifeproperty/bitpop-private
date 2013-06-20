@@ -103,10 +103,13 @@ ul.list li:hover span.leftSide {
   float: left;
   margin-right: -30000px;
   height: 100%;
+  display: table;
 }
 .content-item {
-  float:left;
+  display: table-cell;
+  vertical-align: top;
   width: 185px;
+  height: 100%;
 }
 #login-content {
   display: table;
@@ -279,6 +282,6 @@ p.promo {
   color: gray;
 }
 
-#chat-content, .antiscroll-wrap {
+.antiscroll-wrap {
   height: 100%;
 }
