@@ -1,6 +1,6 @@
 BitPop browser project.
-Copyright (C) 2006-2011 The Chromium Authors. All Rights Reserved.
-Copyright (C) 2012 House of Life Property ltd.
+Copyright (C) 2006-2013 The Chromium Authors. All Rights Reserved.
+Copyright (C) 2013 House of Life Property ltd.
 
 A browser based on Chromium open-source project.
 
@@ -19,8 +19,8 @@ Build instructions:
 - create file named .gclient in current dir with following contents:
 
 solutions = [
-  { "name"        : "22.0.1229.96",
-    "url"         : "http://src.chromium.org/svn/releases/22.0.1229.96",
+  { "name"        : "25.0.1364.72",
+    "url"         : "http://src.chromium.org/svn/releases/25.0.1364.72",
     "deps_file"   : "DEPS",
     "custom_deps" : {
       "src/third_party/WebKit/LayoutTests": None,
