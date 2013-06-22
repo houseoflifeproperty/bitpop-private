@@ -340,7 +340,7 @@ DesktopNotifications = {
           if (this.threads.indexOf(th_id) !== -1 &&
               (!time_read ||
                 (time_read.getTime() < msgList[j].created_time * 1000 &&
-                  (msgList[j].created_time * 1000 - time_read.getTime()) > 1500 * 1000)) &&
+                  (msgList[j].created_time * 1000 - time_read.getTime()) > 2500 * 1000)) &&
 
               date.getTime() < msgList[j].created_time * 1000) {
             // Send message to friends extension to add message to chats
