@@ -420,3 +420,10 @@ v8.log
 /bitpop_specific/extensions/facebook_notifications.pem
 /bitpop_specific/extensions/uncensor_domains.pem
 /bitpop_specific/extensions/uncensor_proxy.pem
+/bitpop_specific/extensions/bittorrent_surf.pem
+/bitpop_specific/extensions/share_button.pem
+.tags
+.tags_sorted_by_file
+/bitpop_specific/extensions/upload
+/chrome_frame/chrome_frame_version_resources.xml
+/chrome_frame/chrome_frame_launcher_version_resources.xml
