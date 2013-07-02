@@ -1,0 +1,28 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_search_settings.png" />
+        </span>
+        <span class="text">Use default search engine in Surf?</span>
+    </h3>
+    <div class="search_options">
+      <input type="radio" name="search_engine_first" value="google" />
+      <label>Google</label>
+      <small>("torrent" added to searches)</small>
+    </div>
+    <div class="search_options">
+      <input type="radio" name="search_engine_first" value="bing" />
+      <label>Bing</label>
+      <small>("torrent" added to searches)</small>
+    </div>
+    <div class="search_options">
+      <input type="radio" name="search_engine_first" value="yahoo" />
+      <label>Yahoo</label>
+      <small>("torrent" added to searches)</small>
+    </div>
+</header>
+<div class="row buttons">
+    <button class="cancel js-set-default-search" data-default-search="false">Not now</button>
+    <button type="submit" class="primary js-set-default-search" data-default-search="true" data-close-dialog="true">Use Selected</button>
+</div>

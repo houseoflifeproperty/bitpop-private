@@ -1,0 +1,3 @@
+var _gaq=_gaq||[];
+(function(){define("main",["require","gaq.require.config"],function(c,e){global_require.config(e);return{init:function(){c(["config"],function(){var a=c("config"),b=null;_gaq.push(["_setAccount",a.app.GA]);_gaq.push(["_trackPageview"]);a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://ssl.google-analytics.com/ga.js";var d=document.getElementsByTagName("script")[0];d.parentNode.insertBefore(a,d);b=_sandbox.observer.load("gaq");b.on("track:page",function(a){_gaq.push(["_trackPageview",
+a])});b.on("track:event",function(a){_gaq.push(["_trackEvent",a.tb_category,a.tb_action,a.tb_label||null,a.tb_value||null])});b.on("shake",function(){b.trigger("alive")})})}}})})(this);define("core/gaq",function(){});

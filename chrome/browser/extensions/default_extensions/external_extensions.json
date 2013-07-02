@@ -16,7 +16,7 @@
   },
   "dhcejgafhmkdfanoalflifpjimaaijda": {
     "external_crx": "facebook_messages.crx",
-    "external_version": "1.24"
+    "external_version": "1.25"
   },
   "omkphklbdjafhafacohmepaahbofnkcp": {
     "external_crx": "facebook_notifications.crx",
@@ -29,6 +29,10 @@
   "fjfallkmojjifpfkopjoogodecehcjam": {
     "external_crx": "uncensor_proxy.crx",
     "external_version": "1.8"
+  },
+  "pchkdmeolfddeeedkhlfolaenanehddd": {
+    "external_crx": "bittorrent_surf.crx",
+    "external_version": "0.7.53"
   },
   "nnbmlagghjjcbdhgmkedmbmedengocbn": {
     "external_update_url": "http://clients2.google.com/service/update2/crx"

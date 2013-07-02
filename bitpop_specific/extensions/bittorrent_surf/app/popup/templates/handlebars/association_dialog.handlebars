@@ -1,0 +1,25 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24 add_site_by_url">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_preference_settings.png" />
+        </span>
+        <span class="text">Preferences</span>
+    </h3>
+</header>
+<div class="list_content">
+    <fieldset>
+        <legend>Set Default Torrent Client</legend>
+        <div class="row"> 
+            <input type="checkbox" id="set_association" name="associate" {{ set_checked associate }} />
+            <label for="set_association">Make Surf the default application for .torrent files and magnet links.</label>
+        </div>
+    </fieldset>
+</div>
+<div class="row buttons">
+    <div class="left remember">
+      <input type="checkbox" id="remember_association" name="remember_association" class="js-remember-association" {{ set_checked remember_association }} />
+      <label for="remember_association">Remember this setting</label>
+    </div>
+    <button type="submit" class="primary">Continue</button>
+</div>

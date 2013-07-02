@@ -1,0 +1,34 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24 add_site_by_url">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_notification_settings.png" />
+        </span>
+        <span class="text">Notifications</span>
+    </h3>
+</header>
+<div class="list_content">
+	{{#if notifications}}
+	    <div class="header">
+	        <span class="column center" style="width: 15%">Type</span>
+	        <span class="column" style="width: 63%">Event</span>
+	        <span class="column" style="width: 22%">Time</span>
+	    </div>
+	    <ul class="list">
+	        {{#each notifications}}
+	            <li class="{{ this.attributes.type }} {{ resolved_class this }}">
+	                {{notification_icon this}}
+	                {{notification_link this}}
+	                <time class="timeago time" datetime="{{ iso_date timestamp }}">{{ timestamp }}</time>
+	            </li>
+	        {{/each}}
+	    </ul>
+	{{else}}
+	    <ul class="list">
+	        <li class="message">No notifications.</li>
+	    </ul>
+	{{/if}}
+</div>
+<div class="buttons">
+    <button class="cancel right">Done</button>
+</div>

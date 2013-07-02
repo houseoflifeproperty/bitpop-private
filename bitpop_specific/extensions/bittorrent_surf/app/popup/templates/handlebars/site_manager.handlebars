@@ -1,0 +1,45 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24 add_site_by_url">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_search_settings.png" />
+        </span>
+        <span class="text">Search Settings</span>
+    </h3>
+</header>
+<div class="list_content">
+    <ul class="list can-expand">
+        <li class="expandable default_engines">
+            <div class="arrow js-toggle-expandable"></div>
+            <input type="checkbox" class="switch_input js-toggle-site" name="search_default" id="search_default" data-id="search_default" />
+            <div class="switch"></div>
+
+            <label for="search_engine">Default Search Site <small>("torrent" added to searches.)</small></label>
+            
+            <ul class="engines sub">
+                <li>
+                    <input type="radio" name="search_engine" value="google" /><label>Google</label>
+                </li>
+                <li>
+                    <input type="radio" name="search_engine" value="bing" /><label>Bing</label>
+                </li>
+                <li>
+                    <input type="radio" name="search_engine" value="yahoo" /><label>Yahoo</label>
+                </li>
+            </ul>
+        </li>
+        {{#sites}}
+            <li class="{{ type }} {{ id }}">
+                <img src="{{ favicon }}" alt="" class="icon16 favicon"/>
+                <input type="checkbox" id="site_{{ id }}" data-id="{{ id }}" class="switch_input js-toggle-site" {{#if enabled}}checked="checked"{{/if}} />
+                <div class="switch {{ site_enabled this }}"></div>        
+                <label for="site_{{ id }}">{{ get_site_name id }}</label>
+            </li>
+        {{/sites}}        
+    </ul>
+</div>
+
+<div class="buttons">
+    <button class="left js-open-dialog" data-dialog="add_site">Add Site from URL</button>
+    <button class="cancel right">Done</button>
+</div>

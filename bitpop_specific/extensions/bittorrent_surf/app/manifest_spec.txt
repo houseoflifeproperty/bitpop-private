@@ -1,0 +1,76 @@
+// hi.  this is a commented version of how the bt manifest works.
+// this is a work in progress.  I am writing down spec ideas as I go.
+// the launcher and build scripts need to read the manifest file and generate
+// each extensions specific manifest.json ( for chrome ), package.json ( for firefox ),
+// {whatever}.plist ( for safari ), and in the future something for i.e.
+
+{
+	"meta" : {
+		//this includes all that extra necessary information
+        "id":           //for firefox,
+        "name":         //name of extension,
+        "author":       ...,
+        "version":      ...,
+        "version_min":  ... ( String, minimum local version to load remote code of this version ),
+        "description":  ...,
+        "fullName":     //used for firefox manifest, also, this string is used to set the tooltip title on the popup icon for chrome
+        ... other meta information
+        ... fullName, license ... ?
+	},
+
+    "icons" : {
+        "popup_default": "{ path... set during runtime and put in manifests as default popup icon image (think chrome)}",
+        "{ size }" : "{ path }",
+        ...
+    },
+
+    "remote_source" : 
+        "String:    the domain where newer resources are hosted remotely.  
+                    the idea is that there is a remote version of any local 
+                    scripts that can be newer than the local scripts.
+                    this source makes its way into the sandboxed content security policy"
+
+    "plugins" : {   Object: holds array of binary paths and object for meta info
+        "bin":      [ Array:    list of paths to plugin files to load.  
+                                existence of this makes firefox builder create 
+                                a separate extension for the plugins, and a 'meta' 
+                                extension to package it all together                ],
+
+        "meta": { Object:   key/value pairs to create the plugin extension for firefox
+            "name":         // String:  long name of plugin extension ex: "Bittorrent TorqueChrome Plugin"
+            "description":  // String:  
+            "creator":      // String:  ex: "Bittorrent, Inc."
+            "version":      // String:  version number, ex: "4.3.7"
+        }
+
+    }
+
+    // WORKERS:
+    // get auto-loaded by keys as names.
+    // loads {key}.html, {key}.css, {key}.js (  and the script should be a require module 
+    //                                          that returns an init function to have resources 
+    //                                          passed into it, and sets up the paths of other remote modules )
+    "workers" : {
+        "{ keyed by id / name of worker }" : 
+            Bool {  true if sandboxed ( can load remote scripts )
+                    false if not ( priveleged, has access to plugins, LCD chrome ) }
+
+        //maybe keep references to popup here, and the popup key has special logic attached?
+        //  if there is a worker with a value of popup, then 
+
+
+    },
+
+    // PLUGIN WORKERS
+    // this is a major pain.  in safari, we have to use a stupid trick to render the worker frame so that the browser
+    // actually provides access to the plugin.
+    // having more than one causes this trick to not be reliable.  therefore, you get one worker with access to the plugin
+    "plugin_worker": "{{ id / name of worker }}"
+
+    //  if there is a popup key, then
+    //  the manifest for chrome gets "browser_action": {}
+    //  added to it.  the extension itself will set everything else
+    "popup" : "String: name"
+
+
+}

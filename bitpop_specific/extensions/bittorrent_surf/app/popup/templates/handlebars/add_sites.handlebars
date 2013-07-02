@@ -1,0 +1,28 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24 add_sites">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_search_add.png" />
+        </span>
+        <span class="text">{{add_sites_header this}}</span>
+    </h3>
+</header>
+
+<div class="row">
+    <div class="sites">
+        {{#each sites}}
+            <div class="site cf" data-id="{{id}}">
+                {{add_sites_icon this}}
+                <span class="text">{{get_site_name id}}</span>
+                <span class="icon_sprite remove" data-tip="Remove">
+                    <img class="icon16" src="{{root}}img/icon_minus_w.png" alt="Remove" />
+                </span>
+            </div>
+        {{/each}}
+    </div>
+</div>
+<div class="row buttons">
+    <button class="cancel">Cancel</button>
+    <button class="primary" type="submit">Add Search Sites</button>
+</div>
+

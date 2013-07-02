@@ -1,0 +1,23 @@
+<div class="header">
+    <div class="column download">Downloads</div>
+    <div class="column status">Status</div>
+    <div class="column size">Size</div>
+    <div class="column torrent_health">Options</div>
+
+    <div id="download_settings">
+        <a href="#" class="arrow icon16 js-toggle-menu" data-tip="Open Settings">Torrent Settings</a>
+        
+        <ul class="hidden menu">
+            <li class="js-open-dialog" data-dialog="settings" href="#settings">Set Download Options</li>
+            <li class="js-menu-action" data-action="clear_completed_downloads">Clear Completed Downloads</li>
+        </ul>
+    </div>  
+</div>
+
+<!-- Displayed when NO torrents are downloading/seeding -->
+<div class="message" id="no_torrents">Empty list.</div>
+
+<!-- Displayed when torrents are downloading/seeding -->
+<ul id="torrents"></ul>
+
+<div class="alert_container"></div>

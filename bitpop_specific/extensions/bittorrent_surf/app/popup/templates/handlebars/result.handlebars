@@ -1,0 +1,61 @@
+{{#if duplicates}}
+    <div class="arrow js-toggle-expandable"></div>
+{{else}}
+    <a class="js-open-tab" data-tip="{{ get_tab_link_tip this }}" href="{{ torrent.url }}"><img src="{{ getFavicon favicon }}" alt="" class="icon16 favicon"/></a>
+{{/if}}
+
+    <div class="col size right">
+        <span class="size">{{ get_result_size this }}</span>
+    </div>
+
+    {{ scrape_health this }}
+
+    <ul class="downloads">
+    {{#download}}
+        {{#torrent}}
+            <li>
+                <div class="line"></div>
+                <a href="{{ this }}" class="download torrent {{#../../downloaded}}downloading{{/../../downloaded}}" data-id="{{../../torrent/url}}">
+                    <img class="icon16 dl_arrow" src="{{root}}img/icon_download_w.png" alt="Download" data-tip="{{ get_download_link_tip ../.. }}" />
+                    <img class="icon16 check" src="{{root}}img/icon_check_w.png" alt="Downloading" data-tip="Downloading" />
+                </a>
+            </li>
+        {{/torrent}}
+        {{#magnet}}
+            <li>
+                <div class="line"></div>
+                <a href="{{ this }}" class="download magnet {{#../../downloaded}}downloading{{/../../downloaded}}" data-id="{{ ../../torrent/url }}">
+                    <img class="icon16 dl_arrow" src="{{root}}img/icon_download_w.png" alt="Magnet" data-tip="{{ get_download_link_tip ../.. }}" />
+                    <img class="icon16 check" src="{{root}}img/icon_check_w.png" alt="Downloading" data-tip="Downloading" />
+                </a>
+            </li>
+        {{/magnet}}
+    {{/download}}
+    </ul>
+
+{{#torrent}}
+    {{#if ../duplicates}}
+        <span class="title js-toggle-expandable" data-tip="{{ get_title_tip ../.. }}">{{ get_result_name ../.. }}</span>
+    {{else}}
+        <span class="title" data-tip="{{ get_title_tip ../.. }}">{{ get_result_name ../.. }}</span>
+    {{/if}}
+{{/torrent}}
+
+{{#if duplicates}}
+    <ul class="duplicates">
+        <li>
+            <a class="js-open-tab" data-tip="{{ get_tab_link_tip this }}" href="{{ torrent.url }}">
+                <img src="{{ getFavicon ../favicon }}" alt="" class="icon16 favicon"/>
+            </a>
+            <span class="title" data-tip="{{ get_title_tip .. }}">{{ ../torrent.name }}</span>
+        </li>
+        {{#duplicates}}
+        <li>
+            <a class="js-open-tab" data-tip="{{ get_tab_link_tip this }}" href="{{ torrent.url }}">
+                <img src="{{ getFavicon favicon }}" alt="" class="icon16 favicon"/>
+            </a>
+            <span class="title" data-tip="{{ get_title_tip .. }}">{{ torrent.name }}</span>
+        </li>
+        {{/duplicates}}
+    </ul>
+{{/if}}

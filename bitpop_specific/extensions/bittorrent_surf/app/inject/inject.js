@@ -1,0 +1,1 @@
+Message.send('html', { url: window.location.href, html: document.documentElement.innerHTML });

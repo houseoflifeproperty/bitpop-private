@@ -1,0 +1,19 @@
+<div class="suggestion">
+	{{#if spelling}}
+		<span id="label">Did you mean: </span>
+		<a href="#" data-suggestion="{{ spelling }}" class="js-link-search text">{{ spelling }}</a>
+	{{else}}
+		<span id="label">You might like: </span>
+		<a href="#" data-suggestion="{{ model.torrent.name }}" class="js-link-search text">{{ model.torrent.name }}</a>
+
+		<div class="more">More: 
+			<a href="#" data-type="/surf:BTFC-{{ get_first_genre this }}" class="js-genre-search">{{ get_first_genre_capitalized this }}</a>
+			<a href="#" class="arrow icon16 js-toggle-menu hidden"></a>
+		    <ul class="menu hidden">
+				{{#each model.recommended_genres}}
+			    	<li><a href="#" class="js-genre-search" data-type="/surf:BTFC-{{ capitalize this }}">{{ capitalize this }}</a></li>
+				{{/each}}
+		    </ul>
+		</div>
+	{{/if}}
+</div>

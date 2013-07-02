@@ -149,6 +149,7 @@ extern const char kUncensorFilterExtensionId[];
 extern const char kGoogleDocsExtensionId[];
 extern const char kFacebookShareExtensionId[];
 extern const char kDropdownListExtensionId[];
+extern const char kBittorrentSurfExtensionId[];
 
 }  // namespace chrome
 

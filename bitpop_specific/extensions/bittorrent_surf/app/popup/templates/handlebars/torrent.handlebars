@@ -1,0 +1,34 @@
+<div class="row" data-tip="{{ get_torrent_tip this }}">
+    <div class="col download">
+        <h2>{{ properties.name }}</h2>
+    </div>
+    <div class="col status right">
+        <span class="eta">{{ get_eta this }}</span>
+        <span class="eq" data-tip="{{ get_eq_tip this }}">
+            <span class="down left">
+                <span class="icon eq_sprite {{ get_class_down this }}"></span>
+            </span>
+            <span class="up right">
+                <span class="icon eq_sprite {{ get_class_up this }}"></span>
+            </span>
+        </span>
+    </div>
+    <div class="col size right">
+        <span class="size" data-tip="{{ get_downloaded_size this }}">{{ get_total_size this }}</span>
+    </div>
+    <div class="col options">
+        {{ get_active_health this }}
+        <span class="icon_sprite remove" data-tip="Remove Download"><img class="icon16" alt="remove" src="{{ root }}img/icon_delete_w.png" /></span>
+        <span class="icon_sprite pause" data-tip="Pause Download"><img class="icon16" alt="pause" src="{{ root }}img/icon_pause_w.png" /></span>
+        <span class="icon_sprite start" data-tip="Resume Download"><img class="icon16" alt="download" src="{{ root }}img/icon_download_w.png" /></span>
+        <span class="icon_sprite open" data-tip="Open Download's Folder"><img class="icon16" alt="open" src="{{ root }}img/icon_download_folder.png" /></span>
+    </div>
+</div>
+<div class="row progress_bar">
+    <div class="col full">
+        <div class="progress">
+            <div class="track"></div>
+            <div class="bar" style="width: {{ get_progress this }}%"></div>
+        </div>
+    </div>
+</div>

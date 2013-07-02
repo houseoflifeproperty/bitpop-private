@@ -1,0 +1,63 @@
+<header class="dialog_header">
+    <h3>
+        <span class="icon icon24 add_site_by_url">
+            <span class="line"></span>
+            <img src="{{root}}img/icon_preference_settings.png" />
+        </span>
+        <span class="text">Preferences</span>
+    </h3>
+</header>
+<div class="list_content">
+    <fieldset>
+        <legend>Download folder</legend>
+        <div class="row"> 
+            <input type="text" id="dir_active_download" name="dir_active_download" class="js-select-download-dir" placeholder="User's Downloads Folder" style="width: 75%" readonly />
+            <button class="js-select-download-dir">Browse&hellip;</button>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Sharing</legend>
+        <div class="row">
+            <div class="col half seed-option" id="seed_time_options">
+                <div class="row">
+                    <label>Share time: <b><span id="seed_time_text">10 minutes</span></b></label>
+                </div>
+                <div class="row">
+                    <input type="range" min="0" max="370" step="10" value="10" id="seed_time" name="seed_time" />
+                </div>
+            </div>
+
+            <div class="col half hidden seed-option" id="seed_percentage_options">
+                <div class="row">
+                    <label>Share percentage: <b><span id="seed_percentage_text">200%</span></b></label>
+                </div>
+                <div class="row">
+                    <input type="range" min="0" max="400" step="10" value="200" id="seed_percentage" name="seed_percentage" />
+                </div>
+            </div>
+            
+            <div class="col half">
+                <div class="row">
+                    <input type="radio" name="seed_type" value="time" id="seed_type_time" checked="checked" data-options="seed_time_options" />
+                    <label for="seed_type_time">Share for specified time</label>
+                </div>
+                <div class="row">
+                    <input type="radio" name="seed_type" value="percentage" id="seed_type_percentage" data-options="seed_percentage_options" />
+                    <label for="seed_type_percentage">Share for % of size</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Torrent Association</legend>
+        <div class="row"> 
+            <input type="checkbox" id="set_association_setting" name="associate" />
+            <label for="set_association_setting">Use Surf to open .torrent files and magnet links.</label>
+        </div>
+    </fieldset>
+</div>
+<div class="buttons">
+    <button class="cancel right">Done</button>
+</div>

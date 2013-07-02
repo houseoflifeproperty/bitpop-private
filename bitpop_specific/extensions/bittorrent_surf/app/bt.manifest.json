@@ -1,0 +1,82 @@
+{
+    "app_paths": [
+        "../core"
+    ], 
+    "popup": "popup", 
+    "target": {
+        "target_max_version": "20.*", 
+        "target_id": "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}", 
+        "target_min_version": "15.0"
+    }, 
+    "ff_multi_meta": {
+        "description": "A multiple extension addon for BitTorrent Surf that provides Surf and the required TorqueChrome plugin.", 
+        "fullName": "BitTorrent Surf Multi", 
+        "author": "Bittorrent, Inc.", 
+        "id": "surf@bittorrent.com", 
+        "name": "surf-multi"
+    }, 
+    "tabs": {
+        "plugin_install": true
+    }, 
+    "workers": {
+        "ext": true, 
+        "gaq": false, 
+        "plugin_app": false
+    }, 
+    "icons": {
+        "popup_default": "img/bt0_icon.png", 
+        "popup_default_safari": "img/surf_icon_safari.png"
+    }, 
+    "meta": {
+        "name": "surf", 
+        "license": "EULA (http://www.bittorrent.com/legal/betaeula)", 
+        "author": "Bittorrent, Inc.", 
+        "version_min": "0.7.48", 
+        "icons": {
+            "128": "img/bt0_icon_128.png", 
+            "64": "img/bt0_icon_64.png", 
+            "48": "img/bt0_icon_48.png", 
+            "16": "img/bt0_icon_16.png"
+        }, 
+        "full_description": "Discover and download torrents, directly in your browser.  \n\nSearch \n\nQuickly find torrents across multiple search sites.  \nAutomatically detect search sites.  \nAnd add your favorite sites to create a search custom engine.\n\nDownload\n\nGet media from sites like the Internet Archive directly from your search results, in one click.  \nStay updated while you Surf: manage downloads and notifications from your browser.  \nFile health estimates help you select the best quality media to download.  \n\nPlay\n\nJust push play.  \nSurf is simply the most beautiful, fluid and streamlined way to find, access and enjoy Internet content.", 
+        "version": "0.7.53", 
+        "contributors": [
+            "Ben Allen", 
+            "Mario Estrada", 
+            "Farid Fadaie", 
+            "David Hilborn", 
+            "Jaehee Lee", 
+            "Venkat Naidu"
+        ], 
+        "fullName": "BitTorrent Surf (Beta)", 
+        "identifier": "com.bittorrent.surf", 
+        "homepage": "http://www.bittorrent.com/bittorrent-surf", 
+        "id": "surf-bare@bittorrent.com", 
+        "description": "Discover and download torrents, directly in your browser."
+    }, 
+    "plugin_worker": "plugin_app", 
+    "plugins": {
+        "TorqueChrome": {
+            "files": [
+                "npTorqueChrome.dll", 
+                "TorqueChrome.plugin"
+            ], 
+            "description": "This is a single extension whose sould purpose is to load the TorqueChrome plugin for use in a separate extension built on the Add-On SDK.", 
+            "creator": "Bittorrent, Inc.", 
+            "icon_path": "../plugins/img/", 
+            "version": "4.3.7", 
+            "path": "../plugins", 
+            "id": "TorqueChrome@bittorrenttorque.com", 
+            "name": "BitTorrent TorqueChrome Plugin"
+        }
+    }, 
+    "content_scripts": {
+        "link": true, 
+        "inject": true
+    }, 
+    "browser_action": {
+        "default_title": "BitTorrent Surf (Beta)", 
+        "default_icon": "app/img/bt0_icon.png", 
+        "default_popup": "popup/chrome/popup.chrome.html"
+    }
+}

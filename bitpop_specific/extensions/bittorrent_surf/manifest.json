@@ -1,0 +1,36 @@
+{
+  "browser_action": {
+    "default_icon": "app/img/bt0_icon.png",
+    "default_popup": "popup/chrome/popup.chrome.html",
+    "default_title": "BitTorrent Surf (Beta)"
+  },
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "plugins": [
+    {"path": "plugins/npTorqueChrome.dll"},
+    {"path": "plugins/TorqueChrome.plugin"}
+  ],
+  "description": "Discover and download torrents, directly in your browser.",
+  "background": {"page": "/platform/chrome/core.html"},
+  "sandbox": {
+    "pages": [
+      "/app/*/*.html",
+      "http://*/"
+    ],
+    "content_security_policy": "sandbox allow-scripts; script-src \u0027self\u0027 \u0027unsafe-eval\u0027 chrome-extension://* http://* https://*; object-src \u0027self\u0027"
+  },
+  "name": "BitTorrent Surf (Beta)",
+  "permissions": [
+    "tabs",
+    "storage",
+    "unlimitedStorage",
+    "*://*/*"
+  ],
+  "icons": {
+    "48": "app/img/bt0_icon_48.png",
+    "128": "app/img/bt0_icon_128.png",
+    "16": "app/img/bt0_icon_16.png"
+  },
+  "manifest_version": 2,
+  "content_security_policy": "script-src \u0027self\u0027 https://ssl.google-analytics.com; object-src \u0027self\u0027",
+  "version": "0.7.53"
+}

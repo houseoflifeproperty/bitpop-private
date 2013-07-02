@@ -1,0 +1,169 @@
+// Mixins
+vendor(prop, args)
+    -webkit-{prop} args
+    -moz-{prop} args
+    -ms-{prop} args
+    -o-{prop} args
+    {prop} args
+
+animation()
+    vendor('animation', arguments)
+
+border-radius()
+    vendor('border-radius', arguments)
+    -webkit-background-clip padding-box
+
+box-shadow()
+    vendor('box-shadow', arguments)
+
+transition()
+    vendor('transition', arguments)
+
+/*transform()
+    vendor('transform', arguments)*/
+
+linear_gradient(start, stop)
+    background-image -webkit-gradient(linear, left top, left bottom, from(start), to(stop))
+    background-image -webkit-linear-gradient(top, start, stop)
+    background-image -moz-linear-gradient(top, start, stop)
+    background-image -ms-linear-gradient(to bottom, start, stop)
+    background-image -o-linear-gradient(top, start, stop)
+    background-image linear-gradient(to bottom, start, stop)
+
+horizontal_linear_gradient(start, stop)
+    background-image -webkit-gradient(linear, left top, right top, from(start), to(stop))
+    background-image -webkit-linear-gradient(left, start, stop)
+    background-image -moz-linear-gradient(left, start, stop)
+    background-image -ms-linear-gradient(to right, start, stop)
+    background-image -o-linear-gradient(left, start, stop)
+    background-image linear-gradient(to right, start, stop)
+
+
+
+$base_bg = #E8E8E8
+$base_width = 620px
+
+$color_text = #333
+$color_white = #fff
+$color_light_blue = rgb( 76, 94, 184 )
+$color_light_blue_alpha = rgba( 76, 94, 184, 0.2 );
+$color_med_blue = rgb( 30, 45, 165 )
+$color_dark_blue = rgb( 25, 18, 117 )
+$color_light_green = rgb( 215, 240, 190 )
+$color_light_green_alpha = rgba(108, 175, 40, 0.25);
+$color_light_purple = rgb( 138, 126, 210 )
+
+body
+    margin 0
+    padding 0
+    background $base_bg
+    background-image url("/app/img/wavecut.png")
+    font-family Helvetica, Arial, sans-serif
+    color $color_text
+
+section
+    width 100%
+    padding-top 2.25em
+    
+    &.top
+        background $color_light_blue_alpha
+        padding-bottom 2.25em
+
+.wrap
+    width $base_width
+    margin 0 auto
+
+
+//h1
+//    text-align center
+
+.btn
+    color $color_white
+    background $color_light_blue
+    border 1px solid $color_med_blue
+    text-decoration none
+    padding 0 1em
+    line-height 2em
+    font-size 1.25em
+    font-weight 300
+    letter-spacing 1px
+    text-shadow 0 1px 1px rgba( $color_text, 0.8)
+
+    &:hover
+        background darken( $color_med_blue, 3% )
+    &:active
+        background darken( $color_med_blue, 25% )
+
+.download
+    float right
+    margin-left 1em
+
+.p
+    line-height 1.4em
+
+header
+    .logo
+        border-bottom 1px solid $color_light_blue
+        padding-bottom 0.75em
+    .top &
+        border-bottom 1px solid $color_white
+
+
+$step_height = 180px
+$step_width = 180px
+$step_color = lighten( $color_text, 60% )
+$step_border_width = 1px
+
+
+.steps
+    img
+        display block
+        float right
+        max-width 55%
+
+    .copy
+        font-weight bold
+        color lighten( $color_text, 15% )
+        font-size 1.25em
+        line-height 1.4em
+        width 40%
+
+    em
+        color lighten( $color_text, 30% )
+
+    > div
+        display none
+
+#progress
+
+    &.step_1
+        .step_1
+            display block
+            
+            .copy
+                width 75%
+            img
+                margin-right 2.25em
+
+    &.step_2
+        .step_2
+            display block
+
+    &.step_3
+        .step_3
+            display block
+
+
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+
+.cf:after {
+    clear: both;
+}
+
+.cf {
+    *zoom: 1;
+}

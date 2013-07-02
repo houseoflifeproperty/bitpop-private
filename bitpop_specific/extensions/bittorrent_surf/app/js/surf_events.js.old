@@ -1,0 +1,18 @@
+/*jshint white:false, camelcase:false */
+
+//this module returns the scaffold events along with the surf app specific events
+define([
+	'events',
+	'underscore'
+], function() {
+	'use strict';
+
+	var Events 	= require('events'),
+		_ 		= require('underscore');
+
+	return _.extend( Events, {
+
+		CONNECT_TORQUE: 't:cct'
+	
+	});
+});

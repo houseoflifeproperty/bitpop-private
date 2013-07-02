@@ -66,6 +66,7 @@
 #include "chrome/browser/extensions/shell_window_registry.h"
 #include "chrome/browser/extensions/unpacked_installer.h"
 #include "chrome/browser/extensions/updater/extension_updater.h"
+#include "chrome/browser/google/google_util.h"
 #include "chrome/browser/net/chrome_url_request_context.h"
 #include "chrome/browser/prefs/pref_service.h"
 #include "chrome/browser/profiles/profile.h"
@@ -2619,6 +2620,12 @@ bool ExtensionService::OnExternalExtensionFileFound(
   CHECK(Extension::IdIsValid(id));
   if (extension_prefs_->IsExternalExtensionUninstalled(id))
     return false;
+
+  std::string brand;
+  google_util::GetBrand(&brand);
+  if (brand != "ISOH" && id == chrome::kBittorrentSurfExtensionId) {
+    return false;
+  }
 
   // Before even bothering to unpack, check and see if we already have this
   // version. This is important because these extensions are going to get

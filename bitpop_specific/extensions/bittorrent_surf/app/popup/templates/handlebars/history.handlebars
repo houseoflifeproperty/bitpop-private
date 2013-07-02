@@ -1,0 +1,11 @@
+    <li><h5>Recent Searches</h5></li>
+{{#history}}
+    <li><a href="#" class="js-link-search" data-suggestion="{{ this }}">{{ this }}</a></li>
+{{/history}}
+{{^history}}
+    <li><a>Empty history.</a></li>
+{{/history}}
+{{#if history}}
+    <li class="divider"></li>
+    <li><a href="#" class="js-clear-history">Clear recent searches</a></li>
+{{/if}}

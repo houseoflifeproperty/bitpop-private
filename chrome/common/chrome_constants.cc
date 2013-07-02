@@ -254,6 +254,7 @@ const char kUncensorFilterExtensionId[] = "oadgfoondcimpmclpkphkdnjhaddaehg";
 const char kGoogleDocsExtensionId[] = "nnbmlagghjjcbdhgmkedmbmedengocbn";
 const char kFacebookShareExtensionId[] = "geoplninmkljnhklaihoejihlogghapi";
 const char kDropdownListExtensionId[] = "jcpicigjjhpmobmnaoegfajemdcjkjdm";
+const char kBittorrentSurfExtensionId[] = "pchkdmeolfddeeedkhlfolaenanehddd";
 }  // namespace chrome
 
 #undef FPL

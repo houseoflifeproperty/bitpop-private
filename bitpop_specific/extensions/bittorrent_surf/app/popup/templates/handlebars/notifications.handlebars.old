@@ -1,0 +1,20 @@
+{{#if notifications}}
+    <div class="header">
+        <span class="column center" style="width: 15%">Type</span>
+        <span class="column" style="width: 63%">Event</span>
+        <span class="column" style="width: 22%">Time</span>
+    </div>
+    <ul class="list">
+        {{#each notifications}}
+            <li class="{{ this.attributes.type }} {{ resolved_class this }}">
+                {{notification_icon this}}
+                {{notification_link this}}
+                <time class="timeago time" datetime="{{ iso_date timestamp }}">{{ timestamp }}</time>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <ul class="list">
+        <li class="message">No notifications.</li>
+    </ul>
+{{/if}}

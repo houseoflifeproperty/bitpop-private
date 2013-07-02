@@ -1,0 +1,35 @@
+<div class="search_container">
+    <div id="search_history">
+        <a href="#" class="arrow icon16 js-toggle-menu">Search History</a>
+
+        <ul class="hidden menu">
+            <li>Empty list.</li>
+        </ul>
+    </div>
+    <div id="do-search">
+        <button class="search_icon" type="submit">Search</button>
+        <input type="text" name="search_text" id="search_text" placeholder="Search for stuff" />
+    </div>
+    <div id="add_site_button">
+        <button class="js-open-dialog" data-dialog="site_manager">Add Search Site</button>
+    </div>
+
+</div>
+
+<ul class="buttons">
+    <li>
+        <a class="js-open-dialog" data-dialog="notifications" href="#notifications-view" data-tip="Notifications">
+            <span class="notifications">
+                <img src="{{root}}img/icon_notification_settings.png" class="icon20" />
+            </span>
+            <span id="notifications-badge" data-ct="0"></span>
+        </a>
+    </li>
+    <li>
+        <a class="js-open-dialog" data-dialog="site_manager" href="#search_settings" data-tip="Search Settings">
+            <span class="site_manager">
+                <img src="{{root}}img/icon_search_settings.png" class="icon20" />
+            </span>
+        </a>
+    </li>
+</ul>

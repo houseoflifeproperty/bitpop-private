@@ -1,0 +1,10 @@
+<ul class="list">
+{{#sites}}
+    <li class="{{ type }}">
+        <img src="{{ favicon }}" alt="" class="icon16 favicon"/>
+        <input type="checkbox" id="site_{{ id }}" data-id="{{ id }}" class="switch_input js-toggle-site" {{#if enabled}}checked="checked"{{/if}} />
+        <div class="switch {{ site_enabled this }}"></div>        
+        <label for="site_{{ id }}">{{ get_site_name id }}</label>
+    </li>
+{{/sites}}
+</ul>
