@@ -10,6 +10,7 @@
 # script is called. See sign_versioned_dir.sh.
 
 set -eu
+set -x
 
 # Environment sanitization. Set a known-safe PATH. Clear environment variables
 # that might impact the interpreter's operation. The |bash -p| invocation
@@ -40,8 +41,18 @@ browser_app_rules="${script_dir}/app_resource_rules.plist"
 versioned_dir="${app_path}/Contents/Versions/@VERSION@"
 
 browser_app="${app_path}"
+framework="${versioned_dir}/@MAC_PRODUCT_NAME@ Framework.framework"
+helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
+helper_eh_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper EH.app"
+helper_np_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper NP.app"
 
-codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
+codesign -fs "${codesign_id}" --keychain "${codesign_keychain}" \
     "${browser_app}" --resource-rules "${browser_app_rules}"
 
+codesign -v "${framework}"
+codesign -v "${helper_app}"
+codesign -v "${helper_eh_app}"
+codesign -v "${helper_np_app}"
 codesign -v "${browser_app}"
+
+touch "${app_path}/../mark2"

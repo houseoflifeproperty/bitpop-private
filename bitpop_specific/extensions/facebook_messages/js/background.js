@@ -48,8 +48,8 @@ chrome.extension.onMessageExternal.addListener(function (request, sender, sendRe
 
   } else if (request.type == 'popupOpened') {
     dn.time_popup_opened_indexed_by_friend_uid[''+request.friend_uid] = (new Date()).getTime();
-  } else if (request.type == 'inPopupMessageReceived') {
-    dn.time_chat_was_read_indexed_by_friend_uid[''+request.from] = request.timestamp;
+  } else if (request.type == 'newMessage') {
+    dn.time_chat_was_read_indexed_by_friend_uid[''+request.from] = new Date(request.timestamp);
   } else if (request.type == 'loggedOut') {
     dn.just_connected = false;
   } else if (request.type == 'wentOffline' || request.type == 'chatIsIdle') {

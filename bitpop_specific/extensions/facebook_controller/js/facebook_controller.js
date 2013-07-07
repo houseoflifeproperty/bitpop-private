@@ -247,7 +247,7 @@ bitpop.FacebookController = (function() {
       var msgText = Strophe.getText(body);
       var msgDate = new Date();
 
-      notifyObservingExtensions({ type: 'newMessage', body: msgText, from: fromUid });
+      notifyObservingExtensions({ type: 'newMessage', body: msgText, from: fromUid, timestamp: msgDate.getTime() });
 
       console.log('I got a message from ' + from + ': ' +
       msgText);

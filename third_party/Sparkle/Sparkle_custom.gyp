@@ -182,6 +182,12 @@
                 'cp', '<@(sparkle_public_headers)', '$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Headers/',
               ],
             },
+            {
+              'postbuild_name': 'Fix permissions on relaunch tool for ninja builds',
+              'action': [
+                'chmod', '755', '$BUILT_PRODUCTS_DIR/$WRAPPER_NAME/Resources/relaunch',
+              ],
+            },
           ],
         },
         {

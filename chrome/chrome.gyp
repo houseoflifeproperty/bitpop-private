@@ -637,7 +637,7 @@
                 {
                   'action_name': 'Sign versioned directory',
                   'inputs': ['<(sign_versioned_dir_script_path)', '<(PRODUCT_DIR)/<(mac_product_name).app', ],
-                  'outputs': [ '<(PRODUCT_DIR)/<(mac_product_name).app/Contents/Versions/<(version_full)/<(mac_product_name) Framework.framework/_CodeSignature' ],
+                  'outputs': ['<(PRODUCT_DIR)/mark1'],
                   'action': [
                     '<(sign_versioned_dir_script_path)',
                     '<(PRODUCT_DIR)/<(mac_product_name).app',
@@ -647,8 +647,8 @@
                 },
                 {
                   'action_name': 'Sign application',
-                  'inputs': ['<(sign_app_script_path)', '<(PRODUCT_DIR)/<(mac_product_name).app', ],
-                  'outputs': [ '<(PRODUCT_DIR)/<(mac_product_name).app/Contents/_CodeSignature' ],
+                  'inputs': ['<(sign_app_script_path)', '<(PRODUCT_DIR)/<(mac_product_name).app', '<(PRODUCT_DIR)/mark1',],
+                  'outputs': ['<(PRODUCT_DIR)/mark2'],
                   'action': [
                     '<(sign_app_script_path)',
                     '<(PRODUCT_DIR)/<(mac_product_name).app',
@@ -662,6 +662,7 @@
           'actions': [
             {
               'inputs': [
+                '<(PRODUCT_DIR)/mark2',
                 '<(build_app_dmg_script_path)',
                 '<(pkg_dmg_script_path)',
                 '<(PRODUCT_DIR)/<(mac_product_name).app',

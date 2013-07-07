@@ -78,10 +78,10 @@ bitpop.chat = (function() {
             if (latest_message && request.type == 'newInboxMessage' &&
                 latest_message.body == request.body &&
                 latest_message.isInbox != (request.type == 'newInboxMessage') &&
-                timestamp.getTime() - latest_message.timestamp.getTime() < 2000) {
+                timestamp.getTime() - latest_message.timestamp.getTime() < 7000) {
               return false;
             }
-            appendMessage(bitpop.preprocessMessageText(request.body), timestamp, false);
+            appendMessage(bitpop.preprocessMessageText(request.body), timestamp, false, atBottom());
             if (request.type == 'newMessage')
               chrome.extension.sendMessage(MESSAGES_EXTENSION_ID,
                                            {
@@ -355,7 +355,9 @@ bitpop.chat = (function() {
     return res;
   }
 
-  function appendMessage(msg, msgDate, me) {
+  function appendMessage(msg, msgDate, me, scrollToBottom_p) {
+    if (!scrollToBottom_p && scrollToBottom_p !== false)
+      scrollToBottom_p = true;
     var refDate = new Date();
     var uid = me ? myUid : friendUid;
     var dateDiffersForMoreThan1Min = lastMessageTime ? !isSameMinute(lastMessageTime, msgDate) : true;
@@ -385,7 +387,8 @@ bitpop.chat = (function() {
     lastMessageUid = uid;
 
     // scroll the chat div to bottom
-    scrollToBottom(true);
+    if (scrollToBottom_p)
+      scrollToBottom(true);
 
     lastMessageTime = msgDate;
   }
