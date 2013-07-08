@@ -51,6 +51,10 @@ bitpop.FriendsSidebar = (function() {
       self.updateDOM();
     });
 
+    $('#login-button, #enable-sync').focus(function() {
+      this.blur();
+    });
+
     if (bgPage && bgPage.friendList) {
       // 2nd param = true is for dontAnimate, we need an instant switch to friends
       // view:
@@ -91,8 +95,12 @@ bitpop.FriendsSidebar = (function() {
       return false;
     });
 
-    $('#friend_list li span').live('click', function() {
-      var parent = $(this).parent();
+    $('#friend_list li span, #friend_list li .open-chat-link').live('click', function() {
+      var parent = null;
+      if (this.className == 'open-chat-link')
+        parent = $(this).parent();
+      else
+        parent = $(this).parent().parent();
       chrome.bitpop.facebookChat.addChat(
         parent.prop('jid'),
         parent.prop('username'),
@@ -131,6 +139,22 @@ bitpop.FriendsSidebar = (function() {
 
     $('#head-col2-row1').click(setStatusAreaClicked);
 
+/*
+    $('.open-chat-link').keydown(function(ev) {
+      if ($(this).is(':focus')) {
+        var links = $('.open-chat-link');
+        var thisIndex = links.index(this);
+
+        if (ev.which == 38) { // UP arrow
+          var nextIndex = (thisIndex < links.length-1) ? (thisIndex+1) : 0;
+          links.eq(nextIndex).focus();
+        } else if (ev.which == 40) { // DOWN arrow
+          var prevIndex = (thisIndex !== 0) ? (thisIndex-1) : (links.length-1);
+          links.eq(prevIndex).focus();
+        }
+      }
+    });
+*/
     function toggleSyncMessage(params) {
       if (params && params === true) {
         $('#sync-para').hide();
@@ -378,8 +402,9 @@ bitpop.FriendsSidebar = (function() {
       var i = index;
 
       if (!self.friendList[i].excluded) {
-        var li = $('<li><span class="leftSide"><img alt="" />' +
-            self.friendList[i].name + '</span></li>');
+        var li = $('<li><a href="#" class="open-chat-link">'+
+            '<span class="leftSide"><img alt="" />' +
+            self.friendList[i].name + '</span></a></li>');
         li.attr('id', 'buddy_' + self.friendList[i].uid.toString());
         li.prop('jid', self.friendList[i].uid.toString());
         li.prop('username', self.friendList[i].name);

@@ -76,7 +76,7 @@ echo "    \"external_update_url\": \"http://clients2.google.com/service/update2/
 echo "  }," >> "$EXT_DEFS"
 echo "  \"geoplninmkljnhklaihoejihlogghapi\": {" >> "$EXT_DEFS"
 echo "    \"external_crx\": \"share_button.crx\"," >> "$EXT_DEFS"
-echo "    \"external_version\": \"0.2\"" >> "$EXT_DEFS"
+echo "    \"external_version\": \"0.4\"" >> "$EXT_DEFS"
 echo "  }" >> "$EXT_DEFS"
 echo "}" >> "$EXT_DEFS"
 

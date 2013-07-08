@@ -76,6 +76,9 @@ ul.list li img.status {
   right: 0;
   top: 8px;
 }
+ul.list li .open-chat-link {
+  color: inherit;
+}
 span.leftSide {
   display: inline-block;
   width: 155px;
