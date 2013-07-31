@@ -172,14 +172,26 @@ if (!button_)
   if (![button_ isDescendantOf:[chatbarController_ view]])
     return NSZeroPoint;
 
-  // Anchor point just above the center of the bottom.
-  const NSRect bounds = [button_ bounds];
-  DCHECK([button_ isFlipped]);
-  NSPoint anchor = NSMakePoint(NSMinX(bounds) +
-                                 kNotificationWindowAnchorPointXOffset,
-                               NSMinY(bounds) - kChatWindowAnchorPointYOffset);
-  return [button_ convertPoint:anchor toView:nil];
-
+  NSView* mainView = [self view];
+  NSPoint res;
+  if ([[mainView animator] alphaValue] < 1.0) {
+    // Anchor point just above the center of the bottom.
+    const NSRect bounds = [[mainView animator] frame];
+    DCHECK([mainView isFlipped]);
+    NSPoint anchor = NSMakePoint(NSMinX(bounds) +
+                                   kNotificationWindowAnchorPointXOffset,
+                                 NSMinY(bounds) - kChatWindowAnchorPointYOffset);
+    res = [[mainView superview] convertPoint:anchor toView:nil];    
+  } else {
+    // Anchor point just above the center of the bottom.
+    const NSRect bounds = [button_ bounds];
+    DCHECK([button_ isFlipped]);
+    NSPoint anchor = NSMakePoint(NSMinX(bounds) +
+                                   kNotificationWindowAnchorPointXOffset,
+                                 NSMinY(bounds) - kChatWindowAnchorPointYOffset);
+    res = [button_ convertPoint:anchor toView:nil];
+  }
+  return res;
 }
 
 - (GURL)getPopupURL {

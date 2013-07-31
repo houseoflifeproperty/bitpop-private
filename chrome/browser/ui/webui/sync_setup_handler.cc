@@ -42,6 +42,7 @@
 #include "chrome/browser/ui/webui/signin/login_ui_service.h"
 #include "chrome/browser/ui/webui/signin/login_ui_service_factory.h"
 #include "chrome/browser/ui/webui/sync_promo/sync_promo_ui.h"
+#include "content/browser/web_contents/web_contents_impl.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -66,10 +67,32 @@ using content::WebContents;
 using l10n_util::GetStringFUTF16;
 using l10n_util::GetStringUTF16;
 
+class AccountLogoutWebContentsObserver : public content::WebContentsObserver {
+ public:
+  AccountLogoutWebContentsObserver() : content::WebContentsObserver() {
+  }
+
+  virtual ~AccountLogoutWebContentsObserver() {
+    Observe(NULL);
+  }
+
+  virtual void DidFinishLoad(int64 frame_id,
+                             const GURL& validated_url,
+                             bool is_main_frame,
+                             content::RenderViewHost* render_view_host) {
+    web_contents()->Close();
+    Observe(NULL);
+  }
+
+  void SetContents(content::WebContents* contents) {
+    Observe(contents);
+  }
+};
+
 namespace {
 
 const char kSyncStatusChanged[] = "bitpop.onSyncStatusChanged";
-const char kDummyFacebookLogoutURL[] = "https://sync.bitpop.com/facebook/logout";
+const char kAccountLogoutURL[] = "https://sync.bitpop.com/accounts/logout";
 
 // A structure which contains all the configuration information for sync.
 struct SyncConfigInfo {
@@ -246,7 +269,8 @@ SyncSetupHandler::SyncSetupHandler(ProfileManager* profile_manager)
       profile_manager_(profile_manager),
       last_signin_error_(GoogleServiceAuthError::NONE),
       retry_on_signin_failure_(true),
-      active_gaia_signin_tab_(NULL) {
+      active_gaia_signin_tab_(NULL),
+      account_logout_tab_observer_(new AccountLogoutWebContentsObserver()) {
 }
 
 SyncSetupHandler::~SyncSetupHandler() {
@@ -1082,7 +1106,10 @@ void SyncSetupHandler::HandleDoSignOutOnAuthError(const ListValue* args) {
 void SyncSetupHandler::HandleStopSyncing(const ListValue* args) {
   DCHECK_EQ(args->GetSize(), 1ul);
   bool logout_from_fb_com = false;
-  DCHECK(args->GetBoolean(0, &logout_from_fb_com));
+  if (!args->GetBoolean(0, &logout_from_fb_com)) {
+    NOTREACHED() << "Can't read logout_from_fb arg";
+    return;
+  }
 
   ProfileSyncService* service = GetSyncService();
   DCHECK(service);
@@ -1095,6 +1122,7 @@ void SyncSetupHandler::HandleStopSyncing(const ListValue* args) {
         new extensions::EventRouterForwarder);
     scoped_ptr<base::ListValue> lv(new base::ListValue());
     lv->AppendBoolean(false);
+    lv->AppendBoolean(logout_from_fb_com);
     router_f->DispatchEventToExtension(chrome::kFacebookChatExtensionId,
                                        kSyncStatusChanged,
                                        lv.Pass(),
@@ -1103,14 +1131,15 @@ void SyncSetupHandler::HandleStopSyncing(const ListValue* args) {
                                        GURL()
                                        );
     if (logout_from_fb_com) {
-      Browser* browser = chrome::FindBrowserWithWebContents(
-          web_ui()->GetWebContents());
+      Browser* browser = chrome::FindLastActiveWithProfile(
+          GetProfile(), chrome::HOST_DESKTOP_TYPE_NATIVE);
       if (browser) {
         chrome::NavigateParams params(browser,
-            GURL(kDummyFacebookLogoutURL),
+            GURL(kAccountLogoutURL),
             content::PAGE_TRANSITION_LINK);
         params.disposition = NEW_BACKGROUND_TAB;
         chrome::Navigate(&params);
+        account_logout_tab_observer_->SetContents(params.target_contents);
       }
     }
   }

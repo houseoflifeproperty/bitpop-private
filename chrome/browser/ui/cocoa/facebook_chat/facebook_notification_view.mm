@@ -42,8 +42,7 @@ namespace {
                                                         blue:kBgColorBlue
                                                        alpha:kBgColorAlpha]];
     [self setArrowLocation:fb_bubble::kBottomLeft];
-
-    //defaultWidth_ = 0;
+    [self setPostsFrameChangedNotifications:YES];
 
     contentMessages_.reset([[NSMutableArray alloc] init]);
 

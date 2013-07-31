@@ -23,8 +23,6 @@
 
   scoped_nsobject<FacebookNotificationView> bubble_;
   scoped_nsobject<HoverButton> hoverCloseButton_;
-
-  NSRect notificationFrame_;
 }
 
 @property (nonatomic, assign) NSPoint anchor;

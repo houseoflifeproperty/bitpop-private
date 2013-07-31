@@ -91,6 +91,12 @@
             "name": "enabled",
             "description": "Sync enabled flag.",
             "optional": false
+          },
+          {
+            "type": "boolean",
+            "name": "logout_from_fb_com",
+            "description": "Optional logout from facebook on stop syncing",
+            "optional": true
           }
         ]
       }

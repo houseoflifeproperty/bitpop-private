@@ -14,6 +14,8 @@
 #include "chrome/browser/ui/webui/signin/login_ui_service.h"
 #include "content/public/browser/web_contents_observer.h"
 
+class AccountLogoutWebContentsObserver;
+
 class LoginUIService;
 class ProfileManager;
 class ProfileSyncService;
@@ -239,6 +241,9 @@ class SyncSetupHandler : public options::OptionsPageUIHandler,
   // When using web-flow, weak pointer to the tab that holds the Gaia sign in
   // page.
   content::WebContents* active_gaia_signin_tab_;
+
+  // Tab in which logout account link is opened
+  scoped_ptr<AccountLogoutWebContentsObserver> account_logout_tab_observer_;
 
   DISALLOW_COPY_AND_ASSIGN(SyncSetupHandler);
 };

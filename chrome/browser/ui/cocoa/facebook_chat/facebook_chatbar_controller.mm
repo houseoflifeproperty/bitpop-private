@@ -208,6 +208,7 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
   rc.size = [controller preferredSize];
   rc.size.width = 0;
   [[controller view] setFrame:rc];
+  [[controller view] setAlphaValue:0.95];
 
   // Keep only a limited number of items in the shelf.
   if ([chatItemControllers_ count] > kMaxChatItemCount) {
@@ -353,6 +354,7 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
 
     frame.size.width = [itemController preferredSize].width;
     [[[itemController view] animator] setFrame:frame];
+    [[[itemController view] animator] setAlphaValue:1.0];
     [itemController layoutChildWindows];
 
     currentX += frame.size.width + kChatItemPadding;
@@ -370,12 +372,12 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
 }
 
 - (void)animationDidEnd:(NSAnimation *)animation {
-  if (animation == addAnimation_) {
+  if (animation == addAnimation_.get()) {
     [lastAddedItem_ layedOutAfterAddingToChatbar];
     addAnimation_.reset();
-  } else if (animation == removeAnimation_)
+  } else if (animation == removeAnimation_.get())
     removeAnimation_.reset();
-  else if (animation == placeFirstAnimation_) {
+  else if (animation == placeFirstAnimation_.get()) {
     placeFirstAnimation_.reset();
   }
 

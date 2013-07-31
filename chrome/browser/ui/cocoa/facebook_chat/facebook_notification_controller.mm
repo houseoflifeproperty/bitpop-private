@@ -29,20 +29,11 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
 
 }
 
-@interface DenyingKeyStatusInfoBubbleWindow : InfoBubbleWindow
-@end
-
-@implementation DenyingKeyStatusInfoBubbleWindow
-- (BOOL)canBecomeKeyWindow {
-  return NO;
-}
-@end
-
 @interface FacebookNotificationController(Private)
 - (void)bubbleMessageShowTimeout;
 // Called when the bubble view has been resized.
-- (void)bubbleViewFrameChanged;
-
+- (void)updateOriginFromAnchor;
+- (void)bubbleViewFrameChanged:(NSNotification*)notification;
 @end
 
 @implementation FacebookNotificationController
@@ -54,21 +45,10 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
   parentWindow_ = parentWindow;
   anchor_ = [parentWindow convertBaseToScreen:anchorPoint];
 
-  NSView *view = [[NSView alloc] initWithFrame:NSZeroRect];
-  //[view setBackgroundColor:[NSColor clearColor]];
-  [view setAutoresizesSubviews:NO];
-
   bubble_.reset([[FacebookNotificationView alloc]
                     initWithFrame:NSZeroRect]);
   if (!bubble_.get())
     return nil;
-  //[bubble_ setArrowLocation:fb_bubble::kBottomLeft];
-
-  NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-  [center addObserver:self
-             selector:@selector(bubbleViewFrameChanged)
-                 name:NSViewFrameDidChangeNotification
-               object:bubble_];
 
   hoverCloseButton_.reset([[HoverImageButton alloc] initWithFrame:
       NSMakeRect(0, 0, kCloseButtonDim, kCloseButtonDim)]);
@@ -94,27 +74,39 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
 
   [bubble_ addSubview:hoverCloseButton_];
 
-  [view addSubview:bubble_];
-
-  scoped_nsobject<DenyingKeyStatusInfoBubbleWindow> window(
-      [[DenyingKeyStatusInfoBubbleWindow alloc]
+  scoped_nsobject<InfoBubbleWindow> window(
+      [[InfoBubbleWindow alloc]
           initWithContentRect:(ui::kWindowSizeDeterminedLater)
                     styleMask:NSBorderlessWindowMask
                       backing:NSBackingStoreBuffered
                         defer:YES]);
   if (!window.get())
     return nil;
-
   [window setDelegate:self];
-  [window setContentView:view];
+  [window setContentView:bubble_];
+  [window setCanBecomeKeyWindow:NO];
+
   self = [super initWithWindow:window];
 
   [self setShouldCascadeWindows:NO];
+
+  // Watch to see if the parent window closes, and if so, close this one.
+  NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+  [center addObserver:self
+             selector:@selector(parentWindowWillClose:)
+                 name:NSWindowWillCloseNotification
+               object:parentWindow_];
+  [center addObserver:self
+             selector:@selector(bubbleViewFrameChanged:)
+                 name:NSViewFrameDidChangeNotification
+               object:bubble_.get()];
+
   return self;
 }
 
 - (void)messageReceived:(NSString*)message {
   [bubble_ pushMessage:message];
+  [self showWindow:self];
   [self performSelector:@selector(bubbleMessageShowTimeout) withObject:nil
       afterDelay:kBubbleMessageTimeoutSec];
 }
@@ -147,50 +139,6 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)bubbleViewFrameChanged {
-// If there are no changes in the width or height of the frame, then ignore.
-  if (NSEqualSizes([bubble_ frame].size, notificationFrame_.size) &&
-      NSEqualPoints(oldAnchor_, anchor_))
-    return;
-  notificationFrame_ = [bubble_ frame];
-  oldAnchor_ = anchor_;
-
-  // position the close small button on top right of the bubble
-  NSRect closeButtonFrame = [hoverCloseButton_ frame];
-  closeButtonFrame.origin.x = NSWidth(notificationFrame_) - kCloseButtonDim -
-      kCloseButtonRightXOffset;
-  closeButtonFrame.origin.y = kCloseButtonTopYOffset;
-  [hoverCloseButton_ setFrame:closeButtonFrame];
-
-  NSRect frame = [bubble_ frame];
-  NSPoint windowOrigin = anchor_;
-  windowOrigin.x -= fb_bubble::kBubbleArrowXOffset +
-      fb_bubble::kBubbleArrowWidth / 2;
-  frame.origin = windowOrigin;
-
-  // Is the window still animating in? If so, then cancel that and create a new
-  // animation setting the opacity and new frame value. Otherwise the current
-  // animation will continue after this frame is set, reverting the frame to
-  // what it was when the animation started.
-  NSWindow* window = [self window];
-  if ([window isVisible] && [[window animator] alphaValue] < 1.0) {
-    [NSAnimationContext beginGrouping];
-    [[NSAnimationContext currentContext] setDuration:kAnimationDuration];
-    [[window animator] setAlphaValue:1.0];
-    [[window animator] setFrame:frame display:YES];
-    [NSAnimationContext endGrouping];
-  } else {
-    [window setFrame:frame display:YES];
-  }
-
-  // A NSViewFrameDidChangeNotification won't be sent until the extension view
-  // content is loaded. The window is hidden on init, so show it the first time
-  // the notification is fired (and consequently the view contents have loaded).
-  if (![window isVisible]) {
-    [self showWindow:self];
-  }
-}
-
 // We want this to be a child of a browser window. addChildWindow: (called from
 // this function) will bring the window on-screen; unfortunately,
 // [NSWindowController showWindow:] will also bring it on-screen (but will cause
@@ -198,8 +146,9 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
 // addChildWindow: and a subsequent showWindow:. Thus, we have our own version.
 - (void)showWindow:(id)sender {
   [parentWindow_ addChildWindow:[self window] ordered:NSWindowAbove];
+  [self updateOriginFromAnchor];
   if ([parentWindow_ isVisible])
-    [[self window] makeKeyAndOrderFront:self];
+    [[self window] orderFront:self];
 }
 
 - (void)close {
@@ -224,9 +173,52 @@ const CGFloat kCloseButtonTopYOffset = 7.0;
   [[self window] orderOut:self];
 }
 
+// Takes the |anchor_| point and adjusts the window's origin accordingly.
+- (void)updateOriginFromAnchor {
+  NSWindow* window = [self window];
+  NSPoint origin = anchor_;
+
+  NSSize offsets = NSMakeSize(fb_bubble::kBubbleArrowXOffset +
+                              fb_bubble::kBubbleArrowWidth / 2.0, 0);
+  offsets = [[parentWindow_ contentView] convertSize:offsets toView:nil];
+  origin.x -= offsets.width;
+
+  // if ([window isVisible] && [[window animator] alphaValue] < 1.0) {
+  //   [NSAnimationContext beginGrouping];
+  //   [[NSAnimationContext currentContext] setDuration:kAnimationDuration];
+  //   [[window animator] setFrameOrigin:origin];
+  //   [NSAnimationContext endGrouping];
+  // } else {
+    [window setFrameOrigin:origin];
+  // }
+}
+
+- (void)bubbleViewFrameChanged:(NSNotification*)notification {
+  NSRect frame = [bubble_ frame];
+
+  // position the close small button on top right of the bubble
+  NSRect closeButtonFrame = [hoverCloseButton_ frame];
+  closeButtonFrame.origin.x = NSWidth(frame) - kCloseButtonDim -
+      kCloseButtonRightXOffset;
+  closeButtonFrame.origin.y = kCloseButtonTopYOffset;
+  [hoverCloseButton_ setFrame:closeButtonFrame];
+
+  NSWindow* window = [self window];
+  NSRect window_frame = [window frame];
+  window_frame.size = frame.size;
+  if ([window isVisible] && [[window animator] alphaValue] < 1.0) {
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:kAnimationDuration];
+    [[window animator] setFrame:window_frame display:YES];
+    [NSAnimationContext endGrouping];
+  } else {
+    [window setFrame:window_frame display:YES];
+  }
+}
+
 - (void)setAnchor:(NSPoint)anchorPoint {
   anchor_ = [parentWindow_ convertBaseToScreen:anchorPoint];
-  [self bubbleViewFrameChanged];
+  [self updateOriginFromAnchor];
 }
 
 @end
