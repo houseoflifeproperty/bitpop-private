@@ -62,14 +62,14 @@
 				e.valLength = vlen;
 				e.boxWidth = ewidth;
 
-                                if (e.style.height != prevHeight) {
-                                  $('.box, .box .antiscroll-inner').height(287 + 30 - $('#msgForm').height());
-                                  if ($('.box-wrap').data('antiscroll')) {
-                                    $('.box-wrap').data('antiscroll').rebuild();
-                                  }
-                                  if (bitpop && bitpop.chat && wasAtBottom)
-                                    bitpop.chat.scrollToBottom();
-                                }
+				if (e.style.height != prevHeight) {
+					$('#scrollable-area').height(287 + 30 - $('#msgForm').height());
+					if ($('.box-wrap').data('antiscroll')) {
+						$('.box-wrap').data('antiscroll').destroy().refresh();
+					}
+					if (bitpop && bitpop.chat && wasAtBottom)
+						bitpop.chat.scrollToBottom();
+				}
 			}
 
 			return true;

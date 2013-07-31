@@ -8,7 +8,7 @@ UPDATES_XML_PATH="$UPLOAD_DIR/updates.xml"
 PRODVERSIONMIN_PATH="./prodversionmin.csv"
 
 # extension names list
-EXT_NAMES="dropdown_most_visited facebook_controller facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy bittorrent_surf"
+EXT_NAMES="dropdown_most_visited facebook_controller facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy bittorrent_surf share_this"
 
 make_app_entry() {
   # $1 - extension id,

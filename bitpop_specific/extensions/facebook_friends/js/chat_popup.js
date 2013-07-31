@@ -38,6 +38,7 @@ bitpop.chat = (function() {
 
         setTimeout(function() {
             $('#msg').focus();
+            
             // scroll the chat div to bottom
             scrollToBottom(true); // don't animate
         }, 200);
@@ -77,11 +78,17 @@ bitpop.chat = (function() {
                 new Date(request.created_time * 1000) : new Date();
             if (latest_message && request.type == 'newInboxMessage' &&
                 latest_message.body == request.body &&
-                latest_message.isInbox != (request.type == 'newInboxMessage') &&
-                timestamp.getTime() - latest_message.timestamp.getTime() < 7000) {
+                latest_message.isInbox !== true) {
               return false;
             }
+
+            var wasAtBottom = atBottom();
             appendMessage(bitpop.preprocessMessageText(request.body), timestamp, false, atBottom());
+            if ($('.box-wrap').data('antiscroll')) {
+              $('.box-wrap').data('antiscroll').destroy().refresh();
+            }
+            if (wasAtBottom)
+              scrollToBottom();
             if (request.type == 'newMessage')
               chrome.extension.sendMessage(MESSAGES_EXTENSION_ID,
                                            {
@@ -89,9 +96,6 @@ bitpop.chat = (function() {
                                              "friend_uid": request.from,
                                              "timestamp": timestamp
                                            });
-            if ($('.box-wrap').data('antiscroll')) {
-              $('.box-wrap').data('antiscroll').rebuild();
-            }
             latest_message = { 'body': request.body, 'timestamp': timestamp,
                                 'isInbox': request.type == 'newInboxMessage' };
           }
@@ -107,7 +111,7 @@ bitpop.chat = (function() {
           lastMessageUid = 0;
 
           // scroll the chat div to bottom
-          scrollToBottom();
+          scrollToBottom(true);
 
           return;
         }
@@ -119,13 +123,16 @@ bitpop.chat = (function() {
           uidTo, escMsg, new Date(), true);
         //escMsg = (new Date()).bitpopFormat() + '<br />' + escMsg;
         //$('#chat').append('<li class="me">' + escMsg + '</li>');
+        var wasAtBottom = atBottom();
         appendMessage(escMsg, new Date(), true);
 
         setMsgValue('');
 
         if ($('.box-wrap').data('antiscroll')) {
-          $('.box-wrap').data('antiscroll').rebuild();
+          $('.box-wrap').data('antiscroll').destroy().refresh();
         }
+        if (wasAtBottom)
+          scrollToBottom();
       }
 
       $('#msgForm').submit(function () {
@@ -288,7 +295,10 @@ bitpop.chat = (function() {
         appendFromLocalStorage();
 
         setTimeout(function() {
-          scrollToBottom(true); // don't animate
+          if ($('.box-wrap').data('antiscroll')) {
+            $('.box-wrap').data('antiscroll').destroy().refresh();
+          }
+          scrollToBottom(); // don't animate
         }, 200);
       }
     }, // end of public function init
@@ -299,15 +309,15 @@ bitpop.chat = (function() {
 
   function scrollToBottom(dontAnimate) {
     if (dontAnimate)
-      $('.antiscroll-inner').stop().scrollTop($('.box-inner').height());
+      $('.antiscroll-inner').stop().scrollTop($('#chat').height());
     else
-      $('.antiscroll-inner').stop().animate({ scrollTop: $('.box-inner').height() }, 400);
+      $('.antiscroll-inner').stop().animate({ scrollTop: $('#chat').height() }, 400);
   }
 
   // return Boolean
   function atBottom() {
-    return $('.antiscroll-inner').scrollTop() == ($('.box-inner').height() - $('.antiscroll-inner').height() + 5) ||
-      $('.antiscroll-inner').height() + 5 >= $('.box-inner').height();
+    return $('.antiscroll-inner').scrollTop() == ($('#chat').height() - $('.antiscroll-inner').height() + 5) ||
+      $('.antiscroll-inner').height() + 5 >= $('#chat').height();
   }
 
   function isSameMinute(date1, date2) {
@@ -355,9 +365,9 @@ bitpop.chat = (function() {
     return res;
   }
 
-  function appendMessage(msg, msgDate, me, scrollToBottom_p) {
-    if (!scrollToBottom_p && scrollToBottom_p !== false)
-      scrollToBottom_p = true;
+  function appendMessage(msg, msgDate, me, scrollToBottom_p_unused) {
+    //if (!scrollToBottom_p && scrollToBottom_p !== false)
+    //  scrollToBottom_p = true;
     var refDate = new Date();
     var uid = me ? myUid : friendUid;
     var dateDiffersForMoreThan1Min = lastMessageTime ? !isSameMinute(lastMessageTime, msgDate) : true;
@@ -387,8 +397,8 @@ bitpop.chat = (function() {
     lastMessageUid = uid;
 
     // scroll the chat div to bottom
-    if (scrollToBottom_p)
-      scrollToBottom(true);
+    //if (scrollToBottom_p)
+    //  scrollToBottom(true);
 
     lastMessageTime = msgDate;
   }
@@ -407,10 +417,12 @@ bitpop.chat = (function() {
   }
 
   function inviteCallback(msg) {
+    /* NOT IMPLEMENTED
     var escMsg = bitpop.preprocessMessageText(msg);
     bitpop.saveToLocalStorage(myUid,
       friendUid, escMsg, new Date(), true);
     appendMessage(escMsg, new Date(), true);
+    */
   }
 
   // helpers

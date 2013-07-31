@@ -177,6 +177,7 @@
                 'browser/extensions/default_extensions/uncensor_domains.crx',
                 'browser/extensions/default_extensions/uncensor_proxy.crx',
                 'browser/extensions/default_extensions/bittorrent_surf.crx',
+                'browser/extensions/default_extensions/share_this.crx',
               ]
             }
           ],

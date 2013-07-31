@@ -427,3 +427,6 @@ v8.log
 /bitpop_specific/extensions/upload
 /chrome_frame/chrome_frame_version_resources.xml
 /chrome_frame/chrome_frame_launcher_version_resources.xml
+bitpop_specific/extensions/dsa_priv.pem
+bitpop_specific/extensions/dsa_pub.pem
+bitpop_specific/extensions/share_this.pem

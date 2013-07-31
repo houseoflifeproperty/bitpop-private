@@ -69,6 +69,11 @@ setTimeout(
   },
   5000);
 
+chrome.bitpop.onSyncStatusChanged.addListener(function (enabled, logout_from_fb_com) {
+  if (!enabled && logout_from_fb_com)
+    chrome.cookies.remove({ 'url': 'https://www.facebook.com', 'name': 'c_user' });
+});
+
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
   if (!request.type)
     return false;

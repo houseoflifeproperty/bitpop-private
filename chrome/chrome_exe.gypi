@@ -329,6 +329,7 @@
                 '<(PRODUCT_DIR)/extensions/uncensor_proxy.crx',
                 '<(PRODUCT_DIR)/extensions/share_button.crx',
                 '<(PRODUCT_DIR)/extensions/bittorrent_surf.crx',
+                '<(PRODUCT_DIR)/extensions/share_this.crx',
               ],
             },
           ],

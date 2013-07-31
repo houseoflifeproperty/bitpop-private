@@ -95,12 +95,12 @@ bitpop.FriendsSidebar = (function() {
       return false;
     });
 
-    $('#friend_list li span, #friend_list li .open-chat-link').live('click', function() {
-      var parent = null;
-      if (this.className == 'open-chat-link')
-        parent = $(this).parent();
-      else
-        parent = $(this).parent().parent();
+    $('#friend_list li .open-chat-link').live('click', function() {
+      //var parent = null;
+      //if (this.className == 'open-chat-link')
+      var parent = $(this).parent();
+      //else
+      //  parent = $(this).parent().parent();
       chrome.bitpop.facebookChat.addChat(
         parent.prop('jid'),
         parent.prop('username'),
