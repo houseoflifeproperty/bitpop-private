@@ -13,8 +13,44 @@ var g_fbChatSidebarBodyHeight = "50%";
 var g_pageletTickerFullHeight = "100%";
 var g_rescheduleDisableChatCounter = 0;
 
+var port;
+
+// Attempt to reconnect
+var reconnectToExtension = function () {
+    // Reset port
+    port = null;
+    // Attempt to reconnect after 1 second
+    setTimeout(connectToExtension, 1000 * 1);
+};
+
+// Attempt to connect
+var connectToExtension = function () {
+
+    // Make the connection
+    port = chrome.extension.connect({name: "my-port"});
+    if (!port)
+        reconnectToExtension();
+
+    // When extension is upgraded or disabled and renabled, the content scripts
+    // will still be injected, so we have to reconnect them.
+    // We listen for an onDisconnect event, and then wait for a second before
+    // trying to connect again. Becuase chrome.extension.connect fires an onDisconnect
+    // event if it does not connect, an unsuccessful connection should trigger
+    // another attempt, 1 second later.
+    port.onDisconnect.addListener(reconnectToExtension);
+
+};
+
+function onPrefsChanged(request) {
+    console.log("Prefs changed");
+    shouldEnableFbJewelsAndChat_();
+}
+
 function init( )
 {
+    // Connect for the first time
+    connectToExtension();
+
     var tagName = 'g_rmInjected__';
     var injected = document.getElementById(tagName);
     if(!injected)
@@ -23,12 +59,7 @@ function init( )
         injected = document.createElement(tagName);
         injected.id = tagName;
         document.body.appendChild(injected);
-        chrome.extension.onMessage.addListener(
-            function(request, sender, sendResponse) {
-                console.log("Prefs changed");
-                shouldEnableFbJewelsAndChat_();
-            }
-        );
+        port.onMessage.addListener(onPrefsChanged);
         injectRmJavasctipt();
         console.log("Script injection done");
     }
@@ -89,6 +120,8 @@ function handleBackgroundPageResponse(responseData)
                                       null,
                                       JSON.stringify(responseData));
     }
+    port.onMessage.removeListener(handleBackgroundPageResponse);
+    port.onMessage.addListener(onPrefsChanged);
 }
 
 /**
@@ -101,7 +134,9 @@ function listenToRequestsFromWebPage( )
         function(req) {
             if(req && req.data) {
                 //send the request to the background page
-                chrome.extension.sendMessage(req.data, handleBackgroundPageResponse);
+                port.onMessage.removeListener(onPrefsChanged);
+                port.onMessage.addListener(handleBackgroundPageResponse);
+                port.postMessage(req.data);
             } else {
                 var msg = "Could not send request.  req=" + req;
                 var e = document.createEvent("TextEvent");

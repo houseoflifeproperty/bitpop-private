@@ -57,6 +57,7 @@ setTimeout(
         { type: 'getMyUid' },
         function(response) {
           if (response && response.id) {
+            loggedIn = true;
             myUid = response.id;
             chrome.extension.sendMessage(
               bitpop.CONTROLLER_EXTENSION_ID,
@@ -98,11 +99,6 @@ chrome.extension.onMessageExternal.addListener(function (request, sender, sendRe
   if (request.type == 'myUidAvailable') {
       myUid = request.myUid;
       sendInboxRequest();
-      // request inbox again in 30 minutes
-      if (inboxFetchInterval) { clearInterval(inboxFetchInterval); }
-      inboxFetchInterval = setInterval(function() {
-        if (myUid && friendList) { sendInboxRequest(); }
-       }, 1000 * 60 * 30);
       loggedIn = true;
       onSuppressChatChanged();
   } else if (request.type == 'friendListReceived') {
@@ -301,11 +297,11 @@ chrome.tabs.onRemoved.addListener(
 
 function sendResponseToContentScript(sender, data, status, response)
 {
-    if(chrome.extension.lastError) {
+    if (chrome.extension.lastError) {
         status = "error";
         response = chrome.extension.lastError;
     }
-    myLog("Sending response ", data.action, data.id, status, response);
+    myLog("Sending response ", data.action, data.id, status, response, response.stack);
     sender({
         action: data.action,
         id: data.id,
@@ -321,11 +317,38 @@ function getDomain(url) {
    return url.match(/:\/\/(.[^/]+)/)[1];
 }
 
+var ports = [];
 function addFbFunctionality( )
 {
     // add a listener to events coming from contentscript
-    chrome.extension.onMessage.addListener(
-        function(request, sender, sendResponse) {
+    chrome.extension.onConnect.addListener(function(port) {
+      ports.push(port);
+      var port_ = port;
+      port.onDisconnect.addListener(function() {
+        console.assert(port_.name == 'my-port');
+        if (port.name != 'my-port')
+          return;
+        var i = ports.indexOf(port_);
+        if (i !== -1) {
+          if (i === 0) {
+            ports.shift();
+          } else if (i === ports.length-1) {
+            ports.pop();
+          } else {
+            ports = ports.slice(0, i).concat(ports.slice(i+1, ports.length));
+          }
+        }
+      });
+
+      console.assert(port.name == 'my-port');
+      if (port.name != 'my-port')
+        return;
+
+      port.onMessage.addListener(
+        function(request) {
+            function sendResponse1(msg) {
+              port.postMessage(msg);
+            }
             if (typeof request != 'string')
               return false;
             myLog("Received request ", request);
@@ -341,15 +364,14 @@ function addFbFunctionality( )
                         data.userId !== undefined) {
                         // save the id of the tabs which want the Jewel/Chat enable/disable
                         // so that they can be informed when quite mode changes
-                        fbTabs[sender.tab.id] = {value: 1, injected: true};
-                        if(sender.tab.incognito) {
+                        if(port.sender.tab.incognito) {
                             // if the broser is in incognito mode make a local decision
                             // no need to consult the native side.
                             var response =  {
                                     enableChat: true,
                                     enableJewels: true
                                 };
-                            sendResponseToContentScript(sendResponse, data, "ok", response);
+                            sendResponseToContentScript(sendResponse1, data, "ok", response);
                         } else {
                             //chrome.bitpop.facebookChat.getFriendsSidebarVisible(function(is_visible) {
                             chrome.bitpop.prefs.facebookShowChat.get({}, function(details) {
@@ -367,7 +389,7 @@ function addFbFunctionality( )
                                 response = { enableChat:true, enableJewels:true };
                               }
 
-                              sendResponseToContentScript(sendResponse, data,
+                              sendResponseToContentScript(sendResponse1, data,
                                                           "ok", response);
                               //});
                             });
@@ -375,24 +397,17 @@ function addFbFunctionality( )
                         }
                     }
                 } catch(e) {
-                    sendResponseToContentScript(sendResponse, data, "error", e);
+                    sendResponseToContentScript(sendResponse1, data, "error", e);
                 }
             }
             return true;
+          });
         });
 }
 
 function onSuppressChatChanged(details) {
-  for(var i in fbTabs) {
-    if(fbTabs[i].injected) {
-        var id = parseInt(i);
-        chrome.tabs.sendMessage(
-            id,
-            {},
-            function(responseData) {
-            // ignore nothing to do here.
-            });
-    }
+  for(var i = 0; i < ports.length; i++) {
+    ports[i].postMessage({});
   }
 }
 
