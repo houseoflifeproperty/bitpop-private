@@ -6,6 +6,15 @@
 
 var bitpop;
 
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-43394997-1']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
 bitpop.chat = (function() {
   function setMsgValue(val) {
     $('#msg').val('');
@@ -37,8 +46,6 @@ bitpop.chat = (function() {
         appendFromLocalStorage();
 
         setTimeout(function() {
-            $('#msg').focus();
-            
             // scroll the chat div to bottom
             scrollToBottom(true); // don't animate
         }, 200);
@@ -50,7 +57,7 @@ bitpop.chat = (function() {
             moveCaretToEnd(document.getElementById('msg'));
             $('#msg').focus();
             $('#msg').prop('scrollTop', $('#msg').prop('scrollHeight'));
-          }, 100);
+          }, 500);
         }
 
         function moveCaretToEnd(el) {
@@ -133,6 +140,8 @@ bitpop.chat = (function() {
         }
         if (wasAtBottom)
           scrollToBottom();
+
+        _gaq.push(['_trackEvent', 'message', 'sent']);
       }
 
       $('#msgForm').submit(function () {

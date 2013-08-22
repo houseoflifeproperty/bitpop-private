@@ -16,7 +16,8 @@
    },
    "name": "Facebook Notify Messages",
    "permissions": [ "notifications", "tabs", "chrome://favicon/" ],
-   "version": "1.30",
+   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+   "version": "1.32",
    "update_url": "http://tools.bitpop.com/ext/updates.xml",
    "manifest_version": 2
 }

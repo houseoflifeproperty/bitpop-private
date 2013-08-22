@@ -992,7 +992,7 @@ std::string BrandCodeInternal() {
   NSString* brand_path = [keystone_glue brandFilePath];
 
   if (![brand_path length])
-    return std::string("");
+    return std::string("ISOH");
 
   NSDictionary* dict =
       [NSDictionary dictionaryWithContentsOfFile:brand_path];

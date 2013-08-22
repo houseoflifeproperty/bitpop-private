@@ -1,3 +1,12 @@
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-43394997-1']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = 'https://ssl.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
 var bitpop;
 if (!bitpop) bitpop = {};
 bitpop.FriendsSidebar = (function() {
@@ -40,11 +49,13 @@ bitpop.FriendsSidebar = (function() {
             self.loginClicked = false;
           }
         });
+      _gaq.push(['_trackEvent', 'login_attempt', 'sync-' + ($('#enable-sync').attr('checked') ? 'on' : 'off')]);
     });
 
     $('#logout a').click(function() {
       chrome.extension.sendMessage(bitpop.CONTROLLER_EXTENSION_ID,
         { type: 'logout' });
+      _gaq.push(['_trackEvent', 'logout', 'clicked']);
     });
 
     $('#search').bind('search', function () {
@@ -322,8 +333,10 @@ bitpop.FriendsSidebar = (function() {
 
       if (response.error == 'yes')
         $('#head-col2-row1').text('Set Status Error');
-      else
+      else {
         $('#head-col2-row1').text(val);
+        _gaq.push(['_trackEvent', 'status', 'set']);
+      }
       self.isEditingStatus = false;
     });
 
