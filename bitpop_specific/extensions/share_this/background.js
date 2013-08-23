@@ -33,8 +33,8 @@
       // The srcUrl property is only available for image elements.
         
       var url = 'https://tools.bitpop.com/fbimage.html?url=' + encodeURIComponent(info.srcUrl) + "&ref=CEX";
-      var w = 455;
-      var h = 450;
+      var w = 470;
+      var h = 520;
       var left = Math.floor((screen.width/2)-(w/2));
       var top = Math.floor((screen.height/2)-(h/2)); 
       chrome.windows.create({url: url, type: 'popup', width: w, height:h, top: top, left: left });
