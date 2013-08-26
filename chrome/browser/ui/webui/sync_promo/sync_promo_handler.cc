@@ -65,6 +65,18 @@ static bool IsValidUserFlowAction(int action) {
          action == SYNC_PROMO_LEFT_DURING_THROBBER;
 }
 
+const syncer::ModelType kDataTypes[] = {
+  syncer::APPS,
+  syncer::AUTOFILL,
+  syncer::BOOKMARKS,
+  syncer::EXTENSIONS,
+  syncer::PREFERENCES,
+  syncer::SESSIONS,
+  syncer::THEMES,
+  syncer::TYPED_URLS
+};
+static const size_t kNumDataTypes = arraysize(kDataTypes);
+
 }  // namespace
 
 SyncPromoHandler::SyncPromoHandler(ProfileManager* profile_manager)
@@ -155,7 +167,12 @@ void SyncPromoHandler::DisplayConfigureSync(bool show_advanced,
     // everything by default. This makes the first run experience simpler. Note,
     // there's an advanced link in the sync promo that takes users to Settings
     // where the configure pane is not skipped.
-    service->OnUserChoseDatatypes(true, syncer::ModelTypeSet());
+    syncer::ModelTypeSet data_types;
+    for (int i = 0; i < kNumDataTypes; ++i) {
+      data_types.Put(kDataTypes[i]);
+    }
+
+    service->OnUserChoseDatatypes(false, data_types);
     ConfigureSyncDone();
   }
 }

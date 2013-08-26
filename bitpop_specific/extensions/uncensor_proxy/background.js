@@ -2,6 +2,25 @@ var DOMAINS_UPDATE_INTERVAL = 24 /*hours*/ * 60 /*minutes factor*/ * 60 /*second
                               1000 /*milliseconds factor*/;
 var UPDATED_NOTIFICATION_SHOW_TIME = 10 * 1000; /* 10 seconds */
 
+var tabDomainHadJippi = {};
+
+function getTabDomainHadJippi(tabId, domainName) {
+  var domains = tabDomainHadJippi[tabId] || [];
+  for (var i = 0; i < domains.length; i++) {
+    if (domains[i] == domainName)
+      return true;
+  }
+  return false;
+}
+
+function setTabDomainHadJippi(tabId, domainName) {
+  if (!getTabDomainHadJippi(tabId, domainName)) {
+    var domains = tabDomainHadJippi[tabId] || [];
+    domains.push(domainName);
+    tabDomainHadJippi[tabId] = domains;
+  }
+}
+
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -241,7 +260,8 @@ function onBeforeRequestListener(details) {
   if (!domains || domains.length == 0)
     return;
   for (var i = 0; i < domains.length; i++) {
-    if (uri['host'].endsWith(domains[i].description)) {
+    var domainName = domains[i].description;
+    if (uri['host'].endsWith(domainName)) {
       var proxyControl = null;
       if (domains[i].value == 'use_global') {
         proxyControl = settings.get('proxy_control').replace(/"/g, '');
@@ -249,6 +269,10 @@ function onBeforeRequestListener(details) {
       else {
         proxyControl = domains[i].value;
       }
+
+      if (proxyControl == 'use_auto' && getTabDomainHadJippi(details.tabId, domainName))
+        return;
+      setTabDomainHadJippi(details.tabId, domainName);
 
       switch (proxyControl) {
         case 'use_auto': {
@@ -338,7 +362,8 @@ function onTabUpdated(tabId, changeInfo, tab) {
   if (!domains || domains.length == 0)
     return;
   for (var i = 0; i < domains.length; i++) {
-    if (uri['host'].endsWith(domains[i].description)) {
+    var domainName = domains[i].description;
+    if (uri['host'].endsWith(domainName)) {
       var proxyControl = null;
       if (domains[i].value == 'use_global') {
         proxyControl = settings.get('proxy_control').replace(/"/g, '');
@@ -347,6 +372,10 @@ function onTabUpdated(tabId, changeInfo, tab) {
         proxyControl = domains[i].value;
       }
 
+      if (proxyControl == 'use_auto' && getTabDomainHadJippi(details.tabId, domainName))
+        return;
+      setTabDomainHadJippi(details.tabId, domainName);
+      
       switch (proxyControl) {
         case 'use_auto':
           if (changeInfo.status == 'loading') {
