@@ -124,6 +124,13 @@ void OpenItem(const FilePath& full_path) {
   }
 }
 
+void OpenItemInTorque(const FilePath& full_path) {
+  DCHECK([NSThread isMainThread]);
+  NSString* path_string = base::SysUTF8ToNSString(full_path.value());
+  if (!path_string || ![[NSWorkspace sharedWorkspace] openFile:path_string withApplication:@"Torque.app"])
+    LOG(WARNING) << "NSWorkspace failed to open file path " << full_path.value();
+}
+
 void OpenExternal(const GURL& url) {
   DCHECK([NSThread isMainThread]);
   NSString* url_string = base::SysUTF8ToNSString(url.spec());

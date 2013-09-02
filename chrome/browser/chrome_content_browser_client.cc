@@ -1217,6 +1217,10 @@ void ChromeContentBrowserClient::OpenItem(const FilePath& path) {
   platform_util::OpenItem(path);
 }
 
+void ChromeContentBrowserClient::OpenItemInTorque(const FilePath& path) {
+  platform_util::OpenItemInTorque(path);
+}
+
 void ChromeContentBrowserClient::ShowItemInFolder(const FilePath& path) {
   platform_util::ShowItemInFolder(path);
 }

@@ -5,6 +5,10 @@ var inboxData = null;
 var inboxFetchInterval = null;
 var newMessageAudio = new Audio("mouth_pop.wav");
 var loggedIn = false;
+var torqueEnabled = false;
+
+var torrentOpenWindows = {};
+var downloadItemOpenInfo = {};
 
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-43394997-1']);
@@ -44,6 +48,69 @@ if (!localStorage.firstRunCompleted) {
     }
   });
 }
+
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
+chrome.management.onEnabled.addListener(function(ext) {
+  if (ext.id == "pchkdmeolfddeeedkhlfolaenanehddd") {
+    torqueEnabled = true;
+  }
+});
+
+chrome.management.get("pchkdmeolfddeeedkhlfolaenanehddd", function(info) {
+  if (info && info.enabled) {
+    torqueEnabled = true;
+  }
+});
+
+chrome.downloads.onChanged.addListener(function (item) {
+  if (torqueEnabled && item.filename && item.filename.current.endsWith('.torrent.crdownload')) {
+    if (!localStorage['torrent.defaultAction']) {
+        chrome.downloads.pause(item.id);
+
+        var w = 400;
+        var h = 230;
+        var left = (screen.width/2)-(w/2);
+        var top = (screen.height/2)-(h/2); 
+        chrome.windows.create({ url: '/torrent_download.html', type: 'popup',
+                                top: top, left: left, width: w, height: h },
+                              function(win) {
+                                torrentOpenWindows[win.id] = { id: item.id };
+                              });
+    }
+  }
+  if (torqueEnabled && item.state && item.state.current == 'complete') {
+    onDownloadComplete(item.id);
+  }    
+});
+
+function onDownloadComplete(itemId) {
+  var action = '';
+  if (localStorage['torrent.defaultAction']) {
+    action = localStorage['torrent.defaultAction'];
+  } else if (downloadItemOpenInfo[itemId]) {
+    action = downloadItemOpenInfo[itemId];
+  }
+
+  switch (action) {
+    case '0':
+      chrome.downloads.openInTorque(itemId);
+      break;
+    case '1':
+      chrome.downloads.open(itemId);
+      break;
+    case '2':
+    case '':
+      // Do nothing
+      break;
+    default:
+      console.error('Invalid action received from .torrent open dialog.');
+      break;
+  }
+}
+
 
 (function () {
   if (chrome.browserAction)
@@ -99,6 +166,25 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
       }
     );
     return true;
+  } else if (request.type == 'torrentOpenInfoDone') {
+    var itemId = torrentOpenWindows[request.windowId]['id'];
+    downloadItemOpenInfo[itemId] = request.action;
+    if (request.alwaysPerform === true) {
+      localStorage['torrent.defaultAction'] = request.action;
+    }
+    chrome.windows.remove(request.windowId);
+
+    chrome.downloads.search({'id': itemId}, function(items) {
+      if (items.length === 0)
+        return;
+
+      var item = items[0];
+      if (item.state == 'complete') {
+        onDownloadComplete(item.id);
+      } else 
+        chrome.downloads.resume(item.id);
+    });
+    
   }
 });
 

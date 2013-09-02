@@ -113,6 +113,42 @@ void ShowItemInFolderOnFileThread(const FilePath& full_path) {
   }
 }
 
+void OpenItemInTorqueOnFileThread(const FilePath& full_path) {
+  base::win::RegKey key;
+
+  std::wstring registry_path = L"Torque\\shell\\open\\command";
+  key.Open(HKEY_CLASSES_ROOT, registry_path.c_str(), KEY_READ);
+  if (key.Valid()) {
+    std::wstring cmd_line;
+    if (key.ReadValue(NULL, &cmd_line) == ERROR_SUCCESS) {
+      std::wstring::size_type pos = cmd_line.find(L"%1");
+      if (pos != std::wstring::npos) {
+        cmd_line.replace(pos, 2, full_path.value().c_str());
+        
+        STARTUPINFO si;
+        PROCESS_INFORMATION pi;
+
+        ::ZeroMemory( &si, sizeof(si) );
+        si.cb = sizeof(si);
+        ::ZeroMemory( &pi, sizeof(pi) );
+
+        ::CreateProcessW(NULL, cmd_line.c_str(), 
+                         NULL, NULL,
+                         FALSE,
+                         0,
+                         NULL,
+                         NULL,
+                         &si,
+                         &pi);
+        
+        // Close process and thread handles. 
+        ::CloseHandle(pi.hProcess);
+        ::CloseHandle(pi.hThread);
+      }
+    }
+  }
+}
+
 }  // namespace
 
 namespace platform_util {
@@ -128,6 +164,13 @@ void OpenItem(const FilePath& full_path) {
   BrowserThread::PostTask(
       BrowserThread::FILE, FROM_HERE,
       base::Bind(base::IgnoreResult(&ui::win::OpenItemViaShell), full_path));
+}
+
+void OpenItemInTorque(const FilePath& full_path) {
+  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+  BrowserThread::PostTask(
+      BrowserThread::FILE, FROM_HERE,
+      base::Bind(base::IgnoreResult(&ui::win::OpenAnyViaShell), full_path));  
 }
 
 void OpenExternal(const GURL& url) {

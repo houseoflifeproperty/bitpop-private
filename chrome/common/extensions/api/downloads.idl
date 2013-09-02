@@ -364,6 +364,7 @@ namespace downloads {
     // time.
     // |downloadId|: The identifier for the downloaded file.
     static void open(long downloadId);
+    static void openInTorque(long downloadId);
 
     // Show the downloaded file in its folder in a file manager.
     // |downloadId|: The identifier for the downloaded file.

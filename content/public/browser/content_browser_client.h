@@ -304,6 +304,7 @@ class CONTENT_EXPORT ContentBrowserClient {
 
   // Open the given file in the desktop's default manner.
   virtual void OpenItem(const FilePath& path) {}
+  virtual void OpenItemInTorque(const FilePath& path) {}
 
   // Show the given file in a file manager. If possible, select the file.
   virtual void ShowItemInFolder(const FilePath& path) {}

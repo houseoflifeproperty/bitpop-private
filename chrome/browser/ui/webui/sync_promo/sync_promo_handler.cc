@@ -168,7 +168,7 @@ void SyncPromoHandler::DisplayConfigureSync(bool show_advanced,
     // there's an advanced link in the sync promo that takes users to Settings
     // where the configure pane is not skipped.
     syncer::ModelTypeSet data_types;
-    for (int i = 0; i < kNumDataTypes; ++i) {
+    for (int i = 0; i < (int)kNumDataTypes; ++i) {
       data_types.Put(kDataTypes[i]);
     }
 

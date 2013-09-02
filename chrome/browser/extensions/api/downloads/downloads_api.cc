@@ -843,6 +843,24 @@ bool DownloadsOpenFunction::RunImpl() {
   return true;
 }
 
+DownloadsOpenInTorqueFunction::DownloadsOpenInTorqueFunction() {}
+DownloadsOpenInTorqueFunction::~DownloadsOpenInTorqueFunction() {}
+
+bool DownloadsOpenInTorqueFunction::RunImpl() {
+  scoped_ptr<extensions::api::downloads::OpenInTorque::Params> params(
+      extensions::api::downloads::OpenInTorque::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  DownloadItem* download_item = GetDownload(
+      profile(), include_incognito(), params->download_id);
+  if (!download_item || !download_item->IsComplete()) {
+    error_ = download_extension_errors::kInvalidOperationError;
+    return false;
+  }
+  download_item->OpenDownloadInTorque();
+  RecordApiFunctions(DOWNLOADS_FUNCTION_OPEN);
+  return true;
+}
+
 DownloadsDragFunction::DownloadsDragFunction() {}
 DownloadsDragFunction::~DownloadsDragFunction() {}
 

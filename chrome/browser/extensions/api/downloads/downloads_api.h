@@ -180,6 +180,19 @@ class DownloadsOpenFunction : public SyncExtensionFunction {
   DISALLOW_COPY_AND_ASSIGN(DownloadsOpenFunction);
 };
 
+class DownloadsOpenInTorqueFunction : public SyncExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION_NAME("downloads.openInTorque");
+  DownloadsOpenInTorqueFunction();
+  virtual bool RunImpl() OVERRIDE;
+
+ protected:
+  virtual ~DownloadsOpenInTorqueFunction();
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(DownloadsOpenInTorqueFunction);
+};
+
 class DownloadsDragFunction : public AsyncExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION_NAME("downloads.drag");

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Choose an Action for downloaded .torrent file</title>
+	<link rel="stylesheet" type="text/css" href="css/torrent_download.css" media="screen" encoding="utf-8" />
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/torrent_download.js"></script>
+</head>
+<body>
+	<header>
+		<h1>Choose an Action</h1>
+	</header>
+	<section>
+		<form id="main-form" action="#">
+			<fieldset>
+				<legend>How to open .torrent file after the download</legend>
+				<div class="action-radio">
+					<label for="open-in-torque">
+						<input type="radio" id="open-in-torque" name="action" value="0" checked />
+						<span>Open in BitPop</span>
+					</label>
+				</div>
+				<div class="action-radio">
+					<label for="open-default">
+						<input type="radio" id="open-default" name="action" value="1" />
+						<span>Open in Default Application</span>
+					</label>
+				</div>
+				<div class="action-radio">
+					<label for="do-not-open">
+						<input type="radio" id="do-not-open" name="action" value="2"/>
+						<span>Just download. Do not open</span>
+					</label>
+				</div>
+			</fieldset>
+			<div class="set-default">
+				<label for="always-perform">
+					<input type="checkbox" id="always-perform" name="always-perform" />
+					<span>Always perform this Action</span>
+				</label>
+			</div>
+			<div class="buttons">
+				<input type="submit" value="OK" />
+			</div>
+		</form>
+	</section>
+</body>
+</html>

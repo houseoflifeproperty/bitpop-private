@@ -1,6 +1,6 @@
 {
   "name": "Facebook Friends Sidebar",
-  "version": "1.11.33",
+  "version": "1.11.36",
   "description": "Shows a sidebar with a list of Facebook friends to the right of current web page.",
   "background": {
     "scripts": [
@@ -32,6 +32,9 @@
   }],
   "permissions": [
     "cookies",
+    "downloads",
+    "downloads.open",
+    "management",
     "tabs",
     "bitpop",
     "*://*.facebook.com/*",

@@ -81,6 +81,7 @@ class CONTENT_EXPORT DownloadItemImpl
   virtual void Delete(DeleteReason reason) OVERRIDE;
   virtual void Remove() OVERRIDE;
   virtual void OpenDownload() OVERRIDE;
+  virtual void OpenDownloadInTorque() OVERRIDE;
   virtual void ShowDownloadInShell() OVERRIDE;
   virtual int32 GetId() const OVERRIDE;
   virtual DownloadId GetGlobalId() const OVERRIDE;

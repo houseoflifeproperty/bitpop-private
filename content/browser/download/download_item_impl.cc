@@ -432,6 +432,38 @@ void DownloadItemImpl::OpenDownload() {
   GetContentClient()->browser()->OpenItem(GetFullPath());
 }
 
+void DownloadItemImpl::OpenDownloadInTorque() {
+  DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
+
+  if (state_ == IN_PROGRESS_INTERNAL) {
+    // We don't honor the open_when_complete_ flag for temporary
+    // downloads. Don't set it because it shows up in the UI.
+    if (!IsTemporary())
+      open_when_complete_ = !open_when_complete_;
+    return;
+  }
+
+  if (state_ != COMPLETE_INTERNAL || file_externally_removed_)
+    return;
+
+  // Ideally, we want to detect errors in opening and report them, but we
+  // don't generally have the proper interface for that to the external
+  // program that opens the file.  So instead we spawn a check to update
+  // the UI if the file has been deleted in parallel with the open.
+  delegate_->CheckForFileRemoval(this);
+  RecordOpen(GetEndTime(), !GetOpened());
+  opened_ = true;
+  FOR_EACH_OBSERVER(Observer, observers_, OnDownloadOpened(this));
+  delegate_->DownloadOpened(this);
+
+  // For testing: If download opening is disabled on this item,
+  // make the rest of the routine a no-op.
+  if (!open_enabled_)
+    return;
+
+  GetContentClient()->browser()->OpenItemInTorque(GetFullPath());
+}
+
 void DownloadItemImpl::ShowDownloadInShell() {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
 

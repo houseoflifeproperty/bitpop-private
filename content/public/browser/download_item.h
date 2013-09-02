@@ -143,6 +143,7 @@ class CONTENT_EXPORT DownloadItem : public base::SupportsUserData {
   // Open the file associated with this download.  If the download is
   // still in progress, marks the download to be opened when it is complete.
   virtual void OpenDownload() = 0;
+  virtual void OpenDownloadInTorque() = 0;
 
   // Show the download via the OS shell.
   virtual void ShowDownloadInShell() = 0;

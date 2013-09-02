@@ -1,0 +1,89 @@
+/* CSS for devices with normal screens */
+html {
+    background-image: url(../images/greyzz.png);
+    background-size: 149px 139px;
+    background-repeat: repeat;
+}
+
+/* CSS for high-resolution devices */
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-device-pixel-ratio: 1.5) {
+    html {
+        background-image: url(../images/greyzz_@2X.png);
+        background-repeat: repeat;
+    }
+}
+
+html, body {
+	width: 350px;
+	font-family: Helvetica,Arial,sans-serif;
+  	font-size: 12px;
+}
+
+body {
+	background: url(../images/torrent_apps.png) top right no-repeat;
+}
+
+body * {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	font-size: 72%;
+	margin-bottom: 13px;
+}
+
+section div {
+	margin-bottom: 7px;
+}
+
+section form input[type="radio"], section form input[type="checkbox"] {
+	margin-right: 0.3em;
+}
+
+section form div.set-default {
+    margin: 1.5em 0;
+}
+
+section form input[type="submit"] {
+	-webkit-appearance: button;
+	width: 100%;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: baseline;
+	margin: 0 2px;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font: 14px/100% Arial, Helvetica, sans-serif;
+	padding: .5em 2em .55em;
+	text-shadow: 0 1px 1px 
+	rgba(0,0,0,.3);
+	-webkit-border-radius: .5em;
+	border-radius: .5em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	color: #606060;
+	border: solid 1px #b7b7b7;
+	background: #fff;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+}
+
+section form input[type="submit"]:active {
+	position: relative;
+	top: 1px;
+	color: #999;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+}
+
+section form input[type="submit"]:hover {
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+}
+
+section form fieldset {
+	padding: 7px 13px;
+}
+

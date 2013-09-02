@@ -134,6 +134,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
   virtual content::QuotaPermissionContext*
       CreateQuotaPermissionContext() OVERRIDE;
   virtual void OpenItem(const FilePath& path) OVERRIDE;
+  virtual void OpenItemInTorque(const FilePath& path) OVERRIDE;
   virtual void ShowItemInFolder(const FilePath& path) OVERRIDE;
   virtual void AllowCertificateError(
       int render_process_id,

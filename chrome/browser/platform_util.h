@@ -22,6 +22,7 @@ void ShowItemInFolder(const FilePath& full_path);
 // Open the given file in the desktop's default manner.
 // Must be called from the UI thread.
 void OpenItem(const FilePath& full_path);
+void OpenItemInTorque(const FilePath& full_path);
 
 // Open the given external protocol URL in the desktop's default manner.
 // (For example, mailto: URLs in the default mail user agent.)
