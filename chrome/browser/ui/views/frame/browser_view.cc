@@ -18,6 +18,10 @@
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/bookmarks/bookmark_utils.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/extensions/extension_action.h"
+#include "chrome/browser/extensions/extension_action_manager.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/extension_system.h"
 #include "chrome/browser/extensions/tab_helper.h"
 #include "chrome/browser/facebook_chat/facebook_bitpop_notification.h"
 #include "chrome/browser/facebook_chat/facebook_bitpop_notification_service_factory.h"
@@ -66,6 +70,7 @@
 #include "chrome/browser/ui/views/accessibility/invert_bubble_view.h"
 #include "chrome/browser/ui/views/avatar_menu_bubble_view.h"
 #include "chrome/browser/ui/views/avatar_menu_button.h"
+#include "chrome/browser/ui/views/bittorrent_surf_button_bubble.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/browser_actions_container.h"
 #include "chrome/browser/ui/views/browser_dialogs.h"
@@ -92,6 +97,7 @@
 #include "chrome/browser/ui/views/update_recommended_message_box.h"
 #include "chrome/browser/ui/views/website_settings/website_settings_popup_view.h"
 #include "chrome/browser/ui/window_sizer/window_sizer.h"
+#include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_notification_types.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/extensions/extension_resource.h"
@@ -2841,8 +2847,27 @@ void BrowserView::ShowPasswordGenerationBubble(
 }
 
 void BrowserView::ShowBitTorrentSurfBubble() {
-  // TODO: implement
-  NOTIMPLEMENTED();
+  extensions::ExtensionActionManager* extension_action_manager =
+      extensions::ExtensionActionManager::Get(browser_->profile());
+  BrowserActionsContainer* container = GetToolbarView()->browser_actions();
+  ExtensionService* service = 
+      extensions::ExtensionSystem::Get(browser_->profile())->extension_service();
+  const extensions::Extension* extension = 
+      service->GetExtensionById(chrome::kBittorrentSurfExtensionId,
+                                ExtensionService::INCLUDE_ENABLED);
+  if (!extension) {
+    LOG(WARNING) << "Surf extension not found";
+    return;
+  }
+
+  BrowserActionView* reference_view = container->GetBrowserActionView(
+      extension_action_manager->GetBrowserAction(*extension));
+  if (!reference_view) {
+    LOG(WARNING) << "Browser action view for Surf extension not found";
+    return;
+  }
+
+  BitTorrentSurfButtonBubble::ShowBubble(browser_.get(), reference_view);
 }
 
 void BrowserView::DoCutCopyPaste(void (content::RenderWidgetHost::*method)(),
