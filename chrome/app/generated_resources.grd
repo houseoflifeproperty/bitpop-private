@@ -15773,6 +15773,12 @@ Some features may be unavailable.  Please check that the profile exists and you 
     <message name="IDS_TOOLTIP_MYBUB_NEWS" desc="">
       News Search
     </message>
+    <message name="IDS_SURF_BUTTON_BUBBLE_TITLE" desc="Title of the BitTorrent Surf button bubble shown on set open action to open with BitPop">
+      Torrent Started
+    </message>
+    <message name="IDS_SURF_BUTTON_BUBBLE_SUBTEXT" desc="Text below th title for Surf Extension button">
+      Click this button to manage your torrent downloads from BitPop.
+    </message>
     </messages>
 
     <structures fallback_to_english="true">

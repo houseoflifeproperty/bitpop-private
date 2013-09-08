@@ -817,6 +817,7 @@ extern const char kRLZDisabled[];
 
 extern const char kAutomaticUpdatesEnabled[];
 extern const char kFacebookShowFriendsList[];
+extern const char kIsSurfPopupShown[];
 
 extern const char kFacebookShowChat[];
 extern const char kFacebookShowJewels[];

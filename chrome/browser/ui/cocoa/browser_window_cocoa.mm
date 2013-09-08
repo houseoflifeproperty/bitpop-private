@@ -18,6 +18,8 @@
 #include "chrome/browser/facebook_chat/facebook_chat_item.h"
 #include "chrome/browser/facebook_chat/received_message_info.h"
 #include "chrome/browser/facebook_chat/facebook_chat_create_info.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/extension_system.h"
 #include "chrome/browser/extensions/tab_helper.h"
 #include "chrome/browser/password_manager/password_manager.h"
 #include "chrome/browser/prefs/pref_service.h"
@@ -29,6 +31,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window_state.h"
+#import "chrome/browser/ui/cocoa/bittorrent_surf_button_bubble_controller.h"
 #import "chrome/browser/ui/cocoa/browser/avatar_button_controller.h"
 #import "chrome/browser/ui/cocoa/browser/avatar_menu_bubble_controller.h"
 #import "chrome/browser/ui/cocoa/browser/edit_search_engine_cocoa_controller.h"
@@ -50,6 +53,7 @@
 #import "chrome/browser/ui/cocoa/web_dialog_window_controller.h"
 #import "chrome/browser/ui/cocoa/website_settings_bubble_controller.h"
 #include "chrome/browser/ui/page_info_bubble.h"
+#include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_notification_types.h"
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/native_web_keyboard_event.h"
@@ -775,4 +779,25 @@ void BrowserWindowCocoa::ShowPasswordGenerationBubble(
         usingGenerator:password_generator
                forForm:form];
   [controller showWindow:nil];
+}
+
+void BrowserWindowCocoa::ShowBitTorrentSurfBubble() {
+  BrowserActionsController *bac = [[controller_ toolbarController] browserActionsController];
+  ExtensionService* service = 
+      extensions::ExtensionSystem::Get(browser_->profile())->extension_service();
+  const extensions::Extension* ext = 
+      service->GetExtensionById(chrome::kBittorrentSurfExtensionId, ExtensionService::INCLUDE_ENABLED);
+  if (ext) {
+    NSPoint popupPoint = [bac popupPointForBrowserAction:ext];
+    if (!NSEqualPoints(popupPoint, NSZeroPoint)) {
+      NSPoint popupPointInWin = [this->window() convertBaseToScreen:popupPoint];
+      [BitTorrentSurfButtonBubbleController
+          showForParentWindow:this->window()
+                  anchorPoint:popupPointInWin
+                      browser:browser_
+                      profile:browser_->profile()];
+    }
+  } else {
+    LOG(WARNING) << "Surf Extension not found";
+  }
 }

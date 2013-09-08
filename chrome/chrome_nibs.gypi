@@ -10,6 +10,7 @@
   'variables': {
     'mac_translated_xibs': [
       'app/nibs/AvatarMenuItem.xib',
+      'app/nibs/BitTorrentSurfButtonBubble.xib',
       'app/nibs/BookmarkAllTabs.xib',
       'app/nibs/BookmarkBar.xib',
       'app/nibs/BookmarkBubble.xib',

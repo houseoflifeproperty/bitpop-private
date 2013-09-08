@@ -2213,6 +2213,7 @@ const char kRLZDisabled[] = "rlz.disabled";
 
 const char kAutomaticUpdatesEnabled[] = "automatic_updates.enabled";
 const char kFacebookShowFriendsList[] = "facebook.showFriendsList";
+const char kIsSurfPopupShown[] = "bitpop.surfPopupShown";
 
 const char kFacebookShowChat[] = "bitpop.facebook_show_chat";
 const char kFacebookShowJewels[] = "bitpop.facebook_show_jewels";

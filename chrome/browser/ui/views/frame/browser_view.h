@@ -363,6 +363,7 @@ class BrowserView : public BrowserWindow,
       const gfx::Rect& rect,
       const content::PasswordForm& form,
       autofill::PasswordGenerator* password_generator) OVERRIDE;
+  virtual void ShowBitTorrentSurfBubble() OVERRIDE;
 
   // Overridden from BrowserWindowTesting:
   virtual BookmarkBarView* GetBookmarkBarView() const OVERRIDE;

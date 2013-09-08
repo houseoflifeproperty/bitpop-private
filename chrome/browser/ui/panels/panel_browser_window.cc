@@ -475,6 +475,10 @@ void PanelBrowserWindow::ShowAvatarBubbleFromAvatarButton() {
   NOTREACHED();
 }
 
+void PanelBrowserWindow::ShowBitTorrentSurfBubble() {
+  NOTREACHED();
+}
+
 void PanelBrowserWindow::DestroyBrowser() {
   native_panel_->DestroyPanelBrowser();
 }

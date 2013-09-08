@@ -2840,6 +2840,11 @@ void BrowserView::ShowPasswordGenerationBubble(
   bubble->Show();
 }
 
+void BrowserView::ShowBitTorrentSurfBubble() {
+  // TODO: implement
+  NOTIMPLEMENTED();
+}
+
 void BrowserView::DoCutCopyPaste(void (content::RenderWidgetHost::*method)(),
 #if defined(OS_WIN)
                                  int windows_msg_id,

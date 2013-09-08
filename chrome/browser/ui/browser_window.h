@@ -374,6 +374,10 @@ class BrowserWindow : public BaseWindow {
       const gfx::Rect& rect,
       const content::PasswordForm& form,
       autofill::PasswordGenerator* password_generator) = 0;
+  
+  // Show bubble for user choice of opening torrent in BitPop after the download.
+  // Popups on the bottom of bittorrent surf browser action.
+  virtual void ShowBitTorrentSurfBubble() = 0;
 
  protected:
   friend void browser::CloseAllBrowsers();

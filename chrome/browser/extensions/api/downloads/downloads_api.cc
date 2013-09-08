@@ -17,12 +17,14 @@
 #include "base/json/json_writer.h"
 #include "base/lazy_instance.h"
 #include "base/logging.h"
+#include "base/message_loop.h"
 #include "base/metrics/histogram.h"
 #include "base/stl_util.h"
 #include "base/string16.h"
 #include "base/string_split.h"
 #include "base/string_util.h"
 #include "base/stringprintf.h"
+#include "base/time.h"
 #include "base/values.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/download/download_file_icon_extractor.h"
@@ -35,12 +37,17 @@
 #include "chrome/browser/extensions/extension_system.h"
 #include "chrome/browser/icon_loader.h"
 #include "chrome/browser/icon_manager.h"
+#include "chrome/browser/prefs/pref_service.h"
 #include "chrome/browser/renderer_host/chrome_render_message_filter.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/host_desktop.h"
 #include "chrome/browser/ui/webui/web_ui_util.h"
 #include "chrome/common/cancelable_task_tracker.h"
 #include "chrome/common/chrome_notification_types.h"
 #include "chrome/common/extensions/api/downloads.h"
+#include "chrome/common/pref_names.h"
 #include "content/public/browser/download_interrupt_reasons.h"
 #include "content/public/browser/download_item.h"
 #include "content/public/browser/download_save_info.h"
@@ -843,6 +850,10 @@ bool DownloadsOpenFunction::RunImpl() {
   return true;
 }
 
+void ShowSurfBubbleOnWindow(BrowserWindow* window) {
+  window->ShowBitTorrentSurfBubble();
+}
+
 DownloadsOpenInTorqueFunction::DownloadsOpenInTorqueFunction() {}
 DownloadsOpenInTorqueFunction::~DownloadsOpenInTorqueFunction() {}
 
@@ -857,6 +868,20 @@ bool DownloadsOpenInTorqueFunction::RunImpl() {
     return false;
   }
   download_item->OpenDownloadInTorque();
+
+  Browser* browser = browser::FindTabbedBrowser(profile(), false,
+                           chrome::GetActiveDesktop());
+  if (!browser)
+    LOG(WARNING) << "Browser not found";
+  
+  PrefService* prefs = profile()->GetPrefs();
+  if (!prefs->GetBoolean(prefs::kIsSurfPopupShown)) {
+    MessageLoop::current()->PostDelayedTask(FROM_HERE,
+        base::Bind(&ShowSurfBubbleOnWindow, base::Unretained(browser->window())),
+        base::TimeDelta::FromMilliseconds(500));
+    prefs->SetBoolean(prefs::kIsSurfPopupShown, true);
+  }
+
   RecordApiFunctions(DOWNLOADS_FUNCTION_OPEN);
   return true;
 }

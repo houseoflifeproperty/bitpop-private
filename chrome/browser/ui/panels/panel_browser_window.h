@@ -148,6 +148,7 @@ class PanelBrowserWindow : public BrowserWindow,
   virtual void ShowAvatarBubble(content::WebContents* web_contents,
                                 const gfx::Rect& rect) OVERRIDE;
   virtual void ShowAvatarBubbleFromAvatarButton() OVERRIDE;
+  virtual void ShowBitTorrentSurfBubble() OVERRIDE;
 
   // TabStripModelObserver overrides.
   virtual void TabInsertedAt(TabContents* contents,

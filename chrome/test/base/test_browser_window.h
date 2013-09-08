@@ -143,6 +143,7 @@ class TestBrowserWindow : public BrowserWindow {
       const gfx::Rect& rect,
       const content::PasswordForm& form,
       autofill::PasswordGenerator* generator) OVERRIDE {}
+  virtual void ShowBitTorrentSurfBubble() OVERRIDE {}
 
   virtual bool IsChatbarVisible() const OVERRIDE;
   virtual FacebookChatbar* GetChatbar() OVERRIDE;

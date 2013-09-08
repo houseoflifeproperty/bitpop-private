@@ -108,6 +108,10 @@ void DownloadPrefs::RegisterUserPrefs(PrefServiceBase* prefs) {
     }
     prefs->SetBoolean(prefs::kDownloadDirUpgraded, true);
   }
+
+  prefs->RegisterBooleanPref(prefs::kIsSurfPopupShown,
+                             false,
+                             PrefService::UNSYNCABLE_PREF);
 }
 
 // static
@@ -116,7 +120,7 @@ DownloadPrefs* DownloadPrefs::FromDownloadManager(
   ChromeDownloadManagerDelegate* delegate =
       static_cast<ChromeDownloadManagerDelegate*>(
           download_manager->GetDelegate());
-  return delegate->download_prefs();
+  return delegate->download_prefs(); 
 }
 
 // static
