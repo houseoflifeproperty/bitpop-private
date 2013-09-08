@@ -15443,15 +15443,15 @@ Some features may be unavailable.  Please check that the profile exists and you 
     </message>
     <message name="IDS_WIN8_RESTART"
              desc="Text for the infobar button to restart Chrome in desktop mode. Doesn't explicitly mention 'on the desktop' because the infobar message already says that.">
-      Relaunch Chrome
+      Relaunch BitPop
     </message>
     <message name="IDS_WIN8_DESKTOP_RESTART"
              desc="Text for the menu item to restart chrome in desktop mode. Aplies to Windows 8 only">
-      Relaunch Chrome on the desktop
+      Relaunch BitPop on the desktop
     </message>
     <message name="IDS_WIN8_METRO_RESTART"
              desc="Text for the menu item to restart chrome in metro. Aplies to Windows 8 only">
-      Relaunch Chrome in Windows 8 mode
+      Relaunch BitPop in Windows 8 mode
     </message>
 
     <!-- Media Galleries. -->

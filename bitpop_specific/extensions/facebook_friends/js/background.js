@@ -71,7 +71,7 @@ chrome.downloads.onChanged.addListener(function (item) {
         chrome.downloads.pause(item.id);
 
         var w = 400;
-        var h = 230;
+        var h = 250;
         var left = (screen.width/2)-(w/2);
         var top = (screen.height/2)-(h/2); 
         chrome.windows.create({ url: '/torrent_download.html', type: 'popup',

@@ -118,6 +118,10 @@ void OpenItemInTorqueOnFileThread(const FilePath& full_path) {
 
   std::wstring registry_path = L"Torque\\shell\\open\\command";
   key.Open(HKEY_CLASSES_ROOT, registry_path.c_str(), KEY_READ);
+  if (!key.Valid()) {
+	  registry_path = L"Applications\\Torque.exe\\shell\\open\\command";
+	  key.Open(HKEY_CLASSES_ROOT, registry_path.c_str(), KEY_READ);
+  }
   if (key.Valid()) {
     std::wstring cmd_line;
     if (key.ReadValue(NULL, &cmd_line) == ERROR_SUCCESS) {
@@ -132,7 +136,7 @@ void OpenItemInTorqueOnFileThread(const FilePath& full_path) {
         si.cb = sizeof(si);
         ::ZeroMemory( &pi, sizeof(pi) );
 
-        ::CreateProcessW(NULL, cmd_line.c_str(), 
+        ::CreateProcessW(NULL, const_cast<wchar_t *>(cmd_line.c_str()), 
                          NULL, NULL,
                          FALSE,
                          0,
@@ -170,7 +174,7 @@ void OpenItemInTorque(const FilePath& full_path) {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
   BrowserThread::PostTask(
       BrowserThread::FILE, FROM_HERE,
-      base::Bind(base::IgnoreResult(&ui::win::OpenAnyViaShell), full_path));  
+      base::Bind(&OpenItemInTorqueOnFileThread, full_path));  
 }
 
 void OpenExternal(const GURL& url) {
