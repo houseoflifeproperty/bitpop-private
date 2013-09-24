@@ -8,7 +8,10 @@ UPDATES_XML_PATH="$UPLOAD_DIR/updates.xml"
 PRODVERSIONMIN_PATH="./prodversionmin.csv"
 
 # extension names list
-EXT_NAMES="dropdown_most_visited facebook_controller facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy bittorrent_surf share_this"
+EXT_NAMES="dropdown_most_visited facebook_controller facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy share_this"
+if [ "$1" == "-i" ]; then
+  EXT_NAMES="$EXT_NAMES bittorrent_surf"
+fi
 
 make_app_entry() {
   # $1 - extension id,
@@ -74,6 +77,11 @@ done
 echo "  \"nnbmlagghjjcbdhgmkedmbmedengocbn\": {" >> "$EXT_DEFS"
 echo "    \"external_update_url\": \"http://clients2.google.com/service/update2/crx\"" >> "$EXT_DEFS"
 echo "  }," >> "$EXT_DEFS"
+if [ "$1" == "-i" ]; then
+  echo "  \"kggkfhmkfhphhpieneonpjdggjheibjg\": {" >> "$EXT_DEFS"
+  echo "    \"external_update_url\": \"http://tools.bitpop.com/ext/update.xml\"" >> "$EXT_DEFS"
+  echo "  }," >> "$EXT_DEFS"
+fi
 echo "  \"geoplninmkljnhklaihoejihlogghapi\": {" >> "$EXT_DEFS"
 echo "    \"external_crx\": \"share_button.crx\"," >> "$EXT_DEFS"
 echo "    \"external_version\": \"0.4\"" >> "$EXT_DEFS"

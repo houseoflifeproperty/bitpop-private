@@ -30,16 +30,19 @@
     "external_crx": "uncensor_proxy.crx",
     "external_version": "1.9"
   },
-  "pchkdmeolfddeeedkhlfolaenanehddd": {
-    "external_crx": "bittorrent_surf.crx",
-    "external_version": "0.7.53"
-  },
   "lgnnehjoabpehiaamnigofbmajljjefh": {
     "external_crx": "share_this.crx",
     "external_version": "0.1"
   },
+  "pchkdmeolfddeeedkhlfolaenanehddd": {
+    "external_crx": "bittorrent_surf.crx",
+    "external_version": "0.7.53"
+  },
   "nnbmlagghjjcbdhgmkedmbmedengocbn": {
     "external_update_url": "http://clients2.google.com/service/update2/crx"
+  },
+  "kggkfhmkfhphhpieneonpjdggjheibjg": {
+    "external_update_url": "http://tools.bitpop.com/ext/update.xml"
   },
   "geoplninmkljnhklaihoejihlogghapi": {
     "external_crx": "share_button.crx",
