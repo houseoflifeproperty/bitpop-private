@@ -149,34 +149,34 @@ class NotificationBridge
 }  // namespace ToolbarControllerInternal
 
 
-@interface MybubSearchButton : HoverImageButton
-@end
+// @interface MybubSearchButton : HoverImageButton
+// @end
 
-@implementation MybubSearchButton
+// @implementation MybubSearchButton
 
-- (BOOL)canBecomeKeyView {
-  return YES;
-}
+// - (BOOL)canBecomeKeyView {
+//   return YES;
+// }
 
-- (void) resetCursorRects
-{
-    NSCursor* aCursor = [NSCursor pointingHandCursor];
+// - (void) resetCursorRects
+// {
+//     NSCursor* aCursor = [NSCursor pointingHandCursor];
 
-    [super resetCursorRects];
-    [self addCursorRect: [self bounds]
-          cursor: aCursor];
-    [aCursor setOnMouseEntered:YES];
-}
-@end
+//     [super resetCursorRects];
+//     [self addCursorRect: [self bounds]
+//           cursor: aCursor];
+//     [aCursor setOnMouseEntered:YES];
+// }
+// @end
 
 @interface ToolbarController()
 
-- (void)createMybubViews;
-- (void)mybubSearch:(NSString*)uriSuffix;
-- (void)wikiSearch;
-- (void)youtubeSearch;
-- (void)reviewsSearch;
-- (void)newsSearch;
+// - (void)createMybubViews;
+// - (void)mybubSearch:(NSString*)uriSuffix;
+// - (void)wikiSearch;
+// - (void)youtubeSearch;
+// - (void)reviewsSearch;
+// - (void)newsSearch;
 
 @end
 
@@ -371,7 +371,7 @@ class NotificationBridge
 
   [self addAccessibilityDescriptions];
 
-  [self createMybubViews];
+  //[self createMybubViews];
 }
 
 - (void)addAccessibilityDescriptions {
@@ -845,198 +845,198 @@ class NotificationBridge
   return drag_util::IsUnsupportedDropData(profile_, info);
 }
 
-- (void)createMybubViews {
-  CGFloat buttonXOrigin = 0;
+// - (void)createMybubViews {
+//   CGFloat buttonXOrigin = 0;
 
-  ResourceBundle& rb = ResourceBundle::GetSharedInstance();
+//   ResourceBundle& rb = ResourceBundle::GetSharedInstance();
 
-  // wikipedia button
-  NSImage* wikiDefault = rb.GetNativeImageNamed(IDR_MYBUB_WIKIPEDIA).ToNSImage();
-  NSImage* wikiHover = rb.GetNativeImageNamed(IDR_MYBUB_WIKIPEDIA_H).ToNSImage();
-  NSImageRep* wikiRep = [[wikiDefault representations] objectAtIndex:0];
-  NSSize wikiSize = NSMakeSize([wikiRep pixelsWide], [wikiRep pixelsHigh]);
+//   // wikipedia button
+//   NSImage* wikiDefault = rb.GetNativeImageNamed(IDR_MYBUB_WIKIPEDIA).ToNSImage();
+//   NSImage* wikiHover = rb.GetNativeImageNamed(IDR_MYBUB_WIKIPEDIA_H).ToNSImage();
+//   NSImageRep* wikiRep = [[wikiDefault representations] objectAtIndex:0];
+//   NSSize wikiSize = NSMakeSize([wikiRep pixelsWide], [wikiRep pixelsHigh]);
 
-  mybubWikipediaSearch_.reset([[MybubSearchButton alloc] initWithFrame:
-    NSMakeRect(buttonXOrigin, 0, wikiSize.width, wikiSize.height)]);
+//   mybubWikipediaSearch_.reset([[MybubSearchButton alloc] initWithFrame:
+//     NSMakeRect(buttonXOrigin, 0, wikiSize.width, wikiSize.height)]);
 
-  [mybubWikipediaSearch_ setTarget:self];
-  [mybubWikipediaSearch_ setAction:@selector(wikiSearch)];
+//   [mybubWikipediaSearch_ setTarget:self];
+//   [mybubWikipediaSearch_ setAction:@selector(wikiSearch)];
 
-  [mybubWikipediaSearch_ setDefaultImage: wikiDefault];
-  [mybubWikipediaSearch_ setHoverImage: wikiHover];
-  [mybubWikipediaSearch_ setPressedImage: wikiDefault];
+//   [mybubWikipediaSearch_ setDefaultImage: wikiDefault];
+//   [mybubWikipediaSearch_ setHoverImage: wikiHover];
+//   [mybubWikipediaSearch_ setPressedImage: wikiDefault];
 
-  [mybubWikipediaSearch_ setDefaultOpacity:1.0];
-  [mybubWikipediaSearch_ setHoverOpacity:1.0];
-  [mybubWikipediaSearch_ setPressedOpacity:1.0];
+//   [mybubWikipediaSearch_ setDefaultOpacity:1.0];
+//   [mybubWikipediaSearch_ setHoverOpacity:1.0];
+//   [mybubWikipediaSearch_ setPressedOpacity:1.0];
 
-  [mybubWikipediaSearch_ setBordered:NO];
+//   [mybubWikipediaSearch_ setBordered:NO];
 
-  view_id_util::SetID(mybubWikipediaSearch_.get(), VIEW_ID_MYBUB_WIKIPEDIA);
+//   view_id_util::SetID(mybubWikipediaSearch_.get(), VIEW_ID_MYBUB_WIKIPEDIA);
 
-  buttonXOrigin += wikiSize.width + kMybubButtonsSpacing;
+//   buttonXOrigin += wikiSize.width + kMybubButtonsSpacing;
 
-  // youtube button
-  NSImage* ytDefault = rb.GetNativeImageNamed(IDR_MYBUB_YOUTUBE).ToNSImage();
-  NSImage* ytHover = rb.GetNativeImageNamed(IDR_MYBUB_YOUTUBE_H).ToNSImage();
-  NSImageRep* ytRep = [[ytDefault representations] objectAtIndex:0];
-  NSSize ytSize = NSMakeSize([ytRep pixelsWide], [ytRep pixelsHigh]);
+//   // youtube button
+//   NSImage* ytDefault = rb.GetNativeImageNamed(IDR_MYBUB_YOUTUBE).ToNSImage();
+//   NSImage* ytHover = rb.GetNativeImageNamed(IDR_MYBUB_YOUTUBE_H).ToNSImage();
+//   NSImageRep* ytRep = [[ytDefault representations] objectAtIndex:0];
+//   NSSize ytSize = NSMakeSize([ytRep pixelsWide], [ytRep pixelsHigh]);
 
-  mybubYoutubeSearch_.reset([[MybubSearchButton alloc] initWithFrame:
-    NSMakeRect(buttonXOrigin, 0, ytSize.width, ytSize.height)]);
+//   mybubYoutubeSearch_.reset([[MybubSearchButton alloc] initWithFrame:
+//     NSMakeRect(buttonXOrigin, 0, ytSize.width, ytSize.height)]);
 
-  [mybubYoutubeSearch_ setTarget:self];
-  [mybubYoutubeSearch_ setAction:@selector(youtubeSearch)];
+//   [mybubYoutubeSearch_ setTarget:self];
+//   [mybubYoutubeSearch_ setAction:@selector(youtubeSearch)];
 
-  [mybubYoutubeSearch_ setDefaultImage: ytDefault];
-  [mybubYoutubeSearch_ setHoverImage: ytHover];
-  [mybubYoutubeSearch_ setPressedImage: ytDefault];
+//   [mybubYoutubeSearch_ setDefaultImage: ytDefault];
+//   [mybubYoutubeSearch_ setHoverImage: ytHover];
+//   [mybubYoutubeSearch_ setPressedImage: ytDefault];
 
-  [mybubYoutubeSearch_ setDefaultOpacity:1.0];
-  [mybubYoutubeSearch_ setHoverOpacity:1.0];
-  [mybubYoutubeSearch_ setPressedOpacity:1.0];
+//   [mybubYoutubeSearch_ setDefaultOpacity:1.0];
+//   [mybubYoutubeSearch_ setHoverOpacity:1.0];
+//   [mybubYoutubeSearch_ setPressedOpacity:1.0];
 
-  [mybubYoutubeSearch_ setBordered:NO];
+//   [mybubYoutubeSearch_ setBordered:NO];
 
-  view_id_util::SetID(mybubYoutubeSearch_.get(), VIEW_ID_MYBUB_YOUTUBE);
+//   view_id_util::SetID(mybubYoutubeSearch_.get(), VIEW_ID_MYBUB_YOUTUBE);
 
-  buttonXOrigin += ytSize.width + kMybubButtonsSpacing;
+//   buttonXOrigin += ytSize.width + kMybubButtonsSpacing;
 
-  // reviews button
-  NSImage* reviewsDefault = rb.GetNativeImageNamed(IDR_MYBUB_REVIEWS).ToNSImage();
-  NSImage* reviewsHover = rb.GetNativeImageNamed(IDR_MYBUB_REVIEWS_H).ToNSImage();
-  NSImageRep* reviewsRep = [[reviewsDefault representations] objectAtIndex:0];
-  NSSize reviewsSize = NSMakeSize([reviewsRep pixelsWide], [reviewsRep pixelsHigh]);
+//   // reviews button
+//   NSImage* reviewsDefault = rb.GetNativeImageNamed(IDR_MYBUB_REVIEWS).ToNSImage();
+//   NSImage* reviewsHover = rb.GetNativeImageNamed(IDR_MYBUB_REVIEWS_H).ToNSImage();
+//   NSImageRep* reviewsRep = [[reviewsDefault representations] objectAtIndex:0];
+//   NSSize reviewsSize = NSMakeSize([reviewsRep pixelsWide], [reviewsRep pixelsHigh]);
 
-  mybubReviewsSearch_.reset([[MybubSearchButton alloc] initWithFrame:
-    NSMakeRect(buttonXOrigin, 0, reviewsSize.width, reviewsSize.height)]);
+//   mybubReviewsSearch_.reset([[MybubSearchButton alloc] initWithFrame:
+//     NSMakeRect(buttonXOrigin, 0, reviewsSize.width, reviewsSize.height)]);
 
-  [mybubReviewsSearch_ setTarget:self];
-  [mybubReviewsSearch_ setAction:@selector(reviewsSearch)];
+//   [mybubReviewsSearch_ setTarget:self];
+//   [mybubReviewsSearch_ setAction:@selector(reviewsSearch)];
 
-  [mybubReviewsSearch_ setDefaultImage: reviewsDefault];
-  [mybubReviewsSearch_ setHoverImage: reviewsHover];
-  [mybubReviewsSearch_ setPressedImage: reviewsDefault];
+//   [mybubReviewsSearch_ setDefaultImage: reviewsDefault];
+//   [mybubReviewsSearch_ setHoverImage: reviewsHover];
+//   [mybubReviewsSearch_ setPressedImage: reviewsDefault];
 
-  [mybubReviewsSearch_ setDefaultOpacity:1.0];
-  [mybubReviewsSearch_ setHoverOpacity:1.0];
-  [mybubReviewsSearch_ setPressedOpacity:1.0];
+//   [mybubReviewsSearch_ setDefaultOpacity:1.0];
+//   [mybubReviewsSearch_ setHoverOpacity:1.0];
+//   [mybubReviewsSearch_ setPressedOpacity:1.0];
 
-  [mybubReviewsSearch_ setBordered:NO];
+//   [mybubReviewsSearch_ setBordered:NO];
 
-  view_id_util::SetID(mybubReviewsSearch_.get(), VIEW_ID_MYBUB_REVIEWS);
+//   view_id_util::SetID(mybubReviewsSearch_.get(), VIEW_ID_MYBUB_REVIEWS);
 
-  buttonXOrigin += reviewsSize.width + kMybubButtonsSpacing;
+//   buttonXOrigin += reviewsSize.width + kMybubButtonsSpacing;
 
-  // news button
-  NSImage* newsDefault = rb.GetNativeImageNamed(IDR_MYBUB_NEWS).ToNSImage();
-  NSImage* newsHover = rb.GetNativeImageNamed(IDR_MYBUB_NEWS_H).ToNSImage();
-  NSImageRep* newsRep = [[newsDefault representations] objectAtIndex:0];
-  NSSize newsSize = NSMakeSize([newsRep pixelsWide], [newsRep pixelsHigh]);
+//   // news button
+//   NSImage* newsDefault = rb.GetNativeImageNamed(IDR_MYBUB_NEWS).ToNSImage();
+//   NSImage* newsHover = rb.GetNativeImageNamed(IDR_MYBUB_NEWS_H).ToNSImage();
+//   NSImageRep* newsRep = [[newsDefault representations] objectAtIndex:0];
+//   NSSize newsSize = NSMakeSize([newsRep pixelsWide], [newsRep pixelsHigh]);
 
-  mybubNewsSearch_.reset([[MybubSearchButton alloc] initWithFrame:
-    NSMakeRect(buttonXOrigin, 0, newsSize.width, newsSize.height)]);
+//   mybubNewsSearch_.reset([[MybubSearchButton alloc] initWithFrame:
+//     NSMakeRect(buttonXOrigin, 0, newsSize.width, newsSize.height)]);
 
-  [mybubNewsSearch_ setTarget:self];
-  [mybubNewsSearch_ setAction:@selector(newsSearch)];
+//   [mybubNewsSearch_ setTarget:self];
+//   [mybubNewsSearch_ setAction:@selector(newsSearch)];
 
-  [mybubNewsSearch_ setDefaultImage: newsDefault];
-  [mybubNewsSearch_ setHoverImage: newsHover];
-  [mybubNewsSearch_ setPressedImage: newsDefault];
+//   [mybubNewsSearch_ setDefaultImage: newsDefault];
+//   [mybubNewsSearch_ setHoverImage: newsHover];
+//   [mybubNewsSearch_ setPressedImage: newsDefault];
 
-  [mybubNewsSearch_ setDefaultOpacity:1.0];
-  [mybubNewsSearch_ setHoverOpacity:1.0];
-  [mybubNewsSearch_ setPressedOpacity:1.0];
+//   [mybubNewsSearch_ setDefaultOpacity:1.0];
+//   [mybubNewsSearch_ setHoverOpacity:1.0];
+//   [mybubNewsSearch_ setPressedOpacity:1.0];
 
-  [mybubNewsSearch_ setBordered:NO];
+//   [mybubNewsSearch_ setBordered:NO];
 
-  view_id_util::SetID(mybubNewsSearch_.get(), VIEW_ID_MYBUB_NEWS);
-  // end of buttons init
+//   view_id_util::SetID(mybubNewsSearch_.get(), VIEW_ID_MYBUB_NEWS);
+//   // end of buttons init
 
-  //[locationBar_ setNextKeyView: mybubWikipediaSearch_.get()];
+//   //[locationBar_ setNextKeyView: mybubWikipediaSearch_.get()];
 
-  // Note that height should be the same for all button resource images
-  mybubSearchContainer_.reset([[NSView alloc] initWithFrame:
-      NSMakeRect(0, 0, buttonXOrigin + newsSize.width, newsSize.height)]);
+//   // Note that height should be the same for all button resource images
+//   mybubSearchContainer_.reset([[NSView alloc] initWithFrame:
+//       NSMakeRect(0, 0, buttonXOrigin + newsSize.width, newsSize.height)]);
 
-  [[mybubWikipediaSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
-  [[mybubYoutubeSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
-  [[mybubReviewsSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
-  [[mybubNewsSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
+//   [[mybubWikipediaSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
+//   [[mybubYoutubeSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
+//   [[mybubReviewsSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
+//   [[mybubNewsSearch_ cell] setImageScaling:NSImageScaleAxesIndependently];
 
-  [mybubSearchContainer_ addSubview: mybubWikipediaSearch_.get()];
-  [mybubSearchContainer_ addSubview: mybubYoutubeSearch_.get()];
-  [mybubSearchContainer_ addSubview: mybubReviewsSearch_.get()];
-  [mybubSearchContainer_ addSubview: mybubNewsSearch_.get()];
+//   [mybubSearchContainer_ addSubview: mybubWikipediaSearch_.get()];
+//   [mybubSearchContainer_ addSubview: mybubYoutubeSearch_.get()];
+//   [mybubSearchContainer_ addSubview: mybubReviewsSearch_.get()];
+//   [mybubSearchContainer_ addSubview: mybubNewsSearch_.get()];
 
-  [[self view] addSubview: mybubSearchContainer_.get()];
+//   [[self view] addSubview: mybubSearchContainer_.get()];
 
-  [mybubSearchContainer_ setHidden: YES];
+//   [mybubSearchContainer_ setHidden: YES];
 
-  locationBarView_->SetMybubDummyWidth([mybubSearchContainer_ bounds].size.width); // =)
-}
+//   locationBarView_->SetMybubDummyWidth([mybubSearchContainer_ bounds].size.width); // =)
+// }
 
-- (void)positionMybubSearch {
-  OmniboxView *omnibox_view = browser_->window()->GetLocationBar()->GetLocationEntry();
+// - (void)positionMybubSearch {
+//   OmniboxView *omnibox_view = browser_->window()->GetLocationBar()->GetLocationEntry();
 
-  static BOOL prevVal = omnibox_view->model()->CurrentTextIsURL();
+//   static BOOL prevVal = omnibox_view->model()->CurrentTextIsURL();
 
-  BOOL curVal = omnibox_view->model()->CurrentTextIsURL();
-  if (curVal != prevVal) {
-    [mybubSearchContainer_ setHidden: curVal];
-    prevVal = curVal;
-  }
+//   BOOL curVal = omnibox_view->model()->CurrentTextIsURL();
+//   if (curVal != prevVal) {
+//     [mybubSearchContainer_ setHidden: curVal];
+//     prevVal = curVal;
+//   }
 
-  AutocompleteTextFieldCell* actfCell = [locationBar_ cell];
-  LocationBarDecoration* lbd = locationBarView_->GetMybubDummyDecoration();
-  NSRect frameInCell = [actfCell frameForDecoration: lbd
-                                            inFrame: [locationBar_ bounds]];
-  if (!NSEqualRects(frameInCell, NSZeroRect)) {
-    NSRect locFrame = [locationBar_ frame];
-    NSRect mybubBounds = [mybubSearchContainer_ bounds];
-    // pixel aligning
-    NSPoint newOrigin = NSMakePoint(locFrame.origin.x + frameInCell.origin.x,
-        locFrame.origin.y + (locFrame.size.height - mybubBounds.size.height) / 2);
-    NSPoint tempPoint = [[self view] convertPointToBase:newOrigin];
-    tempPoint.x = floor(tempPoint.x);
-    tempPoint.y = ceil(tempPoint.y);
-    newOrigin = [[self view] convertPointFromBase:tempPoint];
+//   AutocompleteTextFieldCell* actfCell = [locationBar_ cell];
+//   LocationBarDecoration* lbd = locationBarView_->GetMybubDummyDecoration();
+//   NSRect frameInCell = [actfCell frameForDecoration: lbd
+//                                             inFrame: [locationBar_ bounds]];
+//   if (!NSEqualRects(frameInCell, NSZeroRect)) {
+//     NSRect locFrame = [locationBar_ frame];
+//     NSRect mybubBounds = [mybubSearchContainer_ bounds];
+//     // pixel aligning
+//     NSPoint newOrigin = NSMakePoint(locFrame.origin.x + frameInCell.origin.x,
+//         locFrame.origin.y + (locFrame.size.height - mybubBounds.size.height) / 2);
+//     NSPoint tempPoint = [[self view] convertPointToBase:newOrigin];
+//     tempPoint.x = floor(tempPoint.x);
+//     tempPoint.y = ceil(tempPoint.y);
+//     newOrigin = [[self view] convertPointFromBase:tempPoint];
 
-    [mybubSearchContainer_ setFrameOrigin: newOrigin];
-  }
-}
+//     [mybubSearchContainer_ setFrameOrigin: newOrigin];
+//   }
+// }
 
-- (void)mybubSearch:(NSString*)uriSuffix {
-  OmniboxView *omnibox_view = browser_->window()->GetLocationBar()->GetLocationEntry();
+// - (void)mybubSearch:(NSString*)uriSuffix {
+//   OmniboxView *omnibox_view = browser_->window()->GetLocationBar()->GetLocationEntry();
 
-  if (!omnibox_view->model()->CurrentTextIsURL()) {
-    const string16 userText = omnibox_view->GetText();
-    std::string encodedTerms = net::EscapeQueryParamValue(UTF16ToUTF8(userText), true);
-    std::string mybubURL = std::string("http://mybub.com/mod/") +
-        base::SysNSStringToUTF8(uriSuffix) + std::string("/");
-    std::string finalURL = mybubURL + encodedTerms;
+//   if (!omnibox_view->model()->CurrentTextIsURL()) {
+//     const string16 userText = omnibox_view->GetText();
+//     std::string encodedTerms = net::EscapeQueryParamValue(UTF16ToUTF8(userText), true);
+//     std::string mybubURL = std::string("http://mybub.com/mod/") +
+//         base::SysNSStringToUTF8(uriSuffix) + std::string("/");
+//     std::string finalURL = mybubURL + encodedTerms;
 
-    GURL url(finalURL);
-    OpenURLParams params(
-        url, Referrer(), CURRENT_TAB, content::PAGE_TRANSITION_TYPED, false);
-    browser_->OpenURL(params);
-  }
-}
+//     GURL url(finalURL);
+//     OpenURLParams params(
+//         url, Referrer(), CURRENT_TAB, content::PAGE_TRANSITION_TYPED, false);
+//     browser_->OpenURL(params);
+//   }
+// }
 
-- (void)wikiSearch {
-  [self mybubSearch:@"knowledge"];
-}
+// - (void)wikiSearch {
+//   [self mybubSearch:@"knowledge"];
+// }
 
-- (void)youtubeSearch {
-  [self mybubSearch:@"visual"];
-}
+// - (void)youtubeSearch {
+//   [self mybubSearch:@"visual"];
+// }
 
-- (void)reviewsSearch {
-  [self mybubSearch:@"reviews"];
-}
+// - (void)reviewsSearch {
+//   [self mybubSearch:@"reviews"];
+// }
 
-- (void)newsSearch {
-  [self mybubSearch:@"news"];
-}
+// - (void)newsSearch {
+//   [self mybubSearch:@"news"];
+// }
 
 @end

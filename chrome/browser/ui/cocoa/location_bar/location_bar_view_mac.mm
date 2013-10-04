@@ -88,24 +88,24 @@ const static int kFirstRunBubbleYOffset = 1;
 
 }
 
-class MybubDummyDecoration : public LocationBarDecoration {
-public:
-  MybubDummyDecoration() : LocationBarDecoration(), desiredWidth_(0) {}
+// class MybubDummyDecoration : public LocationBarDecoration {
+// public:
+//   MybubDummyDecoration() : LocationBarDecoration(), desiredWidth_(0) {}
 
-  void SetDesiredWidth(CGFloat width) {
-    desiredWidth_ = width;
-  }
+//   void SetDesiredWidth(CGFloat width) {
+//     desiredWidth_ = width;
+//   }
 
-  virtual CGFloat GetWidthForSpace(CGFloat width) OVERRIDE {
-    return desiredWidth_;
-  }
+//   virtual CGFloat GetWidthForSpace(CGFloat width) OVERRIDE {
+//     return desiredWidth_;
+//   }
 
-  void DrawInFrame(NSRect frame, NSView* control_view) {
-    // we do not want to draw anything here
-  }
-private:
-  CGFloat desiredWidth_;
-};
+//   void DrawInFrame(NSRect frame, NSView* control_view) {
+//     // we do not want to draw anything here
+//   }
+// private:
+//   CGFloat desiredWidth_;
+// };
 
 // TODO(shess): This code is mostly copied from the gtk
 // implementation.  Make sure it's all appropriate and flesh it out.
@@ -132,8 +132,8 @@ LocationBarViewMac::LocationBarViewMac(
       zoom_decoration_(new ZoomDecoration(toolbar_model)),
       keyword_hint_decoration_(
           new KeywordHintDecoration(OmniboxViewMac::GetFieldFont())),
-      mybub_dummy_decoration_(
-          new MybubDummyDecoration()),
+      // mybub_dummy_decoration_(
+      //     new MybubDummyDecoration()),
       web_intents_button_decoration_(
           new WebIntentsButtonDecoration(this, OmniboxViewMac::GetFieldFont())),
       profile_(profile),
@@ -368,12 +368,12 @@ void LocationBarViewMac::OnChanged() {
   ev_bubble_decoration_->SetImage(image);
   Layout();
 
-  if (browser_->window()) {
-    BrowserWindowController* controller =
-        static_cast<BrowserWindowCocoa*>(browser_->window())->cocoa_controller();
-    if (controller && [controller toolbarController])
-      [[controller toolbarController] positionMybubSearch];
-  }
+  // if (browser_->window()) {
+  //   BrowserWindowController* controller =
+  //       static_cast<BrowserWindowCocoa*>(browser_->window())->cocoa_controller();
+  //   if (controller && [controller toolbarController])
+  //     [[controller toolbarController] positionMybubSearch];
+  // }
 }
 
 void LocationBarViewMac::OnSelectionBoundsChanged() {
@@ -762,7 +762,7 @@ void LocationBarViewMac::Layout() {
     [cell addRightDecoration:page_action_decorations_[i]];
   }
 
-  [cell addRightDecoration:mybub_dummy_decoration_.get()];
+  //[cell addRightDecoration:mybub_dummy_decoration_.get()];
 
   for (size_t i = 0; i < content_setting_decorations_.size(); ++i) {
     [cell addRightDecoration:content_setting_decorations_[i]];
@@ -777,7 +777,7 @@ void LocationBarViewMac::Layout() {
   selected_keyword_decoration_->SetVisible(false);
   ev_bubble_decoration_->SetVisible(false);
   keyword_hint_decoration_->SetVisible(false);
-  mybub_dummy_decoration_->SetVisible(!omnibox_view_->model()->CurrentTextIsURL());
+  //mybub_dummy_decoration_->SetVisible(!omnibox_view_->model()->CurrentTextIsURL());
 
   // Get the keyword to use for keyword-search and hinting.
   const string16 keyword = omnibox_view_->model()->keyword();
@@ -855,11 +855,11 @@ void LocationBarViewMac::UpdatePlusDecorationVisibility() {
   }
 }
 
-void LocationBarViewMac::SetMybubDummyWidth(CGFloat width) {
-  if (mybub_dummy_decoration_.get())
-    mybub_dummy_decoration_->SetDesiredWidth(width);
-}
+// void LocationBarViewMac::SetMybubDummyWidth(CGFloat width) {
+//   if (mybub_dummy_decoration_.get())
+//     mybub_dummy_decoration_->SetDesiredWidth(width);
+// }
 
-LocationBarDecoration* LocationBarViewMac::GetMybubDummyDecoration() const {
-  return static_cast<LocationBarDecoration*>(mybub_dummy_decoration_.get());
-}
+// LocationBarDecoration* LocationBarViewMac::GetMybubDummyDecoration() const {
+//   return static_cast<LocationBarDecoration*>(mybub_dummy_decoration_.get());
+// }
