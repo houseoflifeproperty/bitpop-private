@@ -1581,7 +1581,6 @@ enum {
     facebookChatbarController_.reset([[FacebookChatbarController alloc]
         initWithBrowser:browser_.get() resizeDelegate:self]);
     [[[self window] contentView] addSubview:[facebookChatbarController_ view]];
-    [facebookChatbarController_ show:nil];
   }
   return facebookChatbarController_;
 }

@@ -86,6 +86,8 @@ class FullscreenController : public content::NotificationObserver {
                           bool user_gesture,
                           bool last_unlocked_by_target);
 
+  void SetOpenChatbarOnNextFullscreenEvent();
+
   // Callbacks /////////////////////////////////////////////////////////////////
 
   // Called by Browser::TabDeactivated.

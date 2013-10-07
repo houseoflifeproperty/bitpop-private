@@ -46,6 +46,8 @@ class FacebookChatItem;
   FacebookChatItemController *lastAddedItem_;
 
   BOOL isRemovingAll_;
+
+  Browser* browser_;
 }
 
 - (id)initWithBrowser:(Browser*)browser

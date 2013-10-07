@@ -7,6 +7,7 @@
 
 #import "chrome/browser/ui/cocoa/facebook_chat/facebook_chatbar_controller.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/fullscreen/fullscreen_controller.h"
 
 FacebookChatbarMac::FacebookChatbarMac(Browser *browser,
                                        FacebookChatbarController *controller)
@@ -16,7 +17,8 @@ FacebookChatbarMac::FacebookChatbarMac(Browser *browser,
 
 void FacebookChatbarMac::AddChatItem(FacebookChatItem *chat_item) {
   [controller_ addChatItem: chat_item];
-  Show();
+  if (!browser_ || !browser_->fullscreen_controller()->IsFullscreenForTabOrPending())
+    Show();
 }
 
 void FacebookChatbarMac::Show() {

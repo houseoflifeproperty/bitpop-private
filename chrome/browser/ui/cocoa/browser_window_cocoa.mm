@@ -52,6 +52,7 @@
 #import "chrome/browser/ui/cocoa/toolbar/toolbar_controller.h"
 #import "chrome/browser/ui/cocoa/web_dialog_window_controller.h"
 #import "chrome/browser/ui/cocoa/website_settings_bubble_controller.h"
+#include "chrome/browser/ui/fullscreen/fullscreen_controller.h"
 #include "chrome/browser/ui/page_info_bubble.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_notification_types.h"
@@ -684,7 +685,7 @@ void BrowserWindowCocoa::Observe(int type,
                   browser_->profile());
           // the next call returns the found element if jid's equal
           FacebookChatItem *newItem = mgr->CreateFacebookChat(*(chat_info.ptr()));
-          if (IsActive())
+          if (IsActive() && !browser_->fullscreen_controller()->IsFullscreenForTabOrPending())
             newItem->set_needs_activation(true);
           else
             newItem->set_needs_activation(false);

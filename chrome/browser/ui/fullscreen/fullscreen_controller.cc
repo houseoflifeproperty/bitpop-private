@@ -115,16 +115,6 @@ void FullscreenController::ToggleFullscreenModeForTab(WebContents* web_contents,
       // a fullscreen notification now because there is no window change.
       PostFullscreenChangeNotification(true);
     }
-
-    if (window_->IsFriendsSidebarVisible()) {
-        window_->SetFriendsSidebarVisible(false);
-        friends_sidebar_temporarily_hidden_ = true;
-    }
-
-    if (window_->IsChatbarVisible()) {
-      window_->GetChatbar()->Hide();
-      chatbar_temporarily_hidden_ = true;
-    }
   } else {
     if (in_browser_or_tab_fullscreen_mode) {
       if (tab_caused_fullscreen_) {
@@ -145,17 +135,6 @@ void FullscreenController::ToggleFullscreenModeForTab(WebContents* web_contents,
         // a fullscreen notification now because there is no window change.
         PostFullscreenChangeNotification(true);
       }
-    }
-
-    if (friends_sidebar_temporarily_hidden_ &&
-        !window_->IsFriendsSidebarVisible()) {
-      window_->SetFriendsSidebarVisible(true);
-      friends_sidebar_temporarily_hidden_ = false;
-    }
-
-    if (chatbar_temporarily_hidden_ && !window_->IsChatbarVisible()) {
-      window_->GetChatbar()->Show();
-      chatbar_temporarily_hidden_ = false;
     }
   }
 }
@@ -286,10 +265,32 @@ void FullscreenController::WindowFullscreenStateChanged() {
   PostFullscreenChangeNotification(!exiting_fullscreen);
   if (exiting_fullscreen)
     NotifyTabOfExitIfNecessary();
-  if (exiting_fullscreen)
+  if (exiting_fullscreen) {
     window_->GetDownloadShelf()->Unhide();
-  else
+    
+    if (friends_sidebar_temporarily_hidden_ &&
+        !window_->IsFriendsSidebarVisible()) {
+      window_->SetFriendsSidebarVisible(true);
+      friends_sidebar_temporarily_hidden_ = false;
+    }
+
+    if (chatbar_temporarily_hidden_ && !window_->IsChatbarVisible()) {
+      window_->GetChatbar()->Show();
+      chatbar_temporarily_hidden_ = false;
+    }
+  } else {
     window_->GetDownloadShelf()->Hide();
+
+    if (window_->IsFriendsSidebarVisible()) {
+        window_->SetFriendsSidebarVisible(false);
+        friends_sidebar_temporarily_hidden_ = true;
+    }
+
+    if (window_->IsChatbarVisible()) {
+      window_->GetChatbar()->Hide();
+      chatbar_temporarily_hidden_ = true;
+    }
+  }
 }
 
 bool FullscreenController::HandleUserPressedEscape() {
@@ -630,4 +631,8 @@ ContentSetting
   HostContentSettingsMap* settings_map = profile_->GetHostContentSettingsMap();
   return settings_map->GetContentSetting(url, url,
       CONTENT_SETTINGS_TYPE_MOUSELOCK, std::string());
+}
+
+void FullscreenController::SetOpenChatbarOnNextFullscreenEvent() {
+  chatbar_temporarily_hidden_ = true;
 }

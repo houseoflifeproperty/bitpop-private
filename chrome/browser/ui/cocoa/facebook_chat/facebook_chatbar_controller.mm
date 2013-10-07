@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #import "chrome/browser/ui/cocoa/hover_close_button.h"
+#include "chrome/browser/ui/fullscreen/fullscreen_controller.h"
 
 namespace {
 // The size of the x button by default.
@@ -66,6 +67,7 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
   if ((self = [super initWithNibName:@"FacebookChatbar"
                               bundle:base::mac::FrameworkBundle()])) {
     resizeDelegate_ = resizeDelegate;
+    browser_ = browser;
     maxBarHeight_ = NSHeight([[self view] bounds]);
 
     if (browser && browser->window())
@@ -140,7 +142,7 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
   NSRect hoverFrame = [hoverCloseButton_ frame];
   NSRect bounds;
 
-  if (isFullscreen_) {
+  if (browser_ && browser_->window() && browser_->window()->IsFullscreen()) {
     bounds = NSMakeRect(NSMinX(hoverFrame), 0,
                         selfBounds.size.width - NSMinX(hoverFrame),
                         selfBounds.size.height);
@@ -162,8 +164,11 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
 - (void)addChatItem:(FacebookChatItem*)item {
   DCHECK([NSThread isMainThread]);
 
-  if (![self isVisible])
+  if (browser_ && browser_->fullscreen_controller()->IsFullscreenForTabOrPending()) {
+    browser_->fullscreen_controller()->SetOpenChatbarOnNextFullscreenEvent();
+  } else if (![self isVisible]) {
     [self show:nil];
+  }
 
   // Do not place an item with existing jid to the chat item controllers
   for (FacebookChatItemController *contr in chatItemControllers_.get())
