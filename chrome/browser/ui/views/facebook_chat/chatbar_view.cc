@@ -10,6 +10,7 @@
 #include "chrome/browser/facebook_chat/facebook_chat_item.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/fullscreen/fullscreen_controller.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/facebook_chat/chat_item_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -71,6 +72,8 @@ ChatbarView::ChatbarView(Browser* browser, BrowserView* parent)
     item_to_remove_(NULL),
     item_to_place_first_(NULL) {
   set_id(VIEW_ID_FACEBOOK_CHATBAR);
+  SetVisible(false);
+  
   parent->AddChildView(this);
 
   ResourceBundle &rb = ui::ResourceBundle::GetSharedInstance();
@@ -98,8 +101,6 @@ ChatbarView::ChatbarView(Browser* browser, BrowserView* parent)
 
   place_first_animation_.reset(new ui::SlideAnimation(this));
   place_first_animation_->SetSlideDuration(kPlaceFirstAnimationDuration);
-
-  Show();
 }
 
 ChatbarView::~ChatbarView() {
@@ -202,7 +203,9 @@ void ChatbarView::OnPaintBorder(gfx::Canvas* canvas) {
 }
 
 void ChatbarView::AddChatItem(FacebookChatItem *chat_item) {
-  if (!this->visible())
+  if (browser_->fullscreen_controller()->IsFullscreenForTabOrPending()) {
+    browser_->fullscreen_controller()->SetOpenChatbarOnNextFullscreenEvent();
+  } else if (!this->visible())
     Show();
 
   // do not allow duplicate chat items

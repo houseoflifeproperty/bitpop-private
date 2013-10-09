@@ -56,6 +56,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window_state.h"
+#include "chrome/browser/ui/fullscreen/fullscreen_controller.h"
 #include "chrome/browser/ui/ntp_background_util.h"
 #include "chrome/browser/ui/omnibox/omnibox_popup_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_popup_view.h"
@@ -1621,7 +1622,7 @@ void BrowserView::Observe(int type,
           if (mgr) {
             // the next call returns the found element if jid's equal
             FacebookChatItem *newItem = mgr->CreateFacebookChat(*(chat_info.ptr()));
-            if (IsActive())
+            if (IsActive() && !browser_->fullscreen_controller()->IsFullscreenForTabOrPending())
               newItem->set_needs_activation(true);
             else
               newItem->set_needs_activation(false);
@@ -2971,10 +2972,10 @@ void BrowserView::SetChatbarVisible(bool visible) {
   if (browser_ == NULL)
     return;
 
-  if (visible && IsChatbarVisible() != visible) {
-    (void) GetChatbar();
-  } else if (!visible && IsChatbarVisible() != visible)
-    fb_chatbar_->SetVisible(false);
+  (void) GetChatbar();
+  if (IsChatbarVisible() != visible) {
+    fb_chatbar_->SetVisible(visible);
+  }
 
   ToolbarSizeChanged(false);
 }

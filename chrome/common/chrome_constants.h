@@ -150,6 +150,7 @@ extern const char kGoogleDocsExtensionId[];
 extern const char kFacebookShareExtensionId[];
 extern const char kDropdownListExtensionId[];
 extern const char kBittorrentSurfExtensionId[];
+extern const char kBitPopGiftExtensionId[];
 
 }  // namespace chrome
 

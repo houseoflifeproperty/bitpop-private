@@ -261,6 +261,12 @@ bool ExtensionService::OnExternalExtensionUpdateUrlFound(
   CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));
   CHECK(Extension::IdIsValid(id));
 
+  std::string brand;
+  google_util::GetBrand(&brand);
+  if (brand != "ISOH" && id == chrome::kBitPopGiftExtensionId) {
+    return false;
+  }
+
   const Extension* extension = GetExtensionById(id, true);
   if (extension) {
     // Already installed. Skip this install if the current location has

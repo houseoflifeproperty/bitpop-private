@@ -11,7 +11,7 @@ var friendListCached = null;
 var friendListLastUpdateTime = null;
 var connection = null;
 var friendListRequestInterval = null;
-var need_more_permissions = false;
+var need_more_permissions = true;
 var seen_message_timeout = null;
 var doing_permissions_request = false;
 var offline_wait_timer = null;
@@ -408,7 +408,7 @@ bitpop.FacebookController = (function() {
 
   function checkForPermissions(callbackAfter) {
     doing_permissions_request = true;
-    graphApiRequest('/me/permissions', {}, function(response) {
+    graphApiRequest('/me/permissions', {}, function(response) {  // onsuccess func
         var permsArray = response.data[0];
 
         var permsToPrompt = [];
@@ -614,7 +614,7 @@ bitpop.FacebookController = (function() {
         var left = (screen.width/2)-(w/2);
         var top = (screen.height/2)-(h/2);
 
-        var w = window.open(url, "newwin", "height=" + h + ",width=" + w +
+        window.open(url, "newwin", "height=" + h + ",width=" + w +
             ",left=" + left + ",top=" + top +
             ",toolbar=no,scrollbars=no,menubar=no,location=no,resizable=yes");
       }

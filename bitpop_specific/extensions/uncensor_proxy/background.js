@@ -35,7 +35,7 @@ var settings = new Store("settings", {
   "proxy_active_message": true
 });
 
-var globalControlTransform = [ 'use_auto', 'never_use', 'ask_me'];
+var globalControlTransform = [ 'use_auto', 'never_use', 'ask_me' ];
 
 chrome.bitpop.prefs.blockedSitesList.onChange.addListener(function(details) {
   var domains = JSON.parse(details.value);
@@ -45,9 +45,13 @@ chrome.bitpop.prefs.blockedSitesList.onChange.addListener(function(details) {
 });
 
 chrome.bitpop.prefs.globalProxyControl.onChange.addListener(function(details) {
-  settings.set('proxy_control', globalControlTransform[+details.value])
+  var control = globalControlTransform[+details.value];
+  settings.set('proxy_control', control);
   //chrome.extension.sendMessage({ reason: 'settingsChanged' });
-  setProxyConfig(getAutoEntries() + getEntriesForAsk());
+  if (control == 'never_use') {
+    chrome.proxy.settings.clear({});
+  } else
+    setProxyConfig(getAutoEntries() + getEntriesForAsk());
 });
 
 chrome.bitpop.prefs.showMessageForActiveProxy.onChange.addListener(function(details) {

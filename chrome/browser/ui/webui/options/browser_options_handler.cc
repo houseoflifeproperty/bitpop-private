@@ -281,6 +281,7 @@ void BrowserOptionsHandler::GetLocalizedValues(DictionaryValue* values) {
     { "themes", IDS_THEMES_GROUP_NAME },
     { "themesReset", IDS_THEMES_RESET_BUTTON },
 #endif
+    { "useBitpopProxyPref", IDS_USE_BITPOP_PROXY },
 #if defined(OS_CHROMEOS)
     { "accessibilityExplanation",
       IDS_OPTIONS_SETTINGS_ACCESSIBILITY_EXPLANATION },
@@ -683,6 +684,14 @@ void BrowserOptionsHandler::InitializePage() {
   }
 
 #endif
+  Profile* profile = Profile::FromWebUI(web_ui());
+  PrefService* prefs = profile->GetPrefs();
+
+  scoped_ptr<base::Value> global_proxy_control(base::Value::CreateIntegerValue(
+      prefs->GetInteger(prefs::kGlobalProxyControl)));
+  web_ui()->CallJavascriptFunction(
+      "BrowserOptions.initUseBitpopProxy",
+      *global_proxy_control);
 }
 
 void BrowserOptionsHandler::CheckAutoLaunch(

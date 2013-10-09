@@ -255,6 +255,7 @@ const char kGoogleDocsExtensionId[] = "nnbmlagghjjcbdhgmkedmbmedengocbn";
 const char kFacebookShareExtensionId[] = "geoplninmkljnhklaihoejihlogghapi";
 const char kDropdownListExtensionId[] = "jcpicigjjhpmobmnaoegfajemdcjkjdm";
 const char kBittorrentSurfExtensionId[] = "pchkdmeolfddeeedkhlfolaenanehddd";
+const char kBitPopGiftExtensionId[] = "kggkfhmkfhphhpieneonpjdggjheibjg";
 }  // namespace chrome
 
 #undef FPL

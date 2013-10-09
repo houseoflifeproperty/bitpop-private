@@ -429,6 +429,12 @@ cr.define('options', function() {
           chrome.send('toggleAutomaticUpdates');
         };
       }
+
+      $('useBitpopProxy').onclick = function(event) {
+        Preferences.setIntegerPref(
+          'bitpop.global_proxy_control',
+           this.checked ? 0 : 1, true);
+      };
     },
 
     /** @override */
@@ -1307,6 +1313,10 @@ cr.define('options', function() {
         if (index != undefined)
           $('bluetooth-paired-devices-list').deleteItemAtIndex(index);
       }
+    },
+
+    initUseBitpopProxy_: function(valueForSetting) {
+      $('useBitpopProxy').checked = (valueForSetting == 1) ? false : true;
     }
 
   };
@@ -1347,6 +1357,7 @@ cr.define('options', function() {
     'updateSearchEngines',
     'updateStartupPages',
     'updateSyncState',
+    'initUseBitpopProxy'
   ].forEach(function(name) {
     BrowserOptions[name] = function() {
       var instance = BrowserOptions.getInstance();
