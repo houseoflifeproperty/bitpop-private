@@ -214,7 +214,7 @@ function getAutoEntries() {
 function getEntryForDomain(domain_name) {
   return "  if (host == '" + domain_name + "' || shExpMatch(host, '*." + domain_name + "'))\n" +
          "  {\n" +
-         "    return 'PROXY 31.192.228.61:8228';\n" +
+         "    return 'PROXY 54.235.173.247:8228';\n" +
          "  }\n";
 }
 
