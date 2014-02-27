@@ -1,17 +1,27 @@
+<!doctype html>
 <html>
 <head>
-  <title>Facebook Connect For Chrome Extension</title>
+	<script src="js/libs/jquery-1.9.1.min.js"></script>
+	<script src="js/libs/handlebars-1.0.rc.3.js"></script>
+	<script src="js/libs/ember-1.0.0-rc.1.min.js"></script>
+	<script src="js/libs/ga-init.js"></script><!-- Google Analytics script -->
+	
+	<!-- Beginning of chat scripts -->
+	<script src="js/libs/strophe.min.js"></script>
+	<script src="js/libs/plugin.cm.js"></script>
+	<script src="js/libs/strophe.vcard.js"></script>
+	<script src="js/libs/strophe-facebook.js"></script>
+	<script src="js/libs/underscore-min.js"></script>
+	<script src="js/libs/jquery.ba-tinypubsub.js"></script>
 
-  <script type="text/javascript" src="js/autolink-min.js"></script>
-  <script type="text/javascript" src="js/common.js"></script>
-  <script type="text/javascript" src="fancy-settings/source/lib/store.js"></script>
-  <script type="text/javascript">
-    var ffSettings = new Store("settings", {
-      "show_chat": false,
-      "show_jewels": "true"
-    });
-  </script>
-  <script type="text/javascript" src="js/background.js"></script>
+	<script src="js/background/facebook-helper.js"></script>
+	<script src="js/background/client.js"></script>
+	<script src="js/background/app.js"></script>
+
+	<script src="js/background/models/message.js"></script>
+
+	<script src="js/background/controllers/application.js"></script>
+	<!-- End of chat scripts -->
 </head>
 <body>
 </body>

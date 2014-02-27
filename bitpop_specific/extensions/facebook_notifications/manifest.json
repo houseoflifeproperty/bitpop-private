@@ -22,7 +22,7 @@
    "options_page": "options.html",
    "permissions": [ "notifications", "chrome://favicon/" ],
    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-   "version": "2.9",
+   "version": "2.10",
    "update_url": "http://tools.bitpop.com/ext/updates.xml",
    "manifest_version": 2
 }

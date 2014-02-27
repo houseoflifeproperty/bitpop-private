@@ -1,33 +1,46 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html>
 <head>
-  <link rel="stylesheet" href="css/chat_popup.css" type="text/css" media="screen" charset="utf-8">
-  <link rel="stylesheet" href="js/antiscroll/antiscroll.css" type="text/css" media="screen" charset="utf-8">
-  <script src='js/jquery.min.js'></script>
-  <script src="js/autolink-min.js"></script>
-  <script src="js/antiscroll/deps/jquery-mousewheel.js"></script>
-  <script src="js/antiscroll/antiscroll.js"></script>
-  <script src="js/jquery.textarea-expander.js"></script>
-  <script src="js/common.js"></script>
-  <script src="js/chat_popup.js"></script>
-  <script src="js/chat_init.js"></script>
+	<link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/new_chat.css?v=2">
+    <link rel="stylesheet" href="css/antiscroll.css">
+    <link rel="stylesheet" href="css/css-tooltips.css?v=2">
+
+	<script src="js/libs/jquery-1.9.1.min.js"></script>
+	<script src="js/libs/jquery-migrate-1.2.1.js"></script>
+	<script src="js/libs/autolink-min.js"></script>
+	<script src="js/libs/jquery-mousewheel.js"></script>
+	<script src="js/libs/antiscroll.js"></script>
+	<script src="js/libs/jquery.parseparams.js"></script>
+	<script src="js/libs/jquery.textarea-autogrow.js"></script>
+	<script src="js/libs/handlebars-v1.1.2.js"></script>
+	<script src="js/libs/ember-1.2.0-debug.js"></script>
+
+	<!-- Beginning of chat scripts -->
+	<script src="js/libs/strophe.min.js"></script>
+	<script src="js/libs/underscore-min.js"></script>
+	<script src="js/libs/jquery.ba-tinypubsub.js"></script>
+	<script src="js/libs/date-short-long.js"></script>
+	<script src="js/libs/ba-emotify.js"></script>
+
+	<script src="js/chat/app.js"></script>
+
+	<script src="js/chat/models/chat_tab.js"></script>
+	<script src="js/chat/models/message.js"></script>
+	<script src="js/chat/models/user.js"></script>
+
+	<script src="js/chat/controllers/local_storage.js"></script>
+	<script src="js/chat/controllers/application.js"></script>
+
+	<script src="js/chat/views/chat_tab/message.js"></script>
+	<script src="js/chat/views/chat_tab/message_collection.js"></script>
+	<script src="js/chat/views/chat_tab/text_area.js"></script>
+	<script src="js/chat/views/chat_tab/layout.js"></script>
+	<!-- End of chat scripts -->
+
+	<script src="js/chat/views/application.js"></script>
 </head>
 <body>
-  <div id="head" class="content-friend-name">
-  </div>
-  <div class="box-wrap antiscroll-wrap">
-    <div class="antiscroll-inner" id="scrollable-area">
-      <div id="chat">
-        <div class="composing-notification"><span
-            class="content-friend-name"></span> is typing...
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <form id="msgForm">
-    <textarea id="msg" class="expand11-52" rows="1" wrap="soft" autofocus></textarea>
-    <input id="pastePageLink" type="button" value="" class="clearfix" />
-  </form>
+	<script type="text/x-handlebars">{{view Chat.Views.Application}}</script>
 </body>
 </html>

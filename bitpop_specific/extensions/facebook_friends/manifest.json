@@ -1,24 +1,22 @@
 {
   "name": "Facebook Friends Sidebar",
-  "version": "1.11.36",
+  "version": "2.2",
   "description": "Shows a sidebar with a list of Facebook friends to the right of current web page.",
-  "background": {
-    "scripts": [
-      "js/jquery.min.js",
-      "js/autolink-min.js",
-      "js/common.js",
-      "js/background.js"
-    ]
-  },
-  "browser_action": {
-    "default_title": "Facebook chat",
-    "default_icon": "images/facebook_icon.png"
-  },
   "icons": {
     "128": "images/icon128.png",
     "16": "images/icon16.png",
     "32": "images/icon32.png",
     "48": "images/icon48.png"
+  },
+  "background": {
+  	"page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": {                    // optional
+      "19": "images/facebook_icon.png"//,           // optional
+      //"38": "images/icon38.png"            // optional
+    },
+    "default_title": "Show/Hide Facebook Sidebar"      // optional; shown in tooltip
   },
   "content_scripts": [ {
     "css": [ "suppression/facebook_suppressor.css" ],
@@ -31,6 +29,7 @@
     "run_at": "document_end"
   }],
   "permissions": [
+    "idle",
     "cookies",
     "downloads",
     "downloads.open",
@@ -39,10 +38,9 @@
     "bitpop",
     "*://*.facebook.com/*",
     "https://api.facebook.com/*",
-    "https://graph.facebook.com/*"
+    "https://graph.facebook.com/*",
+    "http://tools.bitpop.com:5280/*"
   ],
   "content_security_policy": "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval'; object-src 'self'",
-  "update_url": "http://tools.bitpop.com/ext/updates.xml",
   "manifest_version": 2
 }
-

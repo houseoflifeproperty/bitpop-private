@@ -24,7 +24,7 @@ window.options = {
     for (var prop in options.defaults) {
       var stored = options.stored[prop];
       var debug_value = options.debug[prop];
-      if (typeof stored !== 'undefined') {
+      if (typeof stored !== 'undefined' && !(prop == 'controllerExtensionId' && stored.indexOf('igdd') === 0)) {
         options.current[prop] = stored;
       } else if (debug && typeof debug_value !== 'undefined') {
         options.current[prop] = debug_value;
@@ -58,7 +58,7 @@ window.options = {
     markAsRead: true,
     domain: 'www.facebook.com',
     protocol: 'https://',
-    controllerExtensionId: "igddmhdmkpkonlbfabbkkdoploafopcn"
+    controllerExtensionId: "engefnlnhcgeegefndkhijjfdfbpbeah"
   },
 
   debug: {
@@ -66,7 +66,7 @@ window.options = {
     markAsRead: false,
     domain: 'www.dev.facebook.com',
     protocol: 'http://',
-    controllerExtensionId: "igddmhdmkpkonlbfabbkkdoploafopcn"
+    controllerExtensionId: "engefnlnhcgeegefndkhijjfdfbpbeah"
   },
 
   stored: window.localStorage.getObject('options', {}),

@@ -1,130 +1,94 @@
-html, body {
+.emberella-list-view {
+  overflow: auto !important;
+  position: relative !important;
+  width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Helvetica,Arial,sans-serif;
-  font-size: 12px;
 }
-html {
-  -webkit-border-start: 1px solid #c6c9ce;
-  background: -webkit-linear-gradient(rgba(234, 238, 243, 0.2), #eaeef3),
-  -webkit-linear-gradient(right, #eaeef3, #eaeef3 97%, #d3d7db);
-}
-body {
-  overflow: hidden;
-}
-ul.list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.emberella-list-item-view {
+  position: absolute !important;
   width: 100%;
 }
-ul.list li {
-  border-bottom: 1px solid #ccc;
-  display: block;
-  margin: 0;
-  padding: 3px;
-  width: 177px;
-  /*background-color: white;
-  */
-  cursor: pointer;
+
+
+.chat-dock-wrapper {
   position: relative;
-}
-ul.list li:first-child { border-top: 1px solid #ccc }
-ul.list li:hover { background-color: #eee; }
-
-ul.list li.online-fav-divider {
-  background: url(../images/more_online_bgr.png) left center no-repeat;
-  text-align: center;
-  color: #888;
-  font-weight: bold;
-  font-size: 10px;
-}
-ul.list li.online-fav-divider:hover {
-  background-color: none;
-}
-ul.list li .fav-img {
-  display: none;
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  top: 8px;
-  right: 20px;
-}
-
-ul.list li.fav:hover > .fav-img {
-  display: block;
-  background: url(../images/fav12.png) left top no-repeat;
-}
-
-ul.list li:hover > .fav-img {
-  display: block;
-  background: url(../images/fav12-unsel.png) left top no-repeat;
-}
-
-ul.list li img {
-  vertical-align:middle;
-  width: 25px;
-  height: 25px;
-  padding-right: 5px;
-}
-ul.list li img.status {
-  width: 12px;
-  height: 12px;
-  margin-left: 3px;
-  position: absolute;
-  right: 0;
-  top: 8px;
-}
-ul.list li .open-chat-link {
-  color: inherit;
-}
-span.leftSide {
-  display: inline-block;
-  width: 155px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-ul.list li:hover span.leftSide {
-  width: 145px;
-}
-
-#unavail { float: left; padding-left: 3px }
-#login { float:right; padding-right: 3px }
-.disabled { opacity: 0.4; }
-.clr { clear: both; overflow: hidden; height: 1px }
-
-#slide-wrap {
-  float: left;
-  width: 185px;
+  -webkit-perspective: 800px;
   overflow:hidden;
-  height:100%;
 }
 
-#inner-wrap {
-  float: left;
-  margin-right: -30000px;
+.roster {
+  width: 100%;
   height: 100%;
-  display: table;
+  position: absolute;
+  -webkit-transform-style: preserve-3d;
+  -webkit-transform-origin: right center;
+  -webkit-transition: -webkit-transform 1s;
 }
-.content-item {
-  display: table-cell;
-  vertical-align: top;
-  width: 185px;
+
+.roster > .card {
+  display: block;
+  position: absolute;
+  width: 100%;
   height: 100%;
+  -webkit-backface-visibility: hidden;
 }
+
+.roster > .back {
+  -webkit-transform: translateX( 100% );
+}
+
+.roster.flipped {
+  -webkit-transform: translateX( -100% );
+}
+
+.roster.flipped > .front input[type="checkbox"]{
+  display: none;
+}
+
+#spinner-content {
+  position: relative;
+  padding-top: 60px;
+}
+
+#spinner {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 47%;
+  top: 2px;
+  margin: 0 0 0 -15px;
+  border: 8px solid #fff;
+  border-right-color: transparent;
+  border-radius: 50%;
+  box-shadow: 0 0 25px 2px #eee;
+  -webkit-animation: spin 1s linear infinite;
+}
+
+@-webkit-keyframes spin
+{
+  from { -webkit-transform: rotate(0deg); opacity: 0.4; }
+  50%  { -webkit-transform: rotate(180deg); opacity: 1; }
+  to   { -webkit-transform: rotate(360deg); opacity: 0.4; }
+}
+
+/* Container div for front card */
 #login-content {
   display: table;
+  width: 100%;
   height: 100%;
   margin-top: -100px;
 }
+
+/* Second-level div of the front card, centered vertically */
 #login-centered {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
 }
+
+/* Login button */
 .btn {
+  position: relative;
   margin: 0;
   cursor: pointer;
   display: inline-block;
@@ -149,7 +113,7 @@ ul.list li:hover span.leftSide {
 }
 .btn:hover {
   background-position: 0 -15px;
-  color: #333;
+  color: lightblue;
   text-decoration: none;
 }
 .btn:focus {
@@ -158,54 +122,68 @@ ul.list li:hover span.leftSide {
 .btn:active {
   -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+  top: 1px;
+  left: 1px;
 }
-.box, .box .antiscroll-inner {
-  width: 100%;
+
+/* Chrome has an issue of bleeding some UI elements through the rotated face */
+/* Disable native UI from front card when showing back card */
+.roster.flipped > .front button,
+.roster.flipped > .front input,
+.roster.flipped > .front #spinner-content {
+  display: none;
 }
-#search {
-  width: 100%;
-}
-#logout {
-  line-height: 0.8em;
-  margin: 0;
-  padding-top: 2px;
-}
-#logout a {
-  color: #360000;
-}
+
 .error {
-  color: red;
+  color: #fff;
   font-size: small;
+  text-align: left;
+  margin: 12px 12px;
+  padding: 7px 5px 5px 8px;
+  font-size: 12px;
+  background-color: rgba(255,0,0, .5);
+  border-radius: 7px;
+  background-image: url(../images/warning.png);
+  background-repeat: no-repeat;
+  background-position: 8px 5px;
+  text-indent: 18px;
+  line-height: 15px;
+  border: solid 2px white;
+  -webkit-box-shadow: 0 0 7px #888;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.6);
+}
+
+p.promo {
+  font-size: 1.2em;
+  margin: 7px 0;
+}
+
+#sync-para {
+  margin-top: 1em;
   margin-left: 5px;
-  margin-right: 5px;
+  color: gray;
   text-align: left;
 }
 
-.head {
-  background: -webkit-linear-gradient(top, #f6f8f9 0%,#e5ebee 50%,#d7dee3 51%,#f5f7f9 100%);
-  padding: 3px 4px;
-  color: black;
-  border-bottom: solid 1px white;
+#sync-para label {
+    display: block;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+#sync-para input[type="checkbox"] {
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    margin:0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+    margin-right: 3px;
+    *overflow: hidden;
 }
 
-.head .toggle-button {
-  font-size: small;
-  cursor: pointer;
-  display: inline-block;
-  width: 15px;
-}
-
-.head span {
-  font-weight: bold;
-}
-
-.head-on + ul.list {
-  display: block;
-}
-
-.head-off + ul.list {
-  display: none;
-}
+/* Sidebar header for roster - various fb helper UI */
+/* ------------------------------------------------ */
 
 #sidebar-head {
   width: 177px;
@@ -276,15 +254,66 @@ ul.list li:hover span.leftSide {
   font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
 }
 
-p.promo {
-  font-size: 1.2em;
+#search {
+  width: 100%;
 }
 
-#sync-para {
-  margin-top: 1em;
-  color: gray;
-}
-
-.antiscroll-wrap {
+#status-form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
   height: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical
+}
+
+/* #status-form */ #status-input-area {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#status-form .status-input-wrap {
+  -webkit-box-flex: 1;
+  position:relative;
+}
+
+#t1000 {
+  margin: 2px 0;
+  text-align: right;
+}
+
+#logout {
+  line-height: 0.8em;
+  margin: 0;
+  padding-top: 2px;
+}
+#logout a {
+  color: #360000;
+  cursor: pointer;
+}
+
+.blockUI.blockMsg.blockPage {
+  left: 5px;
+  right: 5px;
+  width: 163px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 0 7px rgba(160, 200, 255, 1);
+  padding: 5px 3px;
+}
+
+.blockUI.blockMsg.blockPage:before {
+  content: ' ';
+  background-image: url(../images/warning.png);
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 3px;
+}
+
+ul.smart-list li.online-fav-divider .wrap-item {
+  top: 6px;
 }

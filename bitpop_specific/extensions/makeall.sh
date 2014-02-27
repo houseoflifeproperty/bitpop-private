@@ -8,7 +8,7 @@ UPDATES_XML_PATH="$UPLOAD_DIR/updates.xml"
 PRODVERSIONMIN_PATH="./prodversionmin.csv"
 
 # extension names list
-EXT_NAMES="dropdown_most_visited facebook_controller facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy share_this"
+EXT_NAMES="dropdown_most_visited facebook_friends facebook_messages facebook_notifications uncensor_domains uncensor_proxy share_this"
 if [ "$1" == "-i" ]; then
   EXT_NAMES="$EXT_NAMES bittorrent_surf"
 fi
@@ -57,7 +57,7 @@ for EXT in $EXT_NAMES; do
   ./crxmake.sh "$EXT/" "$EXT.pem"
   cp -f "$EXT.crx" "$EXT_DIR/"
 
-  EXT_ID=`cat "$EXT.pem" | openssl rsa -pubout -outform DER | openssl dgst -sha256 | awk '{print $2}' | cut -c 1-32 | tr '0-9a-f' 'a-p'`
+  EXT_ID=`cat "$EXT.pem" | openssl rsa -pubout -outform DER | openssl dgst -sha256 | cut -c 1-32 | tr '0-9a-f' 'a-p'`
   #EXT_ID=$($EXT_ID_COMMAND)
   EXT_VERSION=`grep \"version\": "$EXT/manifest.json" | sed -E 's/[^[:digit:]\.]//g'`
 

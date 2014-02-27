@@ -1,5 +1,5 @@
 var bitpop = {
-  CONTROLLER_EXTENSION_ID: "igddmhdmkpkonlbfabbkkdoploafopcn"
+  CONTROLLER_EXTENSION_ID: "engefnlnhcgeegefndkhijjfdfbpbeah"
 };
 
 cleanLocalStorage();

@@ -1,4 +1,4 @@
-// This file is packaged with the extension then re-fetched from the
+`// This file is packaged with the extension then re-fetched from the
 // server for updates. Bitter experience has taught us that we can't depend on
 // the server resource loading correctly.
 
