@@ -46,8 +46,15 @@ helper_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper.app"
 helper_eh_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper EH.app"
 helper_np_app="${versioned_dir}/@MAC_PRODUCT_NAME@ Helper NP.app"
 
+rm -f "${sparkle_framework}/Sparkle.TOC"
+rm -f "${framework}/@MAC_PRODUCT_NAME@ Framework.tmp"
+rm -f "${framework}/@MAC_PRODUCT_NAME@ Framework.TOC"
 codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
-		"${framework}"
+	"${sparkle_framework}/Sparkle"
+codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
+	"${sparkle_framework}"
+codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
+	"${framework}"
 codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
     "${helper_app}"
 codesign -s "${codesign_id}" --keychain "${codesign_keychain}" \
