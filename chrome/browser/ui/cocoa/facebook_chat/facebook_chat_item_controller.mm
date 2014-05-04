@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/logging.h"
 #include "base/mac/bundle_locations.h"
 #include "base/mac/mac_util.h"
 #include "base/string_number_conversions.h"
@@ -24,6 +25,7 @@
 #include "chrome/common/extensions/extension.h"
 #include "chrome/common/url_constants.h"
 #include "googleurl/src/gurl.h"
+#include "googleurl/src/url_util.h"
 #include "grit/generated_resources.h"
 #include "grit/theme_resources.h"
 #include "grit/ui_resources.h"
@@ -32,6 +34,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_util_mac.h"
+#include "ui/gfx/screen.h"
 #include "ui/gfx/skia_util.h"
 
 namespace {
@@ -75,6 +78,7 @@ namespace {
                       selector:@selector(viewFrameDidChange:)
                           name:NSViewFrameDidChangeNotification
                         object:[self view]];
+    delayActivation_ = YES;
   }
   return self;
 }
@@ -163,7 +167,16 @@ namespace {
   DCHECK([button_ isFlipped]);
   NSPoint anchor = NSMakePoint(NSMidX(bounds),
                                NSMinY(bounds) - kChatWindowAnchorPointYOffset);
-  return [button_ convertPoint:anchor toView:nil];
+
+  NSPoint res = [button_ convertPoint:anchor toView:nil];
+  
+  gfx::Size screenSize = gfx::Screen::GetNativeScreen()->GetPrimaryDisplay().GetSizeInPixel();
+  int clampToX = screenSize.width() - 140; // OOOOO! MAGIC NUMBER!
+  res.x = std::min(res.x, (float)clampToX);
+  
+  LOG(INFO) << "popupPointForChatWindow: (" << res.x << ", " << res.y << ")";
+
+  return res;
 }
 
 - (NSPoint)popupPointForNotificationWindow {
@@ -200,10 +213,19 @@ if (!button_)
       FacebookChatManagerServiceFactory::GetForProfile(profile);
   std::string urlString(chrome::kFacebookChatExtensionPrefixURL);
   urlString += chrome::kFacebookChatExtensionChatPage;
-  urlString += "#";
+  urlString += "#?friend_jid=";
   urlString += bridge_->chat()->jid();
-  urlString += "&";
+  urlString += "&jid=";
   urlString += mgr->global_my_uid();
+  urlString += "&name=";
+  urlString += bridge_->chat()->username();
+  url_canon::RawCanonOutput<1024> out;
+  url_util::EncodeURIComponent(
+                  bridge_->chat()->username().c_str(),
+                  bridge_->chat()->username().length(),
+                  &out);
+  urlString += std::string(out.data(), out.length());
+  LOG(INFO) << urlString;
   return GURL(urlString);
 }
 
@@ -297,7 +319,9 @@ if (!button_)
       [notificationController_ close];
 
     [self chatItem]->ClearUnreadMessages();
-    [self openChatWindow];
+    LOG(INFO) << "delayActivation: " << (int)[self delayActivation]; 
+    if (![self delayActivation])
+      [self openChatWindow];
   }
 
   active_ = active;
@@ -327,8 +351,15 @@ if (!button_)
 }
 
 - (void)layedOutAfterAddingToChatbar {
-  if ([self active])
+  if ([self active]) {
     [self openChatWindow];
+
+    if ([self delayActivation])
+      [self setDelayActivation:NO];
+
+    LOG(INFO) << "Active";
+  } else 
+    LOG(INFO) << "Non-active";
 
   int numNotifications = [self chatItem]->num_notifications();
   if (numNotifications > 0)
@@ -355,6 +386,14 @@ if (!button_)
     [[FacebookPopupController popup] close];
   if (notificationController_.get())
     [notificationController_ close];
+}
+
+- (BOOL)delayActivation {
+  return delayActivation_;
+}
+
+- (void)setDelayActivation:(BOOL)delayActivation {
+  delayActivation_ = delayActivation;
 }
 
 @end

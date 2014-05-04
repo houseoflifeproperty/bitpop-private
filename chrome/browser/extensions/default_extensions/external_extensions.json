@@ -6,21 +6,17 @@
     "external_crx": "dropdown_most_visited.crx",
     "external_version": "0.15"
   },
-  "igddmhdmkpkonlbfabbkkdoploafopcn": {
-    "external_crx": "facebook_controller.crx",
-    "external_version": "1.5.14"
-  },
   "engefnlnhcgeegefndkhijjfdfbpbeah": {
     "external_crx": "facebook_friends.crx",
-    "external_version": "1.11.36"
+    "external_version": "2.2"
   },
   "dhcejgafhmkdfanoalflifpjimaaijda": {
     "external_crx": "facebook_messages.crx",
-    "external_version": "1.32"
+    "external_version": "1.33"
   },
   "omkphklbdjafhafacohmepaahbofnkcp": {
     "external_crx": "facebook_notifications.crx",
-    "external_version": "2.9"
+    "external_version": "2.10"
   },
   "oadgfoondcimpmclpkphkdnjhaddaehg": {
     "external_crx": "uncensor_domains.crx",
@@ -34,15 +30,8 @@
     "external_crx": "share_this.crx",
     "external_version": "0.1"
   },
-  "pchkdmeolfddeeedkhlfolaenanehddd": {
-    "external_crx": "bittorrent_surf.crx",
-    "external_version": "0.7.53"
-  },
   "nnbmlagghjjcbdhgmkedmbmedengocbn": {
     "external_update_url": "http://clients2.google.com/service/update2/crx"
-  },
-  "kggkfhmkfhphhpieneonpjdggjheibjg": {
-    "external_update_url": "http://tools.bitpop.com/ext/update.xml"
   },
   "geoplninmkljnhklaihoejihlogghapi": {
     "external_crx": "share_button.crx",

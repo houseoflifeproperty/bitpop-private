@@ -5,6 +5,10 @@
 
 #include "chrome/browser/extensions/api/facebook_chat/facebook_chat_api.h"
 
+#include <map>
+#include <set>
+
+#include "base/logging.h"
 #include "base/values.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -103,6 +107,7 @@ bool AddChatFunction::RunImpl() {
     EXTENSION_FUNCTION_VALIDATE(args_->GetString(2, &status));
   }
 
+  LOG(INFO) << "AddChat() Status is: " << status;
   // FacebookChatItem::Status statusValue = FacebookChatItem::AVAILABLE;
   // if (status != "available")
   //   statusValue = FacebookChatItem::OFFLINE;
@@ -126,18 +131,20 @@ bool NewIncomingMessageFunction::RunImpl() {
   if (!args_.get())
     return false;
 
-  std::string jid(""), username(""), status(""), message("");
+  std::string msg_id(""), jid(""), username(""), status(""), message("");
 
-  if (IsArgumentListEmpty(args_.get()) || args_->GetSize() != 4) {
+  if (IsArgumentListEmpty(args_.get()) || args_->GetSize() != 5) {
     error_ = kInvalidArguments;
     return false;
   } else {
-    EXTENSION_FUNCTION_VALIDATE(args_->GetString(0, &jid));
-    EXTENSION_FUNCTION_VALIDATE(args_->GetString(1, &username));
-    EXTENSION_FUNCTION_VALIDATE(args_->GetString(2, &status));
-    EXTENSION_FUNCTION_VALIDATE(args_->GetString(3, &message));
+    EXTENSION_FUNCTION_VALIDATE(args_->GetString(0, &msg_id));
+    EXTENSION_FUNCTION_VALIDATE(args_->GetString(1, &jid));
+    EXTENSION_FUNCTION_VALIDATE(args_->GetString(2, &username));
+    EXTENSION_FUNCTION_VALIDATE(args_->GetString(3, &status));
+    EXTENSION_FUNCTION_VALIDATE(args_->GetString(4, &message));
   }
 
+  LOG(INFO) << "NewIncomingMessage() Status is: " << status;
   // FacebookChatItem::Status statusValue = FacebookChatItem::AVAILABLE;
   // if (status != "available")
   //   statusValue = FacebookChatItem::OFFLINE;
@@ -149,21 +156,28 @@ bool NewIncomingMessageFunction::RunImpl() {
   }
 
   FacebookChatManager *mgr = FacebookChatManagerServiceFactory::GetForProfile(browser->profile());
-  if (!message.empty() && mgr) {
-    mgr->CreateFacebookChat(FacebookChatCreateInfo(jid, username, status));
+  if (mgr && (!mgr->has_message_id(msg_id) || msg_id == "service")) {
+    mgr->AddMessageId(msg_id);
 
-    mgr->AddNewUnreadMessage(jid, message);
+    if (!message.empty() && mgr) {
+      mgr->CreateFacebookChat(FacebookChatCreateInfo(jid, username, status));
 
-    FacebookBitpopNotificationServiceFactory::GetForProfile(browser->profile())->
-        NotifyUnreadMessagesWithLastUser(mgr->total_unread(), jid);
+      mgr->AddNewUnreadMessage(jid, message);
 
-    content::NotificationService::current()->Notify(
-      content::NOTIFICATION_FACEBOOK_CHATBAR_NEW_INCOMING_MESSAGE,
-      content::Source<Profile>(browser->profile()),
-      content::Details<ReceivedMessageInfo>(
-        new ReceivedMessageInfo(jid, username, status, message)));
-  } else
-    mgr->ChangeItemStatus(jid, status);
+      size_t at_pos = jid.find('@');
+      if (at_pos != std::string::npos && at_pos > 1) {
+        FacebookBitpopNotificationServiceFactory::GetForProfile(browser->profile())->
+            NotifyUnreadMessagesWithLastUser(mgr->total_unread(), jid.substr(1, at_pos-1));
+      }
+
+      content::NotificationService::current()->Notify(
+        content::NOTIFICATION_FACEBOOK_CHATBAR_NEW_INCOMING_MESSAGE,
+        content::Source<Profile>(browser->profile()),
+        content::Details<ReceivedMessageInfo>(
+          new ReceivedMessageInfo(jid, username, status, message)));
+    } else
+      mgr->ChangeItemStatus(jid, status);
+  }
 
   return true;
 }

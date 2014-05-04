@@ -25,6 +25,7 @@
 #include "chrome/common/badge_util.h"
 #include "chrome/common/url_constants.h"
 #include "googleurl/src/gurl.h"
+#include "googleurl/src/url_util.h"
 #include "grit/generated_resources.h"
 #include "grit/theme_resources.h"
 #include "grit/ui_resources.h"
@@ -277,8 +278,15 @@ void ChatItemView::ActivateChat() {
     // open popup
     std::string urlString(chrome::kFacebookChatExtensionPrefixURL);
     urlString += chrome::kFacebookChatExtensionChatPage;
-    urlString += "#";
-    urlString += model_->jid() + "&" + mgr->global_my_uid();
+    urlString += "#?friend_jid=";
+    urlString += model_->jid() + "&jid=" + mgr->global_my_uid();
+    urlString += "&name=";
+    url_canon::RawCanonOutput<1024> out;
+    url_util::EncodeURIComponent(
+                    model_->username().c_str(),
+                    model_->username().length(),
+                    &out);
+    urlString += std::string(out.data(), out.length());
 
     chat_popup_ = ExtensionChatPopup::ShowPopup(GURL(urlString), chatbar_->browser(),
                                   this, BubbleBorder::BOTTOM_CENTER);

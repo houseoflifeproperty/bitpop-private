@@ -27,8 +27,8 @@ using extensions::ExtensionHost;
 // The maximum is an arbitrary number that should be smaller than most screens.
 const int ChatPopup::kMinWidth = 25;
 const int ChatPopup::kMinHeight = 25;
-const int ChatPopup::kMaxWidth = 203 + 4;
-const int ChatPopup::kMaxHeight = 350 + 4 + 7;
+const int ChatPopup::kMaxWidth = 270 + 4;
+const int ChatPopup::kMaxHeight = 320 + 4 + 7;
 
 ChatPopup::ChatPopup(
     Browser* browser,

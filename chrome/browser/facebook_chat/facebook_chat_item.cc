@@ -91,7 +91,7 @@ std::string FacebookChatItem::GetMessageAtIndex(unsigned int index) {
 }
 
 void FacebookChatItem::ChangeStatus(const std::string &status) {
-  if (status == "active")
+  if (status == "online")
     status_ = AVAILABLE;
   else if (status == "idle")
     status_ = IDLE;

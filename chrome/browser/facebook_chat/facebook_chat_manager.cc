@@ -62,7 +62,7 @@ FacebookChatItem* FacebookChatManager::CreateFacebookChat(
     return it->second;
 
   FacebookChatItem::Status status;
-  if (info.status == "active")
+  if (info.status == "online")
     status = FacebookChatItem::AVAILABLE;
   else if (info.status == "idle")
     status = FacebookChatItem::IDLE;
@@ -140,4 +140,12 @@ int FacebookChatManager::total_unread() const {
     total += (*it)->num_notifications();
   }
   return total;
+}
+
+bool FacebookChatManager::has_message_id(const std::string& msg_id) const {
+  return (message_id_set_.find(msg_id) != message_id_set_.end());
+}
+
+void FacebookChatManager::AddMessageId(const std::string& msg_id) {
+  message_id_set_.insert(msg_id);
 }

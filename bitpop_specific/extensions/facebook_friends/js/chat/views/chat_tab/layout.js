@@ -165,9 +165,11 @@ Chat.Views.ChatTab.Layout = Ember.View.extend(Ember.TargetActionSupport, {
       });
 
       $(document).on('height_should_change', '#msg-input', _.bind(function (ev) {
-        $('.antiscroll-wrap, .antiscroll-inner').height($('.chat-wrap').height() - $('.chat-head').outerHeight(true) - $('.chat-input').outerHeight(true) - (this.get('showSmileys') ? $('.smileys').outerHeight(true) : 0));
-        if ($('.antiscroll-wrap').data('antiscroll'))
-          $('.antiscroll-wrap').data('antiscroll').destroy().refresh();
+        Ember.run.scheduleOnce('afterRender', this, function(){
+          $('.antiscroll-wrap, .antiscroll-inner').height($('.chat-wrap').height() - $('.chat-head').outerHeight(true) - $('.chat-input').outerHeight(true) - (this.get('showSmileys') ? $('.smileys').outerHeight(true) : 0));
+          if ($('.antiscroll-wrap').data('antiscroll'))
+            $('.antiscroll-wrap').data('antiscroll').destroy().refresh();
+        });
       }, this));
     }
 });

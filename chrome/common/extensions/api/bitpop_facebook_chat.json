@@ -59,6 +59,12 @@
         "description": "Notifies BitPop internals new facebook chat message has arrived",
         "parameters": [
           {
+            "name": "id",
+            "type": "string",
+            "optional": false,
+            "description": "Message ID"
+          },
+          {
             "name": "jid",
             "type": "string",
             "optional": false,

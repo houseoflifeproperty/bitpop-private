@@ -51,6 +51,7 @@ Chat.Controllers.Application = Ember.Object.extend({
   processExtensionMessageExternal: function (request, sender, sendResponse) {
     if (request.type == 'newInboxMessage') {
       var message = {
+        id: "service",
         body: request.body,
         from: '-' + request.from + '@chat.facebook.com',
         createdAt: new Date(request.timestamp * 1000)
@@ -329,6 +330,7 @@ Chat.Controllers.Application = Ember.Object.extend({
           return;
       }
       chrome.bitpop.facebookChat.newIncomingMessage(
+                               message.id,
                                Strophe.getBareJidFromJid(user.get('jid')),
                                user.get('name'),
                                user.get('status'),

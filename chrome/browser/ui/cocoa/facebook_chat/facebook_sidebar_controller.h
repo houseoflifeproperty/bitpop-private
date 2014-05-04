@@ -17,6 +17,7 @@ namespace extensions {
 }
 
 class Browser;
+class ExtensionHostPantry;
 class SidebarExtensionContainer;
 class SidebarExtensionNotificationBridge;
 
@@ -27,9 +28,9 @@ class SidebarExtensionNotificationBridge;
  @private
   BOOL sidebarVisible_;
   content::NotificationRegistrar registrar_;
-  scoped_ptr<extensions::ExtensionHost> extension_host_;
   scoped_ptr<SidebarExtensionNotificationBridge> notification_bridge_;
   scoped_ptr<SidebarExtensionContainer> extension_container_;
+  scoped_ptr<extensions::ExtensionHost> extension_host_;
   Browser* browser_;
 }
 

@@ -322,9 +322,9 @@ Chat.Controllers.Application = Ember.Object.extend({
 
     var jid = Strophe.getBareJidFromJid(desc.from_jid);
     if (desc.is_typing) {
-      chrome.bitpop.facebookChat.newIncomingMessage(jid, "", 'composing', "");
+      chrome.bitpop.facebookChat.newIncomingMessage("service", jid, "", 'composing', "");
     } else {
-      chrome.bitpop.facebookChat.newIncomingMessage(jid, "", 'online', "");
+      chrome.bitpop.facebookChat.newIncomingMessage("service", jid, "", 'online', "");
     }
   },
 

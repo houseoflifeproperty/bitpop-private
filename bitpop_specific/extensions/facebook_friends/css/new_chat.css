@@ -242,9 +242,9 @@ textarea {
   display: block;
   text-indent: 17px;
   width: 220px;
-  min-height: 1.4em;
+  min-height: 21px;
   max-height: 5.6em;
-  height: 1.4em;
+  height: 21px;
   outline: none;
   resize: none;
   overflow: auto;

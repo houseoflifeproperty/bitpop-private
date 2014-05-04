@@ -34,6 +34,7 @@ class GURL;
   NSImage *numNotificationsImage_;
 
   BOOL active_;
+  BOOL delayActivation_;
 }
 
 // Takes ownership of |downloadModel|.
@@ -62,6 +63,9 @@ class GURL;
 
 - (BOOL)active;
 - (void)setActive:(BOOL)active;
+
+- (BOOL)delayActivation;
+- (void)setDelayActivation:(BOOL)active;
 
 - (void)layedOutAfterAddingToChatbar;
 

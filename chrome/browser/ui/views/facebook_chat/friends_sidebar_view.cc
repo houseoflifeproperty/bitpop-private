@@ -53,7 +53,7 @@ void FriendsSidebarView::OnExtensionSizeChanged(ExtensionViewViews* view) {
 
 void FriendsSidebarView::InitializeExtensionHost() {
   std::string url = std::string("chrome-extension://") + std::string(chrome::kFacebookChatExtensionId) +
-        std::string("/friends_sidebar.html");
+        std::string("/roster.html");
   ExtensionProcessManager* manager =
       extensions::ExtensionSystem::Get(browser_->profile())->process_manager();
   extension_host_.reset(manager->CreateViewHost(GURL(url), browser_, chrome::VIEW_TYPE_PANEL));

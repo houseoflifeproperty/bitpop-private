@@ -3,6 +3,7 @@ Chat.Models.Message = Ember.Object.extend({
     to: null,
     body: null,
     createdAt: null,
+    isInbox: false,
 
     init: function () {
         if (!this.get('createdAt'))

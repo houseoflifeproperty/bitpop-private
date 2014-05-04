@@ -39,7 +39,6 @@ namespace {
 // Width of the facebook friends sidebar is constant and cannot be manipulated
 // by user. When time comes we may change this decision.
 const int kFriendsSidebarWidth = 186;
-
 }  // end namespace
 
 @interface FacebookSidebarController (Private)
@@ -222,11 +221,12 @@ class SidebarExtensionNotificationBridge : public content::NotificationObserver 
 
   std::string url = std::string("chrome-extension://") +
       std::string(chrome::kFacebookChatExtensionId) +
-      std::string("/friends_sidebar.html");
+      std::string("/roster.html");
   ExtensionProcessManager* manager =
       ExtensionSystem::Get(profile)->process_manager();
+  
   extension_host_.reset(manager->CreateViewHost(GURL(url), browser_,
-                                                chrome::VIEW_TYPE_PANEL));
+                                            chrome::VIEW_TYPE_PANEL));
   if (extension_host_.get()) {
     gfx::NativeView native_view = extension_host_->view()->native_view();
     NSRect container_bounds = [[self view] bounds];

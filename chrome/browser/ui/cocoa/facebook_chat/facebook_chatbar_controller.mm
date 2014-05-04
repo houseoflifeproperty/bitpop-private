@@ -175,6 +175,8 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
     if ([contr chatItem]->jid() == item->jid()) {
       if ([contr chatItem]->needs_activation())
         [self activateItem:contr];
+      else
+        [contr setDelayActivation:NO];
       return;
     }
 
@@ -201,6 +203,9 @@ const NSTimeInterval kPlaceFirstAnimationDuration = 0.6;
   // Insert new item at the left.
   scoped_nsobject<FacebookChatItemController> controller(
       [[FacebookChatItemController alloc] initWithModel:item chatbar:self]);
+
+  if (![controller chatItem]->needs_activation())
+    [controller setDelayActivation:NO];
 
   // Adding at index 0 in NSMutableArrays is O(1).
   [chatItemControllers_ insertObject:controller.get() atIndex:0];

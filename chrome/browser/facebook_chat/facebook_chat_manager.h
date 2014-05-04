@@ -60,6 +60,9 @@ class FacebookChatManager : public ProfileKeyedService {
     std::string global_my_uid() const { return global_my_uid_; }
     void set_global_my_uid(const std::string& uid) { global_my_uid_ = uid; }
 
+    bool has_message_id(const std::string& msg_id) const;
+    void AddMessageId(const std::string& msg_id);
+
   protected:
     virtual ~FacebookChatManager();
   private:
@@ -67,10 +70,14 @@ class FacebookChatManager : public ProfileKeyedService {
 
     typedef std::set<FacebookChatItem*> ChatSet;
     typedef base::hash_map<std::string, FacebookChatItem*> ChatMap;
+    typedef std::set<std::string> MessageIdSet;
 
     std::string global_my_uid_;
     ChatSet chats_;
     ChatMap jid_chats_map_;
+    // Set of message ids to account for duplicate message notifications
+    // Different messages have different IDs
+    MessageIdSet message_id_set_;
 
     Profile *profile_;
 

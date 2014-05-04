@@ -67,9 +67,10 @@ Chat.Views.Roster.SmartFriendList = Ember.View.extend({
         break;
   }
     return res;
-  },
+  }
+});
 
-  didInsertElement: function () {
+$(window).load(function () {
     $(document).on('click', '.friend a', function (ev) {
       chrome.bitpop.facebookChat.addChat(
                 $(this).attr('data-jid'),
@@ -99,5 +100,4 @@ Chat.Views.Roster.SmartFriendList = Ember.View.extend({
         el.addClass('head-on');
       }
     });
-  }
 });

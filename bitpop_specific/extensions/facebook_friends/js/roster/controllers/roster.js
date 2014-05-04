@@ -80,45 +80,45 @@ Chat.Controllers.Roster = Ember.ArrayController.extend({
         return this.get('content').findProperty(prop, value);
     },
 
-    filterUserByProperty: function (prop, value) {
-        return this.get('content').filterProperty(prop, value).sortBy('name');
-    },
+    // filterUserByProperty: function (prop, value) {
+    //     return this.get('content').filterProperty(prop, value).sortBy('name');
+    // },
 
-    online: function () {
-        return this.filterProperty('status', 'online');
-    }.property('content.@each.status'),
+    // online: function () {
+    //     return this.filterProperty('status', 'online');
+    // }.property('content.@each.status'),
 
-    online_top: function () {
-        return this.filterProperty('onlineCategory', 'top');
-    }.property('content.@each.onlineCategory'),
+    // online_top: function () {
+    //     return this.filterProperty('onlineCategory', 'top');
+    // }.property('content.@each.onlineCategory'),
 
-    online_bottom: function () {
-        return this.filterProperty('onlineCategory', 'bottom');
-    }.property('content.@each.onlineCategory'),
+    // online_bottom: function () {
+    //     return this.filterProperty('onlineCategory', 'bottom');
+    // }.property('content.@each.onlineCategory'),
 
-    idle: function () {
-        return this.filterProperty('status', 'idle');
-    }.property('content.@each.status'),
+    // idle: function () {
+    //     return this.filterProperty('status', 'idle');
+    // }.property('content.@each.status'),
 
-    offline: function () {
-        return this.filterProperty('status', 'offline');
-    }.property('content.@each.status'),
+    // offline: function () {
+    //     return this.filterProperty('status', 'offline');
+    // }.property('content.@each.status'),
 
     isNonEmptySearch: function () {
         return (this.get('searchVal') && this.get('searchVal').trim().length > 0);
     },
 
-    applySearchQuery: function (items) {
-        if (this.isNonEmptySearch()) {
-            var s = this.get('searchVal').trim().toLowerCase();
-            return items.filter(
-                    _.bind(function (item, index, enumerable) {
-                        return (item.get('name').toLowerCase().indexOf(s) !== -1);
-                    }, this)
-                );
-        }
-        return items;
-    },
+    // applySearchQuery: function (items) {
+    //     if (this.isNonEmptySearch()) {
+    //         var s = this.get('searchVal').trim().toLowerCase();
+    //         return items.filter(
+    //                 _.bind(function (item, index, enumerable) {
+    //                     return (item.get('name').toLowerCase().indexOf(s) !== -1);
+    //                 }, this)
+    //             );
+    //     }
+    //     return items;
+    // },
 
     universal_list: function () {
         var new_items = [],
