@@ -700,7 +700,7 @@ cr.define('options', function() {
         if (cr.isChromeOS && syncData.hasError)
           SyncSetupOverlay.doSignOutOnAuthError();
         else
-          SyncSetupOverlay.showErrorUI();
+          SyncSetupOverlay.openSigninPageFromStartSyncSettings();
       };
 
       if (syncData.hasError)
